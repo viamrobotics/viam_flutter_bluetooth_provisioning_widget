@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:viam_flutter_provisioning/viam_bluetooth_provisioning.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 import 'package:viam_sdk/viam_sdk.dart' hide Permission;
 import 'package:viam_sdk/protos/app/app.dart'; // ?
 
+export 'package:flutter_blue_plus/flutter_blue_plus.dart';
 // export 'package:permission_handler/permission_handler.dart';
 // export 'package:viam_flutter_provisioning/viam_bluetooth_provisioning.dart';
 // export 'package:viam_sdk/viam_sdk.dart' hide Permission;
@@ -29,3 +31,6 @@ part 'src/view/wifi_question_screen.dart';
 // widgets
 part 'src/widgets/scanning_list_tile.dart';
 part 'src/widgets/step_tile.dart';
+
+// utils
+part 'src/utils/dialogs.dart';

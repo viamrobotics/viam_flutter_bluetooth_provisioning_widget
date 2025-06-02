@@ -1,9 +1,10 @@
 part of '../../viam_flutter_provisioning_widget.dart';
 
 class PairingScreen extends StatefulWidget {
-  const PairingScreen({super.key, required this.connectedPeripheral});
+  const PairingScreen({super.key, required this.connectedDevice});
 
-  final BluetoothDevice connectedPeripheral; // TODO: rename device
+  // TODO: grab it from the parent view model.. and read it that way!
+  final BluetoothDevice connectedDevice;
 
   // static MaterialPageRoute<void> route({
   //   required BluetoothDevice connectedPeripheral,

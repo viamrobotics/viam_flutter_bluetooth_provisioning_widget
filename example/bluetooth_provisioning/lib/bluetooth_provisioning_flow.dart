@@ -6,6 +6,15 @@ import 'package:viam_flutter_provisioning_widget/viam_flutter_provisioning_widge
 // mv, maybe no changes needed..?
 class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
   // TODO: dependencies
+
+  BluetoothDevice? _connectedDevice;
+  BluetoothDevice? get connectedDevice => _connectedDevice;
+
+  set connectedDevice(BluetoothDevice? device) {
+    _connectedDevice = device;
+    notifyListeners();
+  }
+
   // TODO: methods
 }
 
@@ -36,20 +45,30 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
     _pageController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
   }
 
+  void _onDeviceSelected(BluetoothDevice device) {
+    final bluetoothProvisioningFlowViewModel = Provider.of<BluetoothProvisioningFlowViewModel>(context, listen: false);
+    bluetoothProvisioningFlowViewModel.connectedDevice = device;
+    _onNextPage();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<BluetoothProvisioningFlowViewModel>(
       builder: (context, viewModel, child) {
         return Scaffold(
-          appBar: AppBar(), // TODO: custom app bar
+          appBar: AppBar(), // TODO: custom app bar back button?
           body: SafeArea(
             child: PageView(
               controller: _pageController,
               physics: NeverScrollableScrollPhysics(),
               children: [
-                IntroScreenOne(),
-                // second
-                // third..
+                IntroScreenOne(handleGetStartedTapped: _onNextPage),
+                IntroScreenTwo(handleNextTapped: _onNextPage),
+                BluetoothScanningScreen(onDeviceSelected: _onDeviceSelected), // get back device.. set on viewmodel.. read in my child!
+                PairingScreen(connectedDevice: viewModel.connectedDevice!),
+
+                // FIGURE THIS OUT AFTER, THE ABOVE^
+                // WifiQuestionScreen()
               ],
             ),
           ),

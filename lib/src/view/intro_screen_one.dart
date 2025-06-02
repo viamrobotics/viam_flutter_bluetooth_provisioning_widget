@@ -1,17 +1,9 @@
 part of '../../viam_flutter_provisioning_widget.dart';
 
 class IntroScreenOne extends StatelessWidget {
-  const IntroScreenOne({super.key});
+  final VoidCallback handleGetStartedTapped;
 
-  void _onGetStartedPressed(BuildContext context) {
-    // final viewModel = context.read<VesselSetupViewModel>();
-    // Navigator.of(context).push(MaterialPageRoute(
-    //   builder: (context) => ChangeNotifierProvider.value(
-    //     value: viewModel,
-    //     child: IntroScreenTwo(),
-    //   ),
-    // ));
-  }
+  const IntroScreenOne({super.key, required this.handleGetStartedTapped});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +34,7 @@ class IntroScreenOne extends StatelessWidget {
           const Spacer(),
           const Spacer(),
           FilledButton(
-            onPressed: () => _onGetStartedPressed(context),
+            onPressed: handleGetStartedTapped,
             child: const Text('Get started'),
           ),
         ],
