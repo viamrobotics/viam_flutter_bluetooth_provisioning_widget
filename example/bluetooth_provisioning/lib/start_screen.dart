@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import 'package:viam_flutter_provisioning_widget/viam_flutter_provisioning_widget.dart';
+import 'bluetooth_provisioning_flow.dart';
 
-// TODO: 2 paths eventually, hotspot and ble
 class StartScreen extends StatelessWidget {
   const StartScreen({super.key});
 
   void _goToIntroScreenOne(BuildContext context) async {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => IntroScreenOne(),
+      builder: (context) => ChangeNotifierProvider(
+        create: (context) => BluetoothProvisioningFlowViewModel(),
+        builder: (context, child) => BluetoothProvisioningFlow(),
+      ),
     ));
   }
 
@@ -21,7 +24,7 @@ class StartScreen extends StatelessWidget {
       body: Center(
         child: FilledButton(
           onPressed: () => _goToIntroScreenOne(context),
-          child: const Text('Start'),
+          child: const Text('Start Flow'),
         ),
       ),
     );
