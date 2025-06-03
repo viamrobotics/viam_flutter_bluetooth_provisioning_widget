@@ -47,7 +47,6 @@ class _PairingScreenState extends State<PairingScreen> {
 
   void _onNextPressed(BuildContext context) {
     //   final viewModel = context.read<VesselSetupViewModel>();
-
     //   Navigator.of(context).push(
     //     WifiQuestionScreen.route(
     //       connectedPeripheral: widget.connectedPeripheral,

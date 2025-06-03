@@ -65,7 +65,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                 IntroScreenOne(handleGetStartedTapped: _onNextPage),
                 IntroScreenTwo(handleNextTapped: _onNextPage),
                 BluetoothScanningScreen(onDeviceSelected: _onDeviceSelected), // get back device.. set on viewmodel.. read in my child!
-                PairingScreen(connectedDevice: viewModel.connectedDevice!),
+                if (viewModel.connectedDevice != null) PairingScreen(connectedDevice: viewModel.connectedDevice!),
 
                 // FIGURE THIS OUT AFTER, THE ABOVE^
                 // WifiQuestionScreen()
