@@ -15,6 +15,7 @@ dependencies:
   viam_sdk: ^0.5.1
   collection: ^1.18.0
   viam_flutter_provisioning: ^0.0.8
+  flutter_platform_widgets: ^7.0.1
   
 dev_dependencies:
   flutter_test:

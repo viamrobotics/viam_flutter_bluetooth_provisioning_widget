@@ -12,6 +12,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  provider: ^6.1.5
   viam_flutter_provisioning_widget:
     path: ../../
 

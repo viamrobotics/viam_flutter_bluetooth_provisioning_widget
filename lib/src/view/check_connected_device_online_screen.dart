@@ -3,24 +3,16 @@ part of '../../viam_flutter_provisioning_widget.dart';
 class CheckConnectedDeviceOnlineScreen extends StatefulWidget {
   const CheckConnectedDeviceOnlineScreen({
     super.key,
+    required this.handleSuccess,
+    required this.viam,
     required this.robot,
-    required this.connectedPeripheral,
+    required this.connectedDevice,
   });
 
+  final VoidCallback handleSuccess;
+  final Viam viam;
   final Robot robot;
-  final BluetoothDevice connectedPeripheral;
-
-  static MaterialPageRoute<void> route({
-    required Robot robot,
-    required BluetoothDevice connectedPeripheral,
-  }) {
-    return MaterialPageRoute(
-      builder: (context) => CheckConnectedDeviceOnlineScreen(
-        robot: robot,
-        connectedPeripheral: connectedPeripheral,
-      ),
-    );
-  }
+  final BluetoothDevice connectedDevice;
 
   @override
   State<CheckConnectedDeviceOnlineScreen> createState() => _CheckConnectedDeviceOnlineScreenState();
@@ -40,19 +32,12 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
   void initState() {
     super.initState();
     _initTimers();
-    _markAsConnecting();
   }
 
   @override
   void dispose() {
     _onlineTimer?.cancel();
     super.dispose();
-  }
-
-  Future<void> _markAsConnecting() async {
-    // TODO: !
-    // final provisioningState = Provider.of<ProvisioningState>(context, listen: false);
-    // provisioningState.provisionAttempts[widget.robot.id] = Timer(Duration(minutes: 5), () {});
   }
 
   void _initTimers() {
@@ -64,7 +49,7 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
 
   Future<void> _checkAgentStatus() async {
     try {
-      final status = await widget.connectedPeripheral.readStatus();
+      final status = await widget.connectedDevice.readStatus();
 
       if (status.isConnected && status.isConfigured && _setupState != _DeviceOnlineState.success) {
         setState(() {
@@ -72,28 +57,20 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
         });
       }
     } on Exception catch (e) {
-      // TODO: determine what action to take here
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
   void _checkOnline() async {
-    // TODO: gotta pass in appClient I think
-    // final viam = await AuthService.authenticatedViam;
-    // final refreshedRobot = await viam.appClient.getRobot(widget.robot.id);
-    // final seconds = refreshedRobot.lastAccess.seconds.toInt();
-    // final actual = DateTime.now().microsecondsSinceEpoch / Duration.microsecondsPerSecond;
-    // if ((actual - seconds) < 10) {
-    //   setState(() {
-    //     _setupState = _DeviceOnlineState.success;
-    //   });
-    //   _onlineTimer?.cancel();
-    // }
-  }
-
-  void _proceedOnSuccess() {
-    // TODO: set selected robot with vm
-    //context.push('/');
+    final refreshedRobot = await widget.viam.appClient.getRobot(widget.robot.id);
+    final seconds = refreshedRobot.lastAccess.seconds.toInt();
+    final actual = DateTime.now().microsecondsSinceEpoch / Duration.microsecondsPerSecond;
+    if ((actual - seconds) < 10) {
+      setState(() {
+        _setupState = _DeviceOnlineState.success;
+      });
+      _onlineTimer?.cancel();
+    }
   }
 
   // Helper method for the 'checking' state
@@ -145,7 +122,7 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
           ),
           Spacer(),
           FilledButton(
-            onPressed: _proceedOnSuccess,
+            onPressed: widget.handleSuccess,
             child: Text('Close'),
           ),
           SizedBox(height: 16),
@@ -175,7 +152,7 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
           ),
           Spacer(),
           FilledButton(
-            onPressed: _proceedOnSuccess,
+            onPressed: widget.handleSuccess,
             child: Text('Close'),
           ),
           SizedBox(height: 16),
@@ -189,10 +166,9 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
     return Scaffold(
       backgroundColor: const Color(0xFFFBFBFC),
       appBar: AppBar(
-        // TODO: TEMP HACK FOR TESTING
         leading: IconButton(
           icon: const Icon(Icons.close, color: Colors.black),
-          onPressed: _proceedOnSuccess,
+          onPressed: widget.handleSuccess,
         ),
       ),
       body: SafeArea(

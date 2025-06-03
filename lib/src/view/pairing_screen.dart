@@ -1,21 +1,9 @@
 part of '../../viam_flutter_provisioning_widget.dart';
 
 class PairingScreen extends StatefulWidget {
-  const PairingScreen({super.key, required this.connectedPeripheral});
+  const PairingScreen({super.key, required this.connectedDevice});
 
-  final BluetoothDevice connectedPeripheral; // TODO: rename device
-
-  // static MaterialPageRoute<void> route({
-  //   required BluetoothDevice connectedPeripheral,
-  //   required VesselSetupViewModel viewModel,
-  // }) {
-  //   return MaterialPageRoute(
-  //     builder: (context) => ChangeNotifierProvider.value(
-  //       value: viewModel,
-  //       child: PairingScreen(connectedPeripheral: connectedPeripheral),
-  //     ),
-  //   );
-  // }
+  final BluetoothDevice connectedDevice;
 
   @override
   State<PairingScreen> createState() => _PairingScreenState();
@@ -46,7 +34,6 @@ class _PairingScreenState extends State<PairingScreen> {
 
   void _onNextPressed(BuildContext context) {
     //   final viewModel = context.read<VesselSetupViewModel>();
-
     //   Navigator.of(context).push(
     //     WifiQuestionScreen.route(
     //       connectedPeripheral: widget.connectedPeripheral,
