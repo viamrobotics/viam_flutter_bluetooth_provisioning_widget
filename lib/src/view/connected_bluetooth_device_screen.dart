@@ -1,8 +1,17 @@
 part of '../../viam_flutter_provisioning_widget.dart';
 
 class ConnectedBluetoothDeviceScreen extends StatefulWidget {
-  const ConnectedBluetoothDeviceScreen({super.key, required this.connectedDevice});
+  const ConnectedBluetoothDeviceScreen({
+    super.key,
+    required this.handleGoToNameDeviceScreen,
+    required this.robot,
+    required this.robotPart,
+    required this.connectedDevice,
+  });
 
+  final void Function(String ssid, String? psk) handleGoToNameDeviceScreen;
+  final Robot robot;
+  final RobotPart robotPart;
   final BluetoothDevice connectedDevice;
 
   @override
@@ -13,7 +22,6 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
   List<WifiNetwork> _wifiNetworks = [];
   bool _isScanning = false;
   bool _showingDialog = false;
-  bool _isLoading = false;
 
   @override
   void initState() {
@@ -22,7 +30,6 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
   }
 
   void _readNetworkList() async {
-    if (_isLoading) return;
     setState(() {
       _isScanning = true;
     });
@@ -34,8 +41,7 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
       });
     } catch (e) {
       if (mounted) {
-        // TODO: fix/add to own utils file in library showErrorDialog(context, title: 'Failed to read network list');
-        debugPrint(e.toString());
+        showErrorDialog(context, title: 'Failed to read network list');
       }
     } finally {
       setState(() {
@@ -45,57 +51,13 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
   }
 
   void _scanNetworkAgain() {
-    if (_isLoading) return;
     setState(() {
       _wifiNetworks.clear();
     });
     _readNetworkList();
   }
 
-  Future<void> _writeConfigAndNavigate(String ssid, String? passkey) async {
-    if (_isLoading) return;
-
-    // TODO: get existing robot from start flow
-    // final viewModel = Provider.of<VesselSetupViewModel>(context, listen: false);
-    // final existingRobot = viewModel.robotToProvision;
-
-    // if (existingRobot == null) {
-    //   debugPrint("Error: _writeConfigAndNavigate called unexpectedly (no existing robot in ViewModel).");
-    //   return;
-    // }
-    // setState(() {
-    //   _isLoading = true;
-    // });
-
-    // try {
-    //   debugPrint("writing configuration for existing robot ${existingRobot.name} with SSID: $ssid");
-    //   // TODO:
-    //   // await viewModel.writeConfigForExistingRobot(peripheral: widget.connectedPeripheral, ssid: ssid, passkey: passkey);
-    //   if (mounted) {
-    //     debugPrint("config write successful");
-    //     Navigator.of(context).push(CheckConnectedDeviceOnlineScreen.route(
-    //       robot: existingRobot,
-    //       connectedPeripheral: widget.connectedPeripheral,
-    //     ));
-    //   }
-    // } catch (e, stackTrace) {
-    //   debugPrint("Error during config write of existing robot: $e");
-    //   debugPrint("Stack trace: $stackTrace");
-    // } finally {
-    //   if (mounted) {
-    //     setState(() {
-    //       _isLoading = false;
-    //     });
-    //   }
-    // }
-  }
-
   Future<void> _presentPasskeyDialog(WifiNetwork wifiNetwork) async {
-    if (_isLoading) return;
-    // final viewModel = Provider.of<VesselSetupViewModel>(context, listen: false);
-    // final bool isReprovisioning = viewModel.robotToProvision != null;
-    final bool isReprovisioning = false; // TODO: !
-
     await showDialog(
       context: context,
       builder: (dialogContext) {
@@ -126,11 +88,8 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
                 onPressed: passkeyController.text.isNotEmpty
                     ? () {
                         Navigator.of(dialogContext).pop();
-                        if (isReprovisioning) {
-                          _writeConfigAndNavigate(wifiNetwork.ssid, passkeyController.text);
-                        } else {
-                          _pushToNameConnectedDeviceScreen(wifiNetwork.ssid, passkeyController.text);
-                        }
+                        // TODO: Re-provisioning logic add back
+                        widget.handleGoToNameDeviceScreen(wifiNetwork.ssid, passkeyController.text);
                       }
                     : null,
                 child: Text('Connect'),
@@ -142,20 +101,10 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
     );
   }
 
-  void _pushToNameConnectedDeviceScreen(String ssid, String? passkey) {
-    // Navigator.of(context).push(MaterialPageRoute(
-    //   builder: (context) => ChangeNotifierProvider.value(
-    //     value: viewModel,
-    //     child: NameConnectedDeviceScreen(
-    //       ssid: ssid,
-    //       passkey: passkey,
-    //       connectedPeripheral: widget.connectedPeripheral,
-    //     ),
-    //   ),
-    // ));
-  }
-
   Future<void> _notSeeingYourNetwork() async {
+    setState(() {
+      _showingDialog = true;
+    });
     await showDialog(
       context: context,
       barrierDismissible: false,
@@ -310,7 +259,7 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
                               if (_wifiNetworks[index].isSecure) {
                                 _presentPasskeyDialog(_wifiNetworks[index]);
                               } else {
-                                _pushToNameConnectedDeviceScreen(_wifiNetworks[index].ssid, null);
+                                widget.handleGoToNameDeviceScreen(_wifiNetworks[index].ssid, null);
                               }
                             },
                           ),

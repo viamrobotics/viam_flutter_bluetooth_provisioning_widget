@@ -8,12 +8,16 @@ class StartScreen extends StatelessWidget {
   const StartScreen({super.key});
 
   void _goToIntroScreenOne(BuildContext context) async {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => ChangeNotifierProvider(
-        create: (context) => BluetoothProvisioningFlowViewModel(),
-        builder: (context, child) => BluetoothProvisioningFlow(),
-      ),
-    ));
+    // Navigator.of(context).push(MaterialPageRoute(
+    //   builder: (context) => ChangeNotifierProvider(
+    //     create: (context) => BluetoothProvisioningFlowViewModel(
+    //       viam: AuthService.authenticatedViam,
+    //       robot: Robot(id: ''),
+    //       mainRobotPart: RobotPart(id: ''),
+    //     ),
+    //     builder: (context, child) => BluetoothProvisioningFlow(),
+    //   ),
+    // ));
   }
 
   @override
@@ -30,4 +34,6 @@ class StartScreen extends StatelessWidget {
       ),
     );
   }
+
+  // TODO: add the api key stuff.. from hotspot example
 }

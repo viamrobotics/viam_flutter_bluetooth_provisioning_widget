@@ -31,16 +31,15 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
     _pageController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
   }
 
-  // selected ~> connected?
-  void _onDeviceSelected(BluetoothDevice device) {
+  void _onDeviceConnected(BluetoothDevice device) {
     final viewModel = Provider.of<BluetoothProvisioningFlowViewModel>(context, listen: false);
     viewModel.connectedDevice = device;
     _onNextPage();
   }
 
-  void _onYesToWifiTapped() {
+  void _onNameDeviceScreen(String ssid, String? psk) {
     final viewModel = Provider.of<BluetoothProvisioningFlowViewModel>(context, listen: false);
-    viewModel.saidYesToWifi = true;
+    viewModel.setWifiCredentials(ssid: ssid, psk: psk);
     _onNextPage();
   }
 
@@ -49,7 +48,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
     return Consumer<BluetoothProvisioningFlowViewModel>(
       builder: (context, viewModel, child) {
         return Scaffold(
-          appBar: AppBar(), // TODO: custom app bar back button?
+          appBar: AppBar(), // TODO: custom back button
           body: SafeArea(
             child: PageView(
               controller: _pageController,
@@ -57,17 +56,31 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
               children: [
                 IntroScreenOne(handleGetStartedTapped: _onNextPage),
                 IntroScreenTwo(handleNextTapped: _onNextPage),
-                BluetoothScanningScreen(onDeviceSelected: _onDeviceSelected), // get back device.. set on viewmodel.. read in my child!
+                BluetoothScanningScreen(onDeviceSelected: _onDeviceConnected),
                 if (viewModel.connectedDevice != null)
                   PairingScreen(
                     connectedDevice: viewModel.connectedDevice!,
                   ),
                 if (viewModel.connectedDevice != null)
-                  WifiQuestionScreen(
-                    handleYesTapped: _onYesToWifiTapped,
+                  ConnectedBluetoothDeviceScreen(
+                    handleGoToNameDeviceScreen: _onNameDeviceScreen,
+                    robot: viewModel.robot,
+                    robotPart: viewModel.mainRobotPart,
                     connectedDevice: viewModel.connectedDevice!,
                   ),
-                if (viewModel.connectedDevice != null) ConnectedBluetoothDeviceScreen(connectedDevice: viewModel.connectedDevice!),
+                if (viewModel.ssid != null && viewModel.connectedDevice != null)
+                  NameConnectedDeviceScreen(
+                    ssid: viewModel.ssid!,
+                    passkey: viewModel.psk,
+                    connectedPeripheral: viewModel.connectedDevice!,
+                  ),
+                if (viewModel.connectedDevice != null)
+                  CheckConnectedDeviceOnlineScreen(
+                    handleSuccess: _onNextPage, // TODO: diff handling tbh
+                    viam: viewModel.viam,
+                    robot: viewModel.robot,
+                    connectedDevice: viewModel.connectedDevice!,
+                  ),
               ],
             ),
           ),
