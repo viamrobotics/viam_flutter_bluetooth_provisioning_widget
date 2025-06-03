@@ -85,11 +85,11 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
       _isConnecting = true;
     });
     try {
-      await device.connect();
+      // await device.connect();
       widget.onDeviceSelected(device);
     } catch (e) {
       if (mounted) {
-        showErrorDialog(context, title: 'Failed to connect to device');
+        showErrorDialog(context, title: 'Failed to connect to device', error: e.toString());
       }
     }
     setState(() {

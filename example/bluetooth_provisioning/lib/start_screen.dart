@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'bluetooth_provisioning_flow.dart';
+import 'view_model.dart';
 
 class StartScreen extends StatelessWidget {
   const StartScreen({super.key});

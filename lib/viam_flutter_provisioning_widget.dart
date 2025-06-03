@@ -24,8 +24,6 @@ part 'src/view/intro_screen_one.dart';
 part 'src/view/intro_screen_two.dart';
 part 'src/view/name_connected_device_screen.dart';
 part 'src/view/pairing_screen.dart';
-part 'src/view/setup_hotspot_screen.dart';
-part 'src/view/setup_tethering_screen.dart';
 part 'src/view/wifi_question_screen.dart';
 
 // widgets

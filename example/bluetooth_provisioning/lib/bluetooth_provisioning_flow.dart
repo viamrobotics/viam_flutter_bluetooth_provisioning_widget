@@ -3,22 +3,8 @@ import 'package:provider/provider.dart'; // ignore: depend_on_referenced_package
 
 import 'package:viam_flutter_provisioning_widget/viam_flutter_provisioning_widget.dart';
 
-// mv, maybe no changes needed..?
-class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
-  // TODO: dependencies
+import 'view_model.dart';
 
-  BluetoothDevice? _connectedDevice;
-  BluetoothDevice? get connectedDevice => _connectedDevice;
-
-  set connectedDevice(BluetoothDevice? device) {
-    _connectedDevice = device;
-    notifyListeners();
-  }
-
-  // TODO: methods
-}
-
-// TODO: rename from FirstRunDialog, create view model maybe
 class BluetoothProvisioningFlow extends StatefulWidget {
   const BluetoothProvisioningFlow({super.key});
 
@@ -45,9 +31,16 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
     _pageController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
   }
 
+  // selected ~> connected?
   void _onDeviceSelected(BluetoothDevice device) {
-    final bluetoothProvisioningFlowViewModel = Provider.of<BluetoothProvisioningFlowViewModel>(context, listen: false);
-    bluetoothProvisioningFlowViewModel.connectedDevice = device;
+    final viewModel = Provider.of<BluetoothProvisioningFlowViewModel>(context, listen: false);
+    viewModel.connectedDevice = device;
+    _onNextPage();
+  }
+
+  void _onYesToWifiTapped() {
+    final viewModel = Provider.of<BluetoothProvisioningFlowViewModel>(context, listen: false);
+    viewModel.saidYesToWifi = true;
     _onNextPage();
   }
 
@@ -65,10 +58,16 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                 IntroScreenOne(handleGetStartedTapped: _onNextPage),
                 IntroScreenTwo(handleNextTapped: _onNextPage),
                 BluetoothScanningScreen(onDeviceSelected: _onDeviceSelected), // get back device.. set on viewmodel.. read in my child!
-                if (viewModel.connectedDevice != null) PairingScreen(connectedDevice: viewModel.connectedDevice!),
-
-                // FIGURE THIS OUT AFTER, THE ABOVE^
-                // WifiQuestionScreen()
+                if (viewModel.connectedDevice != null)
+                  PairingScreen(
+                    connectedDevice: viewModel.connectedDevice!,
+                  ),
+                if (viewModel.connectedDevice != null)
+                  WifiQuestionScreen(
+                    handleYesTapped: _onYesToWifiTapped,
+                    connectedDevice: viewModel.connectedDevice!,
+                  ),
+                if (viewModel.connectedDevice != null) ConnectedBluetoothDeviceScreen(connectedDevice: viewModel.connectedDevice!),
               ],
             ),
           ),

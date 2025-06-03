@@ -1,9 +1,9 @@
 part of '../../viam_flutter_provisioning_widget.dart';
 
 class ConnectedBluetoothDeviceScreen extends StatefulWidget {
-  const ConnectedBluetoothDeviceScreen({super.key, required this.connectedPeripheral});
+  const ConnectedBluetoothDeviceScreen({super.key, required this.connectedDevice});
 
-  final BluetoothDevice connectedPeripheral;
+  final BluetoothDevice connectedDevice;
 
   @override
   State<ConnectedBluetoothDeviceScreen> createState() => _ConnectedBluetoothDeviceScreenState();
@@ -28,7 +28,7 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
     });
     await Future.delayed(const Duration(milliseconds: 500)); // delay to see "scanning" ui
     try {
-      final wifiNetworks = await widget.connectedPeripheral.readNetworkList();
+      final wifiNetworks = await widget.connectedDevice.readNetworkList();
       setState(() {
         _wifiNetworks = wifiNetworks.sorted((a, b) => b.signalStrength.compareTo(a.signalStrength));
       });

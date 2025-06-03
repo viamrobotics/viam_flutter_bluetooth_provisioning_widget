@@ -3,28 +3,14 @@ part of '../../viam_flutter_provisioning_widget.dart';
 class WifiQuestionScreen extends StatefulWidget {
   const WifiQuestionScreen({
     super.key,
-    required this.connectedPeripheral,
+    required this.handleYesTapped,
+    required this.connectedDevice,
     this.startInConnectingState = false,
   });
 
-  final BluetoothDevice connectedPeripheral;
+  final VoidCallback handleYesTapped;
+  final BluetoothDevice connectedDevice;
   final bool startInConnectingState;
-
-  // static MaterialPageRoute<void> route({
-  //   required BluetoothDevice connectedPeripheral,
-  //   required VesselSetupViewModel viewModel,
-  //   bool startInConnectingState = false,
-  // }) {
-  //   return MaterialPageRoute(
-  //     builder: (context) => ChangeNotifierProvider.value(
-  //       value: viewModel,
-  //       child: WifiQuestionScreen(
-  //         connectedPeripheral: connectedPeripheral,
-  //         startInConnectingState: startInConnectingState,
-  //       ),
-  //     ),
-  //   );
-  // }
 
   @override
   State<WifiQuestionScreen> createState() => _WifiQuestionScreenState();
@@ -45,17 +31,6 @@ class _WifiQuestionScreenState extends State<WifiQuestionScreen> {
     }
   }
 
-  void _onYesPressed(BuildContext context) {
-    // final viewModel = context.read<VesselSetupViewModel>();
-
-    // Navigator.of(context).push(MaterialPageRoute(
-    //   builder: (context) => ChangeNotifierProvider.value(
-    //     value: viewModel,
-    //     child: ConnectedBluetoothDeviceScreen(connectedPeripheral: widget.connectedPeripheral),
-    //   ),
-    // ));
-  }
-
   Future<void> _onNoPressed(BuildContext context) async {
     setState(() {
       _isConnecting = true;
@@ -64,7 +39,7 @@ class _WifiQuestionScreenState extends State<WifiQuestionScreen> {
     if (!mounted) return;
 
     try {
-      final status = await widget.connectedPeripheral.readStatus();
+      final status = await widget.connectedDevice.readStatus();
       debugPrint(status.toString());
       if (!context.mounted) return;
       // final viewModel = context.read<VesselSetupViewModel>();
@@ -102,9 +77,7 @@ class _WifiQuestionScreenState extends State<WifiQuestionScreen> {
                   child: const Text('OK'),
                   onPressed: () {
                     Navigator.of(context).pop(); // Close the dialog
-                    // Pop back until BluetoothScanningScreen is found
-                    // TODO: may need routes
-                    // Navigator.of(context).popUntil(ModalRoute.withName(Routes.bluetoothScanningPrefix));
+                    // TODO: Pop back to scanning
                   },
                 ),
               ],
@@ -168,7 +141,7 @@ class _WifiQuestionScreenState extends State<WifiQuestionScreen> {
         ),
         const SizedBox(height: 48),
         OutlinedButton(
-          onPressed: () => _onYesPressed(context),
+          onPressed: () => widget.handleYesTapped(),
           child: Text(
             'Yes',
             style: Theme.of(context).textTheme.labelLarge,
