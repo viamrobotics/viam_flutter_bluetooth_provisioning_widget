@@ -64,33 +64,42 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
         return Scaffold(
           appBar: AppBar(),
           body: SafeArea(
-            child: _isLoading
-                ? const Center(child: CircularProgressIndicator()) // TODO: "Finishing up..." screen from design
-                : PageView(
-                    controller: _pageController,
-                    physics: NeverScrollableScrollPhysics(),
-                    children: [
-                      IntroScreenOne(handleGetStartedTapped: _onNextPage),
-                      IntroScreenTwo(handleNextTapped: _onNextPage),
-                      BluetoothScanningScreen(onDeviceSelected: _onDeviceConnected),
-                      if (viewModel.connectedDevice != null)
-                        ConnectedBluetoothDeviceScreen(
-                          handleWifiCredentials: _onWifiCredentials,
-                          robot: viewModel.robot,
-                          robotPart: viewModel.mainRobotPart,
-                          connectedDevice: viewModel.connectedDevice!,
-                        ),
-                      if (viewModel.connectedDevice != null)
-                        CheckConnectedDeviceOnlineScreen(
-                          handleSuccess: () {
-                            debugPrint('success'); // TODO: Flow callback I think, so caller of flow can wrapup/pop
-                          },
-                          viam: viewModel.viam,
-                          robot: viewModel.robot,
-                          connectedDevice: viewModel.connectedDevice!,
-                        ),
-                    ],
+            child: Stack(
+              children: [
+                PageView(
+                  controller: _pageController,
+                  physics: NeverScrollableScrollPhysics(),
+                  children: [
+                    IntroScreenOne(handleGetStartedTapped: _onNextPage),
+                    IntroScreenTwo(handleNextTapped: _onNextPage),
+                    BluetoothScanningScreen(onDeviceSelected: _onDeviceConnected),
+                    if (viewModel.connectedDevice != null)
+                      ConnectedBluetoothDeviceScreen(
+                        handleWifiCredentials: _onWifiCredentials,
+                        robot: viewModel.robot,
+                        robotPart: viewModel.mainRobotPart,
+                        connectedDevice: viewModel.connectedDevice!,
+                      ),
+                    if (viewModel.connectedDevice != null)
+                      CheckConnectedDeviceOnlineScreen(
+                        handleSuccess: () {
+                          debugPrint('success'); // TODO: Flow callback I think, so caller of flow can wrapup/pop
+                        },
+                        viam: viewModel.viam,
+                        robot: viewModel.robot,
+                        connectedDevice: viewModel.connectedDevice!,
+                      ),
+                  ],
+                ),
+                if (_isLoading)
+                  Container(
+                    color: Colors.black.withValues(alpha: 0.5),
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   ),
+              ],
+            ),
           ),
         );
       },
