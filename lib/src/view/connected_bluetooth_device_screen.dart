@@ -61,7 +61,7 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
     await showDialog(
       context: context,
       builder: (dialogContext) {
-        bool obscureText = true;
+        bool obscureText = false;
         TextEditingController passkeyController = TextEditingController();
         return StatefulBuilder(builder: (context, setDialogState) {
           return AlertDialog(

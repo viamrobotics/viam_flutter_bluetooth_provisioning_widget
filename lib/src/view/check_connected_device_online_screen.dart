@@ -163,21 +163,13 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFFBFBFC),
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.close, color: Colors.black),
-          onPressed: widget.handleSuccess,
-        ),
-      ),
-      body: SafeArea(
-        child: switch (_setupState) {
-          _DeviceOnlineState.checking => _buildCheckingState(context),
-          _DeviceOnlineState.agentConnected => _buildAgentConnectedState(context),
-          _DeviceOnlineState.success => _buildSuccessState(context),
-        },
-      ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: switch (_setupState) {
+        _DeviceOnlineState.checking => _buildCheckingState(context),
+        _DeviceOnlineState.agentConnected => _buildAgentConnectedState(context),
+        _DeviceOnlineState.success => _buildSuccessState(context),
+      },
     );
   }
 }
