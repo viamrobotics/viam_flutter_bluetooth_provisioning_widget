@@ -19,14 +19,36 @@ class StartScreen extends StatefulWidget {
 }
 
 class _StartScreenState extends State<StartScreen> {
-  Viam? _viam;
-  Robot? _robot;
-  RobotPart? _mainPart;
+  String? _robotName;
+  bool _isLoading = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _initViam();
+  Future<void> _createRobot() async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      final viam = await Viam.withApiKey(Consts.apiKeyId, Consts.apiKey);
+      final location = await viam.appClient.createLocation(Consts.organizationId, 'test-location-${Random().nextInt(1000)}');
+      final String robotName = "tester-${Random().nextInt(1000)}";
+      setState(() {
+        _robotName = robotName;
+      });
+      debugPrint('robotName: $robotName, locationId: ${location.name}');
+      final robotId = await viam.appClient.newMachine(robotName, location.id);
+      final robot = await viam.appClient.getRobot(robotId);
+      final mainPart = (await viam.appClient.listRobotParts(robotId)).firstWhere((element) => element.mainPart);
+      await Future.delayed(const Duration(seconds: 3));
+      if (mounted) {
+        _goToIntroScreenOne(context, viam, robot, mainPart);
+      }
+    } catch (e) {
+      debugPrint('Error initializing Viam: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+        _robotName = null;
+      });
+    }
   }
 
   void _goToIntroScreenOne(BuildContext context, Viam viam, Robot robot, RobotPart mainPart) async {
@@ -42,24 +64,6 @@ class _StartScreenState extends State<StartScreen> {
     ));
   }
 
-  Future<void> _initViam() async {
-    try {
-      _viam = await Viam.withApiKey(Consts.apiKeyId, Consts.apiKey);
-      _createRobot(_viam!);
-    } catch (e) {
-      debugPrint('Error initializing Viam: $e');
-    }
-  }
-
-  Future<void> _createRobot(Viam viam) async {
-    final location = await viam.appClient.createLocation(Consts.organizationId, 'test-location-${Random().nextInt(1000)}');
-    final String robotName = "tester-${Random().nextInt(1000)}";
-    debugPrint('robotName: $robotName, locationId: ${location.name}');
-    final robotId = await viam.appClient.newMachine(robotName, location.id);
-    _robot = await viam.appClient.getRobot(robotId);
-    _mainPart = (await viam.appClient.listRobotParts(robotId)).firstWhere((element) => element.mainPart);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,14 +71,16 @@ class _StartScreenState extends State<StartScreen> {
         title: const Text('Bluetooth Provisioning'),
       ),
       body: Center(
-        child: FilledButton(
-          onPressed: () => _goToIntroScreenOne(
-            context,
-            _viam!,
-            _robot!,
-            _mainPart!,
-          ),
-          child: const Text('Start Flow'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (_robotName != null) Text('Provisioning machine named: $_robotName'),
+            if (_robotName != null) const SizedBox(height: 16),
+            FilledButton(
+              onPressed: _createRobot,
+              child: _isLoading ? const CircularProgressIndicator.adaptive(backgroundColor: Colors.white) : const Text('Start Flow'),
+            ),
+          ],
         ),
       ),
     );
