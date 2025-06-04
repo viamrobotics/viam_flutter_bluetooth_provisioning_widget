@@ -1,6 +1,8 @@
+// dart imports
 import 'dart:async';
 import 'dart:io';
 
+// package imports
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -9,6 +11,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:viam_sdk/viam_sdk.dart' hide Permission;
 import 'package:viam_sdk/protos/app/app.dart';
 
+// export
 export 'package:viam_flutter_provisioning/viam_bluetooth_provisioning.dart';
 
 // views
