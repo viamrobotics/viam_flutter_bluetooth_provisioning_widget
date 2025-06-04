@@ -85,7 +85,7 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
       _isConnecting = true;
     });
     try {
-      // await device.connect();
+      await device.connect();
       widget.onDeviceSelected(device);
     } catch (e) {
       if (mounted) {

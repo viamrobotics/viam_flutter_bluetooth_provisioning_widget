@@ -14,20 +14,26 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
   BluetoothDevice? _connectedDevice;
   BluetoothDevice? get connectedDevice => _connectedDevice;
 
-  String? _ssid;
-  String? get ssid => _ssid;
-
-  String? _psk;
-  String? get psk => _psk;
-
   set connectedDevice(BluetoothDevice? device) {
     _connectedDevice = device;
     notifyListeners();
   }
 
-  void setWifiCredentials({required String ssid, required String? psk}) {
-    _ssid = ssid;
-    _psk = psk;
-    notifyListeners();
+  Future<void> writeConfig({required String ssid, required String? psk}) async {
+    if (_connectedDevice == null) {
+      throw Exception('No connected device');
+    }
+
+    final status = await _connectedDevice!.readStatus();
+    // don't overwrite existing machine, hotspot provisioning also does this check
+    if (!status.isConfigured) {
+      await _connectedDevice!.writeRobotPartConfig(
+        partId: mainRobotPart.id,
+        secret: mainRobotPart.secret,
+      );
+    }
+    await _connectedDevice!.writeNetworkConfig(ssid: ssid, pw: psk);
+    // can safely disconnect after writing config
+    await _connectedDevice!.disconnect();
   }
 }

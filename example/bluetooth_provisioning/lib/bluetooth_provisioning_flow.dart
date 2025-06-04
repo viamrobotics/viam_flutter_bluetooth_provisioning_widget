@@ -14,6 +14,7 @@ class BluetoothProvisioningFlow extends StatefulWidget {
 
 class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
   late final PageController _pageController;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -37,10 +38,23 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
     _onNextPage();
   }
 
-  void _onNameDeviceScreen(String ssid, String? psk) {
+  void _onWifiCredentials(String ssid, String? psk) async {
     final viewModel = Provider.of<BluetoothProvisioningFlowViewModel>(context, listen: false);
-    viewModel.setWifiCredentials(ssid: ssid, psk: psk);
-    _onNextPage();
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      await viewModel.writeConfig(ssid: ssid, psk: psk);
+      _onNextPage();
+    } catch (e) {
+      if (mounted) {
+        showErrorDialog(context, title: 'Failed to write config', error: e.toString());
+      }
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -48,41 +62,35 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
     return Consumer<BluetoothProvisioningFlowViewModel>(
       builder: (context, viewModel, child) {
         return Scaffold(
-          appBar: AppBar(), // TODO: custom back button
+          appBar: AppBar(),
           body: SafeArea(
-            child: PageView(
-              controller: _pageController,
-              physics: NeverScrollableScrollPhysics(),
-              children: [
-                IntroScreenOne(handleGetStartedTapped: _onNextPage),
-                IntroScreenTwo(handleNextTapped: _onNextPage),
-                BluetoothScanningScreen(onDeviceSelected: _onDeviceConnected),
-                if (viewModel.connectedDevice != null)
-                  PairingScreen(
-                    connectedDevice: viewModel.connectedDevice!,
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator()) // TODO: "Finishing up..." screen from design
+                : PageView(
+                    controller: _pageController,
+                    physics: NeverScrollableScrollPhysics(),
+                    children: [
+                      IntroScreenOne(handleGetStartedTapped: _onNextPage),
+                      IntroScreenTwo(handleNextTapped: _onNextPage),
+                      BluetoothScanningScreen(onDeviceSelected: _onDeviceConnected),
+                      if (viewModel.connectedDevice != null)
+                        ConnectedBluetoothDeviceScreen(
+                          handleWifiCredentials: _onWifiCredentials,
+                          robot: viewModel.robot,
+                          robotPart: viewModel.mainRobotPart,
+                          connectedDevice: viewModel.connectedDevice!,
+                        ),
+                      if (viewModel.connectedDevice != null)
+                        CheckConnectedDeviceOnlineScreen(
+                          handleSuccess: () {
+                            debugPrint('success'); // TODO: Flow callback I think, so caller of flow can wrapup/pop
+                          },
+                          viam: viewModel.viam,
+                          robot: viewModel.robot,
+                          connectedDevice: viewModel.connectedDevice!,
+                        ),
+                    ],
                   ),
-                if (viewModel.connectedDevice != null)
-                  ConnectedBluetoothDeviceScreen(
-                    handleGoToNameDeviceScreen: _onNameDeviceScreen,
-                    robot: viewModel.robot,
-                    robotPart: viewModel.mainRobotPart,
-                    connectedDevice: viewModel.connectedDevice!,
-                  ),
-                if (viewModel.ssid != null && viewModel.connectedDevice != null)
-                  NameConnectedDeviceScreen(
-                    ssid: viewModel.ssid!,
-                    passkey: viewModel.psk,
-                    connectedPeripheral: viewModel.connectedDevice!,
-                  ),
-                if (viewModel.connectedDevice != null)
-                  CheckConnectedDeviceOnlineScreen(
-                    handleSuccess: _onNextPage, // TODO: diff handling tbh
-                    viam: viewModel.viam,
-                    robot: viewModel.robot,
-                    connectedDevice: viewModel.connectedDevice!,
-                  ),
-              ],
-            ),
           ),
         );
       },
