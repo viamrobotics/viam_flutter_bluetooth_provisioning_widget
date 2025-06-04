@@ -6,14 +6,10 @@ import 'package:collection/collection.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:viam_flutter_provisioning/viam_bluetooth_provisioning.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-
 import 'package:viam_sdk/viam_sdk.dart' hide Permission;
-import 'package:viam_sdk/protos/app/app.dart'; // ?
+import 'package:viam_sdk/protos/app/app.dart';
 
-export 'package:flutter_blue_plus/flutter_blue_plus.dart';
-// export 'package:permission_handler/permission_handler.dart';
-// export 'package:viam_flutter_provisioning/viam_bluetooth_provisioning.dart';
-// export 'package:viam_sdk/viam_sdk.dart' hide Permission;
+export 'package:viam_flutter_provisioning/viam_bluetooth_provisioning.dart';
 
 // views
 part 'src/view/bluetooth_scanning_screens.dart';
