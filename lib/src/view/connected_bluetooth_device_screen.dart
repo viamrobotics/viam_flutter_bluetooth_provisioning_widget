@@ -3,13 +3,13 @@ part of '../../viam_flutter_provisioning_widget.dart';
 class ConnectedBluetoothDeviceScreen extends StatefulWidget {
   const ConnectedBluetoothDeviceScreen({
     super.key,
-    required this.handleGoToNameDeviceScreen,
+    required this.handleWifiCredentials,
     required this.robot,
     required this.robotPart,
     required this.connectedDevice,
   });
 
-  final void Function(String ssid, String? psk) handleGoToNameDeviceScreen;
+  final void Function(String ssid, String? psk) handleWifiCredentials;
   final Robot robot;
   final RobotPart robotPart;
   final BluetoothDevice connectedDevice;
@@ -61,7 +61,7 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
     await showDialog(
       context: context,
       builder: (dialogContext) {
-        bool obscureText = true;
+        bool obscureText = false;
         TextEditingController passkeyController = TextEditingController();
         return StatefulBuilder(builder: (context, setDialogState) {
           return AlertDialog(
@@ -88,8 +88,7 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
                 onPressed: passkeyController.text.isNotEmpty
                     ? () {
                         Navigator.of(dialogContext).pop();
-                        // TODO: Re-provisioning logic add back
-                        widget.handleGoToNameDeviceScreen(wifiNetwork.ssid, passkeyController.text);
+                        widget.handleWifiCredentials(wifiNetwork.ssid, passkeyController.text);
                       }
                     : null,
                 child: Text('Connect'),
@@ -115,7 +114,12 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
           actions: <Widget>[
             OutlinedButton(
               child: const Text('Close'),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                Navigator.pop(context);
+                setState(() {
+                  _showingDialog = false;
+                });
+              },
             ),
           ],
         );
@@ -193,103 +197,90 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFFBFBFC),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFFBFBFC),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, size: 24),
-          onPressed: () => Navigator.of(context).pop(),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text('Choose your Wi-Fi', style: Theme.of(context).textTheme.titleLarge),
         ),
-      ),
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text('Choose your Wi-Fi', style: Theme.of(context).textTheme.titleLarge),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 24.0),
-              child: Text(
-                'Choose the Wi-Fi network you’d like to use to connect your device.',
-                style: Theme.of(context).textTheme.bodyLarge,
-                maxLines: 2,
-              ),
-            ),
-            _isScanning && _wifiNetworks.isEmpty
-                ? Expanded(
-                    child: ListView.separated(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      separatorBuilder: (context, index) => const SizedBox(height: 16),
-                      itemCount: 1,
-                      itemBuilder: (context, _) {
-                        return Card(
-                          elevation: 0,
-                          color: const Color(0xFFF5F7F8),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const ScanningListTile(),
-                        );
-                      },
-                    ),
-                  )
-                : Expanded(
-                    child: ListView.separated(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      separatorBuilder: (context, index) => const SizedBox(height: 16),
-                      itemCount: _wifiNetworks.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            side: BorderSide(color: Colors.grey.shade300),
-                          ),
-                          child: ListTile(
-                            minVerticalPadding: 20,
-                            leading: Icon(_networkIcon(_wifiNetworks[index]), color: const Color(0xFF8B949E), size: 20),
-                            trailing:
-                                _wifiNetworks[index].isSecure ? Icon(Icons.lock_outline, color: const Color(0xFF8B949E), size: 20) : null,
-                            horizontalTitleGap: 16,
-                            title: Text(_wifiNetworks[index].ssid, style: Theme.of(context).textTheme.bodyLarge),
-                            onTap: () {
-                              if (_wifiNetworks[index].isSecure) {
-                                _presentPasskeyDialog(_wifiNetworks[index]);
-                              } else {
-                                widget.handleGoToNameDeviceScreen(_wifiNetworks[index].ssid, null);
-                              }
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-            if (!_showingDialog)
-              SizedBox(
-                width: double.infinity,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 8),
-                    OutlinedButton.icon(
-                      onPressed: _scanNetworkAgain,
-                      icon: const Icon(Icons.refresh),
-                      label: const Text('Scan network again'),
-                    ),
-                    TextButton(
-                      onPressed: _notSeeingYourNetwork,
-                      child: const Text('Not seeing your network?'),
-                    ),
-                  ],
+        Padding(
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 24.0),
+          child: Text(
+            'Choose the Wi-Fi network you’d like to use to connect your device.',
+            style: Theme.of(context).textTheme.bodyLarge,
+            maxLines: 2,
+          ),
+        ),
+        _isScanning && _wifiNetworks.isEmpty
+            ? Expanded(
+                child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  separatorBuilder: (context, index) => const SizedBox(height: 16),
+                  itemCount: 1,
+                  itemBuilder: (context, _) {
+                    return Card(
+                      elevation: 0,
+                      color: const Color(0xFFF5F7F8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const ScanningListTile(),
+                    );
+                  },
+                ),
+              )
+            : Expanded(
+                child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  separatorBuilder: (context, index) => const SizedBox(height: 16),
+                  itemCount: _wifiNetworks.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(color: Colors.grey.shade300),
+                      ),
+                      child: ListTile(
+                        minVerticalPadding: 20,
+                        leading: Icon(_networkIcon(_wifiNetworks[index]), color: const Color(0xFF8B949E), size: 20),
+                        trailing: _wifiNetworks[index].isSecure ? Icon(Icons.lock_outline, color: const Color(0xFF8B949E), size: 20) : null,
+                        horizontalTitleGap: 16,
+                        title: Text(_wifiNetworks[index].ssid, style: Theme.of(context).textTheme.bodyLarge),
+                        onTap: () {
+                          if (_wifiNetworks[index].isSecure) {
+                            _presentPasskeyDialog(_wifiNetworks[index]);
+                          } else {
+                            widget.handleWifiCredentials(_wifiNetworks[index].ssid, null);
+                          }
+                        },
+                      ),
+                    );
+                  },
                 ),
               ),
-          ],
-        ),
-      ),
+        if (!_showingDialog)
+          SizedBox(
+            width: double.infinity,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 8),
+                OutlinedButton.icon(
+                  onPressed: _scanNetworkAgain,
+                  icon: const Icon(Icons.refresh),
+                  label: const Text('Scan network again'),
+                ),
+                TextButton(
+                  onPressed: _notSeeingYourNetwork,
+                  child: const Text('Not seeing your network?'),
+                ),
+              ],
+            ),
+          ),
+      ],
     );
   }
 }
