@@ -45,6 +45,8 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
         _isLoading = true;
       });
       await viewModel.writeConfig(ssid: ssid, psk: psk);
+      // can safely disconnect after writing config
+      await viewModel.connectedDevice!.disconnect();
       _onNextPage();
     } catch (e) {
       if (mounted) {

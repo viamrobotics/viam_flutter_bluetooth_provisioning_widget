@@ -33,7 +33,5 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
       );
     }
     await _connectedDevice!.writeNetworkConfig(ssid: ssid, pw: psk);
-    // can safely disconnect after writing config
-    await _connectedDevice!.disconnect();
   }
 }
