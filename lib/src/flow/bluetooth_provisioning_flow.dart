@@ -59,7 +59,12 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
     return Consumer<BluetoothProvisioningFlowViewModel>(
       builder: (context, viewModel, child) {
         return Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back, size: 24),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ),
           body: SafeArea(
             child: Stack(
               children: [
