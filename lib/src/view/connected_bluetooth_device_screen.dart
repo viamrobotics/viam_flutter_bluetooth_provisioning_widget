@@ -110,8 +110,10 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Find your hotspot name'),
-          content: _buildDialogContent(),
+          title: const Text('Tips'),
+          content: const Text(
+            'Make sure that the network isn’t hidden and that your device is within range of your Wi-Fi router.\n\nPlease note that a 2.4GHz network is required.',
+          ),
           actions: <Widget>[
             OutlinedButton(
               child: const Text('Close'),
@@ -125,63 +127,6 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
           ],
         );
       },
-    );
-  }
-
-  Widget _buildDialogContent() {
-    final textTheme = Theme.of(context).textTheme.bodyLarge;
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Your hotspot name is the same as your phone's name.",
-          style: textTheme,
-        ),
-        const SizedBox(height: 16),
-        if (Platform.isIOS) ...[
-          RichText(
-            text: TextSpan(style: textTheme, children: [
-              const TextSpan(text: "If you aren't sure what your phone's name is, you can find it on your "),
-              TextSpan(text: "Personal Hotspot", style: textTheme!.copyWith(fontStyle: FontStyle.italic)),
-              const TextSpan(text: " settings page:"),
-            ]),
-          ),
-          const SizedBox(height: 8),
-          Image.asset('images/ios_find_hotspot_name.png'),
-          const SizedBox(height: 8),
-          RichText(
-            text: TextSpan(style: textTheme, children: [
-              const TextSpan(text: "You can also find it by going to "),
-              TextSpan(text: "Settings > General > About", style: textTheme.copyWith(fontStyle: FontStyle.italic)),
-              const TextSpan(text: ":"),
-            ]),
-          ),
-          const SizedBox(height: 8),
-          Image.asset('images/ios_hotspot_name.png'),
-        ] else ...[
-          RichText(
-            text: TextSpan(style: textTheme, children: [
-              const TextSpan(text: "If you aren't sure what your phone's name is, you can find it in"),
-              TextSpan(text: " Settings > About phone", style: textTheme!.copyWith(fontStyle: FontStyle.italic)),
-              const TextSpan(text: ":"),
-            ]),
-          ),
-          const SizedBox(height: 16),
-          Image.asset('images/android_about_phone.png'),
-          const SizedBox(height: 16),
-          RichText(
-            text: TextSpan(style: textTheme, children: [
-              const TextSpan(text: "Tap "),
-              TextSpan(text: "About phone. ", style: textTheme.copyWith(fontStyle: FontStyle.italic)),
-              const TextSpan(text: "Your device's name should be at the top of the page:"),
-            ]),
-          ),
-          const SizedBox(height: 16),
-          Image.asset('images/android_device_name.png'),
-        ]
-      ],
     );
   }
 
