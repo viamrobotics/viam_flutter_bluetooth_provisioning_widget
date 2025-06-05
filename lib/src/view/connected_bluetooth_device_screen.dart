@@ -68,6 +68,7 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
             title: Text(wifiNetwork.ssid),
             content: TextFormField(
               autofocus: true,
+              autocorrect: false,
               controller: passkeyController,
               obscureText: obscureText,
               decoration: InputDecoration(
