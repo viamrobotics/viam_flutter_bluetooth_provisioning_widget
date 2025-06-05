@@ -18,7 +18,6 @@ class NameConnectedDeviceScreen extends StatefulWidget {
 
 class _NameConnectedDeviceScreenState extends State<NameConnectedDeviceScreen> {
   final TextEditingController _nameController = TextEditingController();
-  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -54,15 +53,7 @@ class _NameConnectedDeviceScreenState extends State<NameConnectedDeviceScreen> {
           const SizedBox(height: 32),
           FilledButton(
             onPressed: () {},
-            child: _isLoading
-                ? const SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator.adaptive(
-                      backgroundColor: Colors.white,
-                    ),
-                  )
-                : const Text("Done"),
+            child: const Text("Done"),
           ),
         ],
       ),
