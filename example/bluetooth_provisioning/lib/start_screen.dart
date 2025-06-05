@@ -38,7 +38,7 @@ class _StartScreenState extends State<StartScreen> {
       final mainPart = (await viam.appClient.listRobotParts(robotId)).firstWhere((element) => element.mainPart);
       await Future.delayed(const Duration(seconds: 3));
       if (mounted) {
-        _goToIntroScreenOne(context, viam, robot, mainPart);
+        _goToBluetoothProvisioningFlow(context, viam, robot, mainPart);
       }
     } catch (e) {
       debugPrint('Error initializing Viam: $e');
@@ -50,7 +50,7 @@ class _StartScreenState extends State<StartScreen> {
     }
   }
 
-  void _goToIntroScreenOne(BuildContext context, Viam viam, Robot robot, RobotPart mainPart) async {
+  void _goToBluetoothProvisioningFlow(BuildContext context, Viam viam, Robot robot, RobotPart mainPart) async {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => ChangeNotifierProvider(
         create: (context) => BluetoothProvisioningFlowViewModel(
