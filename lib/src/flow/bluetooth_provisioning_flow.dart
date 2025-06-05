@@ -1,21 +1,17 @@
 part of '../../viam_flutter_provisioning_widget.dart';
 
 class BluetoothProvisioningFlow extends StatefulWidget {
-  const BluetoothProvisioningFlow({super.key});
+  const BluetoothProvisioningFlow({super.key, required this.onSuccess});
+
+  final VoidCallback onSuccess;
 
   @override
   State<BluetoothProvisioningFlow> createState() => _BluetoothProvisioningFlowState();
 }
 
 class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
-  late final PageController _pageController;
+  final PageController _pageController = PageController();
   bool _isLoading = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController();
-  }
 
   @override
   void dispose() {
@@ -86,9 +82,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                         ),
                       if (viewModel.connectedDevice != null)
                         CheckConnectedDeviceOnlineScreen(
-                          handleSuccess: () {
-                            debugPrint('success'); // TODO: APP-8323 Flow callback I think, so caller of flow can wrapup/pop
-                          },
+                          handleSuccess: widget.onSuccess,
                           viam: viewModel.viam,
                           robot: viewModel.robot,
                           connectedDevice: viewModel.connectedDevice!,

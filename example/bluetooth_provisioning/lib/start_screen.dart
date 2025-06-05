@@ -58,7 +58,9 @@ class _StartScreenState extends State<StartScreen> {
           robot: robot,
           mainRobotPart: mainPart,
         ),
-        builder: (context, child) => BluetoothProvisioningFlow(),
+        builder: (context, child) => BluetoothProvisioningFlow(onSuccess: () {
+          Navigator.of(context).pop();
+        }),
       ),
     ));
   }
