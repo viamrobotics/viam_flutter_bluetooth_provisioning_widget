@@ -6,9 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:viam_sdk/viam_sdk.dart';
 // ignore: depend_on_referenced_packages
 import 'package:viam_sdk/protos/app/app.dart';
+import 'package:viam_flutter_provisioning_widget/viam_flutter_provisioning_widget.dart';
 
-import 'bluetooth_provisioning_flow.dart';
-import 'view_model.dart';
 import 'consts.dart';
 
 class StartScreen extends StatefulWidget {

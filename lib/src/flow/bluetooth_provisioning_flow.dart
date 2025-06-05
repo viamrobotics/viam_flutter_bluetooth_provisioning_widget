@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart'; // ignore: depend_on_referenced_packages
-
-import 'package:viam_flutter_provisioning_widget/viam_flutter_provisioning_widget.dart';
-
-import 'view_model.dart';
+part of '../../viam_flutter_provisioning_widget.dart';
 
 class BluetoothProvisioningFlow extends StatefulWidget {
   const BluetoothProvisioningFlow({super.key});
