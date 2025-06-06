@@ -10,6 +10,23 @@ class ConnectedBluetoothDeviceScreen extends StatefulWidget {
 class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDeviceScreen> {
   bool _showingDialog = false;
 
+  @override
+  void initState() {
+    super.initState();
+    _readNetworkList();
+  }
+
+  // would be in view model, but want to handle error and show dialog w/ the context
+  Future<void> _readNetworkList() async {
+    try {
+      await Provider.of<ConnectedBluetoothDeviceScreenViewModel>(context, listen: false).readNetworkList();
+    } catch (e) {
+      if (mounted) {
+        showErrorDialog(context, title: 'Error reading network list', error: e.toString());
+      }
+    }
+  }
+
   Future<void> _presentPasskeyDialog(WifiNetwork wifiNetwork) async {
     await showDialog(
       context: context,
@@ -66,7 +83,7 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
         return AlertDialog(
           title: const Text('Tips'),
           content: const Text(
-            'Make sure that the network isn’t hidden and that your device is within range of your Wi-Fi router.\n\nPlease note that a 2.4GHz network is required.',
+            'Make sure that the network isn\'t hidden and that your device is within range of your Wi-Fi router.\n\nPlease note that a 2.4GHz network is required.',
           ),
           actions: <Widget>[
             OutlinedButton(
@@ -108,12 +125,12 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 24.0),
           child: Text(
-            'Choose the Wi-Fi network you’d like to use to connect your device.',
+            'Choose the Wi-Fi network you\'d like to use to connect your device.',
             style: Theme.of(context).textTheme.bodyLarge,
             maxLines: 2,
           ),
         ),
-        viewModel.isScanning && viewModel.wifiNetworks.isEmpty
+        viewModel.isLoadingNetworks && viewModel.wifiNetworks.isEmpty
             ? Expanded(
                 child: ListView.separated(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -172,7 +189,7 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
               children: [
                 const SizedBox(height: 8),
                 OutlinedButton.icon(
-                  onPressed: viewModel.scanNetworkAgain,
+                  onPressed: _readNetworkList,
                   icon: const Icon(Icons.refresh),
                   label: const Text('Scan network again'),
                 ),

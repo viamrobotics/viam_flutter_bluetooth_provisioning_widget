@@ -1,7 +1,10 @@
 part of '../../viam_flutter_provisioning_widget.dart';
 
 class BluetoothScanningScreenViewModel extends ChangeNotifier {
-  BluetoothScanningScreenViewModel({required this.onDeviceSelected});
+  BluetoothScanningScreenViewModel({required this.onDeviceSelected}) {
+    start();
+  }
+
   final Function(BluetoothDevice) onDeviceSelected;
   StreamSubscription<List<ScanResult>>? _scanSubscription;
   List<BluetoothDevice> _uniqueDevices = [];

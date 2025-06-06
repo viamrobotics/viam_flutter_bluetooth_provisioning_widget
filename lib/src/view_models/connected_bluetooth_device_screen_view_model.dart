@@ -12,32 +12,21 @@ class ConnectedBluetoothDeviceScreenViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool _isScanning = false;
-  bool get isScanning => _isScanning;
-  set isScanning(bool value) {
-    _isScanning = value;
+  bool _isLoadingNetworks = false;
+  bool get isLoadingNetworks => _isLoadingNetworks;
+  set isLoadingNetworks(bool value) {
+    _isLoadingNetworks = value;
     notifyListeners();
   }
 
-  ConnectedBluetoothDeviceScreenViewModel({required this.handleWifiCredentials, required this.connectedDevice}) {
-    readNetworkList();
-  }
+  ConnectedBluetoothDeviceScreenViewModel({required this.handleWifiCredentials, required this.connectedDevice});
 
-  void readNetworkList() async {
-    isScanning = true;
+  Future<void> readNetworkList() async {
+    this.wifiNetworks.clear();
+    isLoadingNetworks = true;
     await Future.delayed(const Duration(milliseconds: 500)); // delay to see "scanning" ui
-    try {
-      final wifiNetworks = await connectedDevice.readNetworkList();
-      this.wifiNetworks = wifiNetworks.sorted((a, b) => b.signalStrength.compareTo(a.signalStrength));
-    } catch (e) {
-      throw Exception('Failed to read network list');
-    } finally {
-      _isScanning = false;
-    }
-  }
-
-  void scanNetworkAgain() {
-    wifiNetworks.clear();
-    readNetworkList();
+    final wifiNetworks = await connectedDevice.readNetworkList();
+    this.wifiNetworks = wifiNetworks.sorted((a, b) => b.signalStrength.compareTo(a.signalStrength));
+    isLoadingNetworks = false;
   }
 }
