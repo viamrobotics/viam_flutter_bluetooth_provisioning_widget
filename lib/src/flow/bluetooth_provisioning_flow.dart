@@ -1,21 +1,17 @@
 part of '../../viam_flutter_provisioning_widget.dart';
 
 class BluetoothProvisioningFlow extends StatefulWidget {
-  const BluetoothProvisioningFlow({super.key});
+  const BluetoothProvisioningFlow({super.key, required this.onSuccess});
+
+  final VoidCallback onSuccess;
 
   @override
   State<BluetoothProvisioningFlow> createState() => _BluetoothProvisioningFlowState();
 }
 
 class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
-  late final PageController _pageController;
+  final PageController _pageController = PageController();
   bool _isLoading = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController();
-  }
 
   @override
   void dispose() {
@@ -76,22 +72,27 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                     children: [
                       IntroScreenOne(handleGetStartedTapped: _onNextPage),
                       IntroScreenTwo(handleNextTapped: _onNextPage),
-                      BluetoothScanningScreen(onDeviceSelected: _onDeviceConnected),
+                      ChangeNotifierProvider(
+                        create: (_) => BluetoothScanningScreenViewModel(onDeviceSelected: _onDeviceConnected),
+                        child: BluetoothScanningScreen(),
+                      ),
                       if (viewModel.connectedDevice != null)
-                        ConnectedBluetoothDeviceScreen(
-                          handleWifiCredentials: _onWifiCredentials,
-                          robot: viewModel.robot,
-                          robotPart: viewModel.mainRobotPart,
-                          connectedDevice: viewModel.connectedDevice!,
+                        ChangeNotifierProvider(
+                          create: (_) => ConnectedBluetoothDeviceScreenViewModel(
+                            handleWifiCredentials: _onWifiCredentials,
+                            connectedDevice: viewModel.connectedDevice!,
+                          ),
+                          child: ConnectedBluetoothDeviceScreen(),
                         ),
                       if (viewModel.connectedDevice != null)
-                        CheckConnectedDeviceOnlineScreen(
-                          handleSuccess: () {
-                            debugPrint('success'); // TODO: APP-8323 Flow callback I think, so caller of flow can wrapup/pop
-                          },
-                          viam: viewModel.viam,
-                          robot: viewModel.robot,
-                          connectedDevice: viewModel.connectedDevice!,
+                        ChangeNotifierProvider(
+                          create: (_) => CheckConnectedDeviceOnlineScreenViewModel(
+                            handleSuccess: widget.onSuccess,
+                            viam: viewModel.viam,
+                            robot: viewModel.robot,
+                            connectedDevice: viewModel.connectedDevice!,
+                          ),
+                          child: CheckConnectedDeviceOnlineScreen(),
                         ),
                     ],
                   ),
