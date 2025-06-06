@@ -72,20 +72,27 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                     children: [
                       IntroScreenOne(handleGetStartedTapped: _onNextPage),
                       IntroScreenTwo(handleNextTapped: _onNextPage),
-                      BluetoothScanningScreen(onDeviceSelected: _onDeviceConnected),
+                      ChangeNotifierProvider(
+                        create: (_) => BluetoothScanningScreenViewModel(onDeviceSelected: _onDeviceConnected),
+                        child: BluetoothScanningScreen(),
+                      ),
                       if (viewModel.connectedDevice != null)
-                        ConnectedBluetoothDeviceScreen(
-                          handleWifiCredentials: _onWifiCredentials,
-                          robot: viewModel.robot,
-                          robotPart: viewModel.mainRobotPart,
-                          connectedDevice: viewModel.connectedDevice!,
+                        ChangeNotifierProvider(
+                          create: (_) => ConnectedBluetoothDeviceScreenViewModel(
+                            handleWifiCredentials: _onWifiCredentials,
+                            connectedDevice: viewModel.connectedDevice!,
+                          ),
+                          child: ConnectedBluetoothDeviceScreen(),
                         ),
                       if (viewModel.connectedDevice != null)
-                        CheckConnectedDeviceOnlineScreen(
-                          handleSuccess: widget.onSuccess,
-                          viam: viewModel.viam,
-                          robot: viewModel.robot,
-                          connectedDevice: viewModel.connectedDevice!,
+                        ChangeNotifierProvider(
+                          create: (_) => CheckConnectedDeviceOnlineScreenViewModel(
+                            handleSuccess: widget.onSuccess,
+                            viam: viewModel.viam,
+                            robot: viewModel.robot,
+                            connectedDevice: viewModel.connectedDevice!,
+                          ),
+                          child: CheckConnectedDeviceOnlineScreen(),
                         ),
                     ],
                   ),

@@ -1,11 +1,11 @@
 part of '../../viam_flutter_provisioning_widget.dart';
 
 class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
-  BluetoothProvisioningFlowViewModel({required this.viam, required this.robot, required this.mainRobotPart});
+  BluetoothProvisioningFlowViewModel({required this.viam, required this.robot, required mainRobotPart}) : _mainRobotPart = mainRobotPart;
 
   final Viam viam;
   final Robot robot;
-  final RobotPart mainRobotPart;
+  final RobotPart _mainRobotPart;
 
   BluetoothDevice? _connectedDevice;
   BluetoothDevice? get connectedDevice => _connectedDevice;
@@ -23,8 +23,8 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
     // don't overwrite existing machine, hotspot provisioning also does this check
     if (!status.isConfigured) {
       await _connectedDevice!.writeRobotPartConfig(
-        partId: mainRobotPart.id,
-        secret: mainRobotPart.secret,
+        partId: _mainRobotPart.id,
+        secret: _mainRobotPart.secret,
       );
     }
     await _connectedDevice!.writeNetworkConfig(ssid: ssid, pw: psk);

@@ -1,61 +1,14 @@
 part of '../../viam_flutter_provisioning_widget.dart';
 
 class ConnectedBluetoothDeviceScreen extends StatefulWidget {
-  const ConnectedBluetoothDeviceScreen({
-    super.key,
-    required this.handleWifiCredentials,
-    required this.robot,
-    required this.robotPart,
-    required this.connectedDevice,
-  });
-
-  final void Function(String ssid, String? psk) handleWifiCredentials;
-  final Robot robot;
-  final RobotPart robotPart;
-  final BluetoothDevice connectedDevice;
+  const ConnectedBluetoothDeviceScreen({super.key});
 
   @override
   State<ConnectedBluetoothDeviceScreen> createState() => _ConnectedBluetoothDeviceScreenState();
 }
 
 class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDeviceScreen> {
-  List<WifiNetwork> _wifiNetworks = [];
-  bool _isScanning = false;
   bool _showingDialog = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _readNetworkList();
-  }
-
-  void _readNetworkList() async {
-    setState(() {
-      _isScanning = true;
-    });
-    await Future.delayed(const Duration(milliseconds: 500)); // delay to see "scanning" ui
-    try {
-      final wifiNetworks = await widget.connectedDevice.readNetworkList();
-      setState(() {
-        _wifiNetworks = wifiNetworks.sorted((a, b) => b.signalStrength.compareTo(a.signalStrength));
-      });
-    } catch (e) {
-      if (mounted) {
-        showErrorDialog(context, title: 'Failed to read network list');
-      }
-    } finally {
-      setState(() {
-        _isScanning = false;
-      });
-    }
-  }
-
-  void _scanNetworkAgain() {
-    setState(() {
-      _wifiNetworks.clear();
-    });
-    _readNetworkList();
-  }
 
   Future<void> _presentPasskeyDialog(WifiNetwork wifiNetwork) async {
     await showDialog(
@@ -89,7 +42,8 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
                 onPressed: passkeyController.text.isNotEmpty
                     ? () {
                         Navigator.of(dialogContext).pop();
-                        widget.handleWifiCredentials(wifiNetwork.ssid, passkeyController.text);
+                        Provider.of<ConnectedBluetoothDeviceScreenViewModel>(context, listen: false)
+                            .handleWifiCredentials(wifiNetwork.ssid, passkeyController.text);
                       }
                     : null,
                 child: Text('Connect'),
@@ -143,6 +97,7 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<ConnectedBluetoothDeviceScreenViewModel>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -158,7 +113,7 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
             maxLines: 2,
           ),
         ),
-        _isScanning && _wifiNetworks.isEmpty
+        viewModel.isScanning && viewModel.wifiNetworks.isEmpty
             ? Expanded(
                 child: ListView.separated(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -180,7 +135,7 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
                 child: ListView.separated(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   separatorBuilder: (context, index) => const SizedBox(height: 16),
-                  itemCount: _wifiNetworks.length,
+                  itemCount: viewModel.wifiNetworks.length,
                   itemBuilder: (context, index) {
                     return Card(
                       elevation: 0,
@@ -190,15 +145,17 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
                       ),
                       child: ListTile(
                         minVerticalPadding: 20,
-                        leading: Icon(_networkIcon(_wifiNetworks[index]), color: const Color(0xFF8B949E), size: 20),
-                        trailing: _wifiNetworks[index].isSecure ? Icon(Icons.lock_outline, color: const Color(0xFF8B949E), size: 20) : null,
+                        leading: Icon(_networkIcon(viewModel.wifiNetworks[index]), color: const Color(0xFF8B949E), size: 20),
+                        trailing: viewModel.wifiNetworks[index].isSecure
+                            ? Icon(Icons.lock_outline, color: const Color(0xFF8B949E), size: 20)
+                            : null,
                         horizontalTitleGap: 16,
-                        title: Text(_wifiNetworks[index].ssid, style: Theme.of(context).textTheme.bodyLarge),
+                        title: Text(viewModel.wifiNetworks[index].ssid, style: Theme.of(context).textTheme.bodyLarge),
                         onTap: () {
-                          if (_wifiNetworks[index].isSecure) {
-                            _presentPasskeyDialog(_wifiNetworks[index]);
+                          if (viewModel.wifiNetworks[index].isSecure) {
+                            _presentPasskeyDialog(viewModel.wifiNetworks[index]);
                           } else {
-                            widget.handleWifiCredentials(_wifiNetworks[index].ssid, null);
+                            viewModel.handleWifiCredentials(viewModel.wifiNetworks[index].ssid, null);
                           }
                         },
                       ),
@@ -215,7 +172,7 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
               children: [
                 const SizedBox(height: 8),
                 OutlinedButton.icon(
-                  onPressed: _scanNetworkAgain,
+                  onPressed: viewModel.scanNetworkAgain,
                   icon: const Icon(Icons.refresh),
                   label: const Text('Scan network again'),
                 ),
