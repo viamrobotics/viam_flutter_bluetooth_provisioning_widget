@@ -29,7 +29,7 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
     }
   }
 
-  Future<void> _presentPasskeyDialog(WifiNetwork wifiNetwork) async {
+  Future<void> _presentPasskeyDialog(WifiNetwork wifiNetwork, ConnectedBluetoothDeviceScreenViewModel viewModel) async {
     await showDialog(
       context: context,
       builder: (dialogContext) {
@@ -60,9 +60,8 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
               FilledButton(
                 onPressed: passkeyController.text.isNotEmpty
                     ? () {
+                        viewModel.handleWifiCredentials(wifiNetwork.ssid, passkeyController.text);
                         Navigator.of(dialogContext).pop();
-                        Provider.of<ConnectedBluetoothDeviceScreenViewModel>(context, listen: false)
-                            .handleWifiCredentials(wifiNetwork.ssid, passkeyController.text);
                       }
                     : null,
                 child: Text('Connect'),
@@ -173,7 +172,7 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
                             title: Text(viewModel.wifiNetworks[index].ssid, style: Theme.of(context).textTheme.bodyLarge),
                             onTap: () {
                               if (viewModel.wifiNetworks[index].isSecure) {
-                                _presentPasskeyDialog(viewModel.wifiNetworks[index]);
+                                _presentPasskeyDialog(viewModel.wifiNetworks[index], viewModel);
                               } else {
                                 viewModel.handleWifiCredentials(viewModel.wifiNetworks[index].ssid, null);
                               }
