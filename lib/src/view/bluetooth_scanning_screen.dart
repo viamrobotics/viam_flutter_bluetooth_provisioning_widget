@@ -30,7 +30,7 @@ class BluetoothScanningScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<BluetoothScanningScreenViewModel>(
       builder: (context, viewModel, child) {
-        return viewModel._isConnecting
+        return viewModel.isConnecting
             ? const Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
