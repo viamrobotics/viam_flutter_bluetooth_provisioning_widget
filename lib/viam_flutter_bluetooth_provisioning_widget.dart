@@ -14,13 +14,14 @@ import 'package:provider/provider.dart';
 
 // export
 export 'package:viam_flutter_provisioning/viam_bluetooth_provisioning.dart';
+export 'package:viam_sdk/viam_sdk.dart' hide Permission;
+export 'package:viam_sdk/protos/app/app.dart';
 
 // flows
 part 'src/flow/bluetooth_provisioning_flow.dart';
-part 'src/flow/bluetooth_provisioning_flow_view_model.dart';
 
 // views
-part 'src/view/bluetooth_scanning_screens.dart';
+part 'src/view/bluetooth_scanning_screen.dart';
 part 'src/view/check_connected_device_online_screen.dart';
 part 'src/view/connected_bluetooth_device_screen.dart';
 part 'src/view/intro_screen_one.dart';
@@ -33,3 +34,12 @@ part 'src/widgets/step_tile.dart';
 
 // utils
 part 'src/utils/dialogs.dart';
+
+// view models
+part 'src/view_models/connected_bluetooth_device_screen_view_model.dart';
+part 'src/view_models/bluetooth_provisioning_flow_view_model.dart';
+part 'src/view_models/check_connected_device_online_screen_view_model.dart';
+part 'src/view_models/bluetooth_scanning_screen_view_model.dart';
+
+// models
+part 'src/models/device_online_state.dart';

@@ -1,79 +1,8 @@
-part of '../../viam_flutter_provisioning_widget.dart';
+part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
-class CheckConnectedDeviceOnlineScreen extends StatefulWidget {
-  const CheckConnectedDeviceOnlineScreen({
-    super.key,
-    required this.handleSuccess,
-    required this.viam,
-    required this.robot,
-    required this.connectedDevice,
-  });
+class CheckConnectedDeviceOnlineScreen extends StatelessWidget {
+  const CheckConnectedDeviceOnlineScreen({super.key});
 
-  final VoidCallback handleSuccess;
-  final Viam viam;
-  final Robot robot;
-  final BluetoothDevice connectedDevice;
-
-  @override
-  State<CheckConnectedDeviceOnlineScreen> createState() => _CheckConnectedDeviceOnlineScreenState();
-}
-
-enum _DeviceOnlineState {
-  checking,
-  agentConnected,
-  success,
-}
-
-class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceOnlineScreen> {
-  Timer? _onlineTimer;
-  _DeviceOnlineState _setupState = _DeviceOnlineState.checking;
-
-  @override
-  void initState() {
-    super.initState();
-    _initTimers();
-  }
-
-  @override
-  void dispose() {
-    _onlineTimer?.cancel();
-    super.dispose();
-  }
-
-  void _initTimers() {
-    _onlineTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      _checkOnline();
-      _checkAgentStatus();
-    });
-  }
-
-  Future<void> _checkAgentStatus() async {
-    try {
-      final status = await widget.connectedDevice.readStatus();
-
-      if (status.isConnected && status.isConfigured && _setupState != _DeviceOnlineState.success) {
-        setState(() {
-          _setupState = _DeviceOnlineState.agentConnected;
-        });
-      }
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-    }
-  }
-
-  void _checkOnline() async {
-    final refreshedRobot = await widget.viam.appClient.getRobot(widget.robot.id);
-    final seconds = refreshedRobot.lastAccess.seconds.toInt();
-    final actual = DateTime.now().microsecondsSinceEpoch / Duration.microsecondsPerSecond;
-    if ((actual - seconds) < 10) {
-      setState(() {
-        _setupState = _DeviceOnlineState.success;
-      });
-      _onlineTimer?.cancel();
-    }
-  }
-
-  // Helper method for the 'checking' state
   Widget _buildCheckingState(BuildContext context) {
     return Center(
       child: Padding(
@@ -100,9 +29,9 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
     );
   }
 
-  // Helper method for the 'agentConnected' state
   Widget _buildAgentConnectedState(BuildContext context) {
     // Currently same as checking, can customize later if needed
+    final viewModel = Provider.of<CheckConnectedDeviceOnlineScreenViewModel>(context);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -115,14 +44,14 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
           ),
           SizedBox(height: 8),
           Text(
-            '${widget.robot.name} is connected and almost ready to use. You can leave this screen now and it will automatically come online in a few minutes.',
+            '${viewModel.robot.name} is connected and almost ready to use. You can leave this screen now and it will automatically come online in a few minutes.',
             style: Theme.of(context).textTheme.bodyLarge,
             textAlign: TextAlign.center,
             maxLines: 4,
           ),
           Spacer(),
           FilledButton(
-            onPressed: widget.handleSuccess,
+            onPressed: viewModel.handleSuccess,
             child: Text('Close'),
           ),
           SizedBox(height: 16),
@@ -133,6 +62,7 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
 
   // Helper method for the 'success' state
   Widget _buildSuccessState(BuildContext context) {
+    final viewModel = Provider.of<CheckConnectedDeviceOnlineScreenViewModel>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
@@ -145,14 +75,14 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
           Text('All set!', style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center),
           SizedBox(height: 8),
           Text(
-            '${widget.robot.name} is connected and ready to use.',
+            '${viewModel.robot.name} is connected and ready to use.',
             style: Theme.of(context).textTheme.bodyLarge,
             textAlign: TextAlign.center,
             maxLines: 2,
           ),
           Spacer(),
           FilledButton(
-            onPressed: widget.handleSuccess,
+            onPressed: viewModel.handleSuccess,
             child: Text('Close'),
           ),
           SizedBox(height: 16),
@@ -163,12 +93,16 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: switch (_setupState) {
-        _DeviceOnlineState.checking => _buildCheckingState(context),
-        _DeviceOnlineState.agentConnected => _buildAgentConnectedState(context),
-        _DeviceOnlineState.success => _buildSuccessState(context),
+    return Consumer<CheckConnectedDeviceOnlineScreenViewModel>(
+      builder: (context, viewModel, child) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: switch (viewModel.deviceOnlineState) {
+            DeviceOnlineState.checking => _buildCheckingState(context),
+            DeviceOnlineState.agentConnected => _buildAgentConnectedState(context),
+            DeviceOnlineState.success => _buildSuccessState(context),
+          },
+        );
       },
     );
   }

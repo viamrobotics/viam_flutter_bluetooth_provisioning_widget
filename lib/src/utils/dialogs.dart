@@ -1,4 +1,4 @@
-part of '../../viam_flutter_provisioning_widget.dart';
+part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 /// Show an error dialog with one action: OK, which simply dismisses the dialog
 Future<void> showErrorDialog(BuildContext context, {String title = 'An Error Occurred', String? error}) {
