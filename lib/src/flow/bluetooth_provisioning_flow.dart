@@ -76,21 +76,21 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                     children: [
                       IntroScreenOne(handleGetStartedTapped: _onNextPage),
                       IntroScreenTwo(handleNextTapped: _onNextPage),
-                      ChangeNotifierProvider(
-                        create: (_) => BluetoothScanningScreenViewModel(onDeviceSelected: _onDeviceConnected),
+                      ChangeNotifierProvider.value(
+                        value: BluetoothScanningScreenViewModel(onDeviceSelected: _onDeviceConnected),
                         child: BluetoothScanningScreen(),
                       ),
                       if (viewModel.connectedDevice != null)
-                        ChangeNotifierProvider(
-                          create: (_) => ConnectedBluetoothDeviceScreenViewModel(
+                        ChangeNotifierProvider.value(
+                          value: ConnectedBluetoothDeviceScreenViewModel(
                             handleWifiCredentials: _onWifiCredentials,
                             connectedDevice: viewModel.connectedDevice!,
                           ),
                           child: ConnectedBluetoothDeviceScreen(),
                         ),
                       if (viewModel.connectedDevice != null)
-                        ChangeNotifierProvider(
-                          create: (_) => CheckConnectedDeviceOnlineScreenViewModel(
+                        ChangeNotifierProvider.value(
+                          value: CheckConnectedDeviceOnlineScreenViewModel(
                             handleSuccess: widget.onSuccess,
                             viam: viewModel.viam,
                             robot: viewModel.robot,

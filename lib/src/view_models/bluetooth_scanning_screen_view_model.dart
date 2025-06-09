@@ -19,6 +19,7 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
   bool _isConnecting = false;
   bool get isConnecting => _isConnecting;
   set isConnecting(bool value) {
+    debugPrint('isConnecting setter called with: $value');
     _isConnecting = value;
     notifyListeners();
   }
@@ -26,6 +27,7 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
   bool _isScanning = false;
   bool get isScanning => _isScanning;
   set isScanning(bool value) {
+    debugPrint('isScanning setter called with: $value');
     _isScanning = value;
     notifyListeners();
   }
@@ -87,14 +89,14 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
     _scanSubscription?.cancel();
     _scanSubscription = null;
     if (!_isDisposed) {
-      _isScanning = false;
+      isScanning = false;
     }
   }
 
   Future<void> connect(BluetoothDevice device) async {
-    _isConnecting = true;
+    isConnecting = true;
     await device.connect();
-    _isConnecting = false;
+    isConnecting = false;
     onDeviceSelected(device);
   }
 
