@@ -1,11 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
-// ignore: depend_on_referenced_packages
-import 'package:viam_sdk/viam_sdk.dart';
-// ignore: depend_on_referenced_packages
-import 'package:viam_sdk/protos/app/app.dart';
 import 'package:viam_flutter_bluetooth_provisioning_widget/viam_flutter_bluetooth_provisioning_widget.dart';
 
 import 'consts.dart';

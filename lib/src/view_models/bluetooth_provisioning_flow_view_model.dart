@@ -1,4 +1,4 @@
-part of '../../viam_flutter_provisioning_widget.dart';
+part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
   BluetoothProvisioningFlowViewModel({required this.viam, required this.robot, required mainRobotPart}) : _mainRobotPart = mainRobotPart;

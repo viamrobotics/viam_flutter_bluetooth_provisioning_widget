@@ -1,4 +1,4 @@
-part of '../../viam_flutter_provisioning_widget.dart';
+part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class ConnectedBluetoothDeviceScreen extends StatefulWidget {
   const ConnectedBluetoothDeviceScreen({super.key});
@@ -21,9 +21,9 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
     try {
       await Provider.of<ConnectedBluetoothDeviceScreenViewModel>(context, listen: false).readNetworkList();
     } catch (e) {
-      if (mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         showErrorDialog(context, title: 'Error reading network list', error: e.toString());
-      }
+      });
     }
   }
 

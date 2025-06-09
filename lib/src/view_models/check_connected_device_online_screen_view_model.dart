@@ -1,4 +1,4 @@
-part of '../../viam_flutter_provisioning_widget.dart';
+part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
   final VoidCallback handleSuccess;

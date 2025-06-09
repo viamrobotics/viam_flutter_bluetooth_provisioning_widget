@@ -1,4 +1,4 @@
-part of '../../viam_flutter_provisioning_widget.dart';
+part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class BluetoothScanningScreenViewModel extends ChangeNotifier {
   BluetoothScanningScreenViewModel({required this.onDeviceSelected}) {
@@ -94,8 +94,8 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
   Future<void> connect(BluetoothDevice device) async {
     _isConnecting = true;
     await device.connect();
-    onDeviceSelected(device);
     _isConnecting = false;
+    onDeviceSelected(device);
   }
 
   void scanNetworkAgain() {
