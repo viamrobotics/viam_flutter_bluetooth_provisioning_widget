@@ -2,7 +2,13 @@ part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class BluetoothScanningScreenViewModel extends ChangeNotifier {
   BluetoothScanningScreenViewModel({required this.onDeviceSelected}) {
-    start();
+    if (Platform.isAndroid) {
+      // Need to explicitly request permissions on Android
+      // iOS handles this automatically when you initialize bluetoothProvisioning
+      _checkPermissions();
+    } else {
+      _initialize();
+    }
   }
 
   final Function(BluetoothDevice) onDeviceSelected;
@@ -41,37 +47,23 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
     super.dispose();
   }
 
-  // better name
-  void start() {
-    if (Platform.isAndroid) {
-      // Need to explicitly request permissions on Android
-      // iOS handles this automatically when you initialize bluetoothProvisioning
-      checkPermissions();
-    } else {
-      initialize();
-    }
-  }
-
-  // PERMISSION REPO
-  void checkPermissions() async {
+  void _checkPermissions() async {
     final scanStatus = await Permission.bluetoothScan.request();
     final connectStatus = await Permission.bluetoothConnect.request();
     if (scanStatus == PermissionStatus.granted && connectStatus == PermissionStatus.granted) {
-      initialize();
+      _initialize();
     }
   }
 
-  // maybe put elsewhere
-  void initialize() async {
+  void _initialize() async {
     await ViamBluetoothProvisioning.initialize(poweredOn: (poweredOn) {
       if (poweredOn) {
-        startScan();
+        _startScan();
       }
     });
   }
 
-  // TODO: STREAM/MOVE INTO BLUETOOTH REPO!
-  void startScan() async {
+  void _startScan() async {
     _isScanning = true;
     final stream = await ViamBluetoothProvisioning.scanForPeripherals();
     _scanSubscription = stream.listen((device) {
@@ -81,7 +73,7 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
           _uniqueDevices.add(result.device);
         }
       }
-      uniqueDevices = _uniqueDevices; // heh..?
+      uniqueDevices = _uniqueDevices;
     });
   }
 
@@ -104,6 +96,6 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
     _stopScan();
     _deviceIds.clear();
     _uniqueDevices.clear();
-    startScan();
+    _startScan();
   }
 }

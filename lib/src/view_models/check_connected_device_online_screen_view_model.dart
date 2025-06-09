@@ -29,7 +29,6 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
     super.dispose();
   }
 
-  // TODO: REPO this and below
   void _initTimers() {
     _onlineTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
       _checkOnline();
