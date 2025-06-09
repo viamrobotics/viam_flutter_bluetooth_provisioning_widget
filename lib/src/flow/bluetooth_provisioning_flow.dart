@@ -23,6 +23,10 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
     _pageController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
   }
 
+  void _onPreviousPage() {
+    _pageController.previousPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+  }
+
   void _onDeviceConnected(BluetoothDevice device) {
     final viewModel = Provider.of<BluetoothProvisioningFlowViewModel>(context, listen: false);
     viewModel.connectedDevice = device;
@@ -58,7 +62,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
           appBar: AppBar(
             leading: IconButton(
               icon: const Icon(Icons.arrow_back, size: 24),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: _onPreviousPage,
             ),
           ),
           body: SafeArea(
