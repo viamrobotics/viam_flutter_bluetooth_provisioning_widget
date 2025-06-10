@@ -88,8 +88,8 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
   Future<void> connect(BluetoothDevice device) async {
     isConnecting = true;
     await device.connect();
-    isConnecting = false;
     onDeviceSelected(device);
+    isConnecting = false;
   }
 
   void scanNetworkAgain() {
