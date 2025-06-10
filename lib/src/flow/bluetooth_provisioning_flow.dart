@@ -24,7 +24,11 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
   }
 
   void _onPreviousPage() {
-    _pageController.previousPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+    if (_pageController.page == 0) {
+      Navigator.of(context).pop();
+    } else {
+      _pageController.previousPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+    }
   }
 
   void _onDeviceConnected(BluetoothDevice device) {
