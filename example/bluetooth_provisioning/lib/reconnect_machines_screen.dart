@@ -82,14 +82,19 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
       final statusFutures = _robots.map((robot) async {
         try {
           final reloadRobot = await _viam!.appClient.getRobot(robot.robot.id);
-          setState(() {
-            _robotStatuses[reloadRobot.id] = reloadRobot.status;
-          });
+          final newStatus = reloadRobot.status;
+          if (newStatus != _robotStatuses[reloadRobot.id]) {
+            debugPrint('New status for robot ${reloadRobot.name} from ${_robotStatuses[reloadRobot.id]} to $newStatus');
+            setState(() {
+              _robotStatuses[reloadRobot.id] = newStatus;
+            });
+          }
         } catch (e) {
           debugPrint('Error getting status for robot ${robot.robot.id}: $e');
         }
       });
       await Future.wait(statusFutures);
+      debugPrint('Robot statuses updated');
     } catch (e) {
       debugPrint('Error updating robot statuses: $e');
     }
