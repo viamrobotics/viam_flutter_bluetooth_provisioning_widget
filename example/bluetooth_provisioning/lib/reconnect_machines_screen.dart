@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -5,11 +7,13 @@ import 'package:viam_flutter_bluetooth_provisioning_widget/viam_flutter_bluetoot
 
 import 'consts.dart';
 
-class ListRobot {
+enum _RobotStatus { online, offline, awaitingSetup, loading }
+
+class _ListRobot {
   final Robot robot;
   final String locationName;
 
-  ListRobot({required this.robot, required this.locationName});
+  _ListRobot({required this.robot, required this.locationName});
 }
 
 class ReconnectRobotsScreen extends StatefulWidget {
@@ -22,12 +26,23 @@ class ReconnectRobotsScreen extends StatefulWidget {
 class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
   Viam? _viam;
   bool _isLoading = false;
-  List<ListRobot> _robots = [];
+  List<_ListRobot> _robots = [];
+  final Map<String, _RobotStatus> _robotStatuses = {};
+  Timer? _statusTimer;
 
   @override
   void initState() {
     super.initState();
     _loadRobots();
+    _statusTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      _updateRobotStatuses();
+    });
+  }
+
+  @override
+  void dispose() {
+    _statusTimer?.cancel();
+    super.dispose();
   }
 
   Future<void> _loadRobots() async {
@@ -37,10 +52,10 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
     try {
       _viam = await Viam.withApiKey(Consts.apiKeyId, Consts.apiKey);
       final locations = await _viam!.appClient.listLocations(Consts.organizationId);
-      final newList = <ListRobot>[];
+      final newList = <_ListRobot>[];
       for (final location in locations) {
         final locationRobots = await _viam!.appClient.listRobots(location.id);
-        newList.addAll(locationRobots.map((e) => ListRobot(robot: e, locationName: location.name)));
+        newList.addAll(locationRobots.map((e) => _ListRobot(robot: e, locationName: location.name)));
       }
       setState(() {
         _robots = newList;
@@ -51,6 +66,26 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
       setState(() {
         _isLoading = false;
       });
+    }
+  }
+
+  Future<void> _updateRobotStatuses() async {
+    debugPrint('Updating robot statuses');
+    try {
+      final statusFutures = _robots.map((robot) async {
+        try {
+          final reloadRobot = await _viam!.appClient.getRobot(robot.robot.id);
+          final status = await reloadRobot.getStatus();
+          setState(() {
+            _robotStatuses[reloadRobot.id] = status;
+          });
+        } catch (e) {
+          debugPrint('Error getting status for robot ${robot.robot.id}: $e');
+        }
+      });
+      await Future.wait(statusFutures);
+    } catch (e) {
+      debugPrint('Error updating robot statuses: $e');
     }
   }
 
@@ -85,10 +120,40 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
               itemCount: _robots.length,
               itemBuilder: (context, index) => ListTile(
                 title: Text(_robots[index].robot.name),
-                subtitle: Text(_robots[index].locationName),
+                subtitle: Text('location: ${_robots[index].locationName}'),
+                trailing: _robotStatuses[_robots[index].robot.id]?.statusIcon,
                 onTap: () => _goToBluetoothProvisioningFlow(context, _viam!, _robots[index].robot),
               ),
             ),
     );
+  }
+}
+
+extension _RobotStatusCalculation on Robot {
+  Future<_RobotStatus> getStatus() async {
+    final seconds = lastAccess.seconds.toInt();
+    final actual = DateTime.now().microsecondsSinceEpoch / Duration.microsecondsPerSecond;
+    if ((actual - seconds) < 60) {
+      return _RobotStatus.online;
+    }
+
+    if (!lastAccess.hasNanos() && !lastAccess.hasSeconds()) return _RobotStatus.awaitingSetup;
+    if ((actual - seconds) > 60) return _RobotStatus.offline;
+    return _RobotStatus.loading;
+  }
+}
+
+extension _RobotStatusIcon on _RobotStatus {
+  Icon get statusIcon {
+    switch (this) {
+      case _RobotStatus.online:
+        return const Icon(Icons.check_circle, color: Colors.green);
+      case _RobotStatus.offline:
+        return const Icon(Icons.offline_bolt, color: Colors.grey);
+      case _RobotStatus.awaitingSetup:
+        return const Icon(Icons.snooze, color: Colors.blue);
+      case _RobotStatus.loading:
+        return const Icon(Icons.hourglass_empty, color: Colors.black);
+    }
   }
 }
