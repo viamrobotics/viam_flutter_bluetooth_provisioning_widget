@@ -33,7 +33,6 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
       final robotId = await viam.appClient.newMachine(robotName, location.id);
       final robot = await viam.appClient.getRobot(robotId);
       final mainPart = (await viam.appClient.listRobotParts(robotId)).firstWhere((element) => element.mainPart);
-      await Future.delayed(const Duration(seconds: 3));
       if (mounted) {
         _goToBluetoothProvisioningFlow(context, viam, robot, mainPart);
       }
