@@ -5,6 +5,13 @@ import 'package:viam_flutter_bluetooth_provisioning_widget/viam_flutter_bluetoot
 
 import 'consts.dart';
 
+class ListRobot {
+  final Robot robot;
+  final String locationName;
+
+  ListRobot({required this.robot, required this.locationName});
+}
+
 class ReconnectRobotsScreen extends StatefulWidget {
   const ReconnectRobotsScreen({super.key});
 
@@ -15,7 +22,7 @@ class ReconnectRobotsScreen extends StatefulWidget {
 class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
   Viam? _viam;
   bool _isLoading = false;
-  List<Robot> _robots = [];
+  List<ListRobot> _robots = [];
 
   @override
   void initState() {
@@ -30,13 +37,13 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
     try {
       _viam = await Viam.withApiKey(Consts.apiKeyId, Consts.apiKey);
       final locations = await _viam!.appClient.listLocations(Consts.organizationId);
-      final robots = <Robot>[];
+      final newList = <ListRobot>[];
       for (final location in locations) {
-        final robots = await _viam!.appClient.listRobots(location.id);
-        robots.addAll(robots);
+        final locationRobots = await _viam!.appClient.listRobots(location.id);
+        newList.addAll(locationRobots.map((e) => ListRobot(robot: e, locationName: location.name)));
       }
       setState(() {
-        _robots = robots;
+        _robots = newList;
       });
     } catch (e) {
       debugPrint('Error loading robots: $e');
@@ -72,13 +79,14 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
         title: const Text('Reconnect Machines'),
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator.adaptive(backgroundColor: Colors.white))
+          ? const Center(child: CircularProgressIndicator.adaptive(backgroundColor: Colors.black))
           : ListView.builder(
+              padding: const EdgeInsets.all(8),
               itemCount: _robots.length,
               itemBuilder: (context, index) => ListTile(
-                title: Text(_robots[index].name),
-                subtitle: Text(_robots[index].location),
-                onTap: () => _goToBluetoothProvisioningFlow(context, _viam!, _robots[index]),
+                title: Text(_robots[index].robot.name),
+                subtitle: Text(_robots[index].locationName),
+                onTap: () => _goToBluetoothProvisioningFlow(context, _viam!, _robots[index].robot),
               ),
             ),
     );

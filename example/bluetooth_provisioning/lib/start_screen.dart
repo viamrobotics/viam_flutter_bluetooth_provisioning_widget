@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'reconnect_robots_screen.dart';
-import 'provision_new_robot_screen.dart';
+import 'reconnect_machines_screen.dart';
+import 'provision_new_machine_screen.dart';
 
 class StartScreen extends StatelessWidget {
   const StartScreen({super.key});
@@ -32,6 +32,7 @@ class StartScreen extends StatelessWidget {
               onPressed: () => _goToNewMachineFlow(context),
               child: const Text('New Machine Flow'),
             ),
+            const SizedBox(height: 16),
             FilledButton(
               onPressed: () => _goToReconnectMachinesFlow(context),
               child: const Text('Reconnect Machines'),
