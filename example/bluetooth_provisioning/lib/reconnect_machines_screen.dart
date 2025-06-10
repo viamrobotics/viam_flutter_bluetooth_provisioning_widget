@@ -34,9 +34,6 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
   void initState() {
     super.initState();
     _loadRobots();
-    _statusTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
-      _updateRobotStatuses();
-    });
   }
 
   @override
@@ -57,9 +54,13 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
         final locationRobots = await _viam!.appClient.listRobots(location.id);
         newList.addAll(locationRobots.map((e) => _ListRobot(robot: e, locationName: location.name)));
       }
+      for (final robot in newList) {
+        _robotStatuses[robot.robot.id] = robot.robot.status;
+      }
       setState(() {
         _robots = newList;
       });
+      _startStatusTimer();
     } catch (e) {
       debugPrint('Error loading robots: $e');
     } finally {
@@ -69,15 +70,20 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
     }
   }
 
+  Future<void> _startStatusTimer() async {
+    _statusTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      _updateRobotStatuses();
+    });
+  }
+
   Future<void> _updateRobotStatuses() async {
     debugPrint('Updating robot statuses');
     try {
       final statusFutures = _robots.map((robot) async {
         try {
           final reloadRobot = await _viam!.appClient.getRobot(robot.robot.id);
-          final status = await reloadRobot.getStatus();
           setState(() {
-            _robotStatuses[reloadRobot.id] = status;
+            _robotStatuses[reloadRobot.id] = reloadRobot.status;
           });
         } catch (e) {
           debugPrint('Error getting status for robot ${robot.robot.id}: $e');
@@ -130,7 +136,7 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
 }
 
 extension _RobotStatusCalculation on Robot {
-  Future<_RobotStatus> getStatus() async {
+  _RobotStatus get status {
     final seconds = lastAccess.seconds.toInt();
     final actual = DateTime.now().microsecondsSinceEpoch / Duration.microsecondsPerSecond;
     if ((actual - seconds) < 60) {
