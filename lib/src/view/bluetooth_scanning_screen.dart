@@ -1,7 +1,20 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
-class BluetoothScanningScreen extends StatelessWidget {
+class BluetoothScanningScreen extends StatefulWidget {
   const BluetoothScanningScreen({super.key});
+
+  @override
+  State<BluetoothScanningScreen> createState() => _BluetoothScanningScreenState();
+}
+
+class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<BluetoothScanningScreenViewModel>().start();
+    });
+  }
 
   Future<void> _notSeeingDevice(BuildContext context) async {
     await showDialog(

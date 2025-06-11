@@ -1,15 +1,7 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class BluetoothScanningScreenViewModel extends ChangeNotifier {
-  BluetoothScanningScreenViewModel({required this.onDeviceSelected}) {
-    if (Platform.isAndroid) {
-      // Need to explicitly request permissions on Android
-      // iOS handles this automatically when you initialize bluetoothProvisioning
-      _checkPermissions();
-    } else {
-      _initialize();
-    }
-  }
+  BluetoothScanningScreenViewModel({required this.onDeviceSelected});
 
   final Function(BluetoothDevice) onDeviceSelected;
   StreamSubscription<List<ScanResult>>? _scanSubscription;
@@ -45,6 +37,16 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
     _isDisposed = true;
     _stopScan();
     super.dispose();
+  }
+
+  void start() {
+    if (Platform.isAndroid) {
+      // Need to explicitly request permissions on Android
+      // iOS handles this automatically when you initialize bluetoothProvisioning
+      _checkPermissions();
+    } else {
+      _initialize();
+    }
   }
 
   void _checkPermissions() async {
