@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  permission_handler: ^11.4.0
+  permission_handler: ^12.0.0+1
   viam_sdk: ^0.6.4
   collection: ^1.18.0
   viam_flutter_provisioning: ^0.0.8
