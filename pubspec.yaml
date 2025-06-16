@@ -12,7 +12,7 @@ dependencies:
     sdk: flutter
 
   permission_handler: ^11.4.0
-  viam_sdk: ^0.5.1
+  viam_sdk: ^0.6.4
   collection: ^1.18.0
   viam_flutter_provisioning: ^0.0.8
   flutter_platform_widgets: ^7.0.1
@@ -22,20 +22,3 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
-
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
-# The following section is specific to Flutter packages.
-flutter:
-
-  # To add assets to your package, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
-  #
-  # For details regarding assets in packages, see
-  # https://flutter.dev/to/asset-from-package
-  #
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/to/resolution-aware-images
