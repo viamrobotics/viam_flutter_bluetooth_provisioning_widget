@@ -49,7 +49,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
       _onNextPage();
     } catch (e) {
       if (mounted) {
-        showErrorDialog(context, title: 'Failed to write config', error: e.toString());
+        _showErrorDialog(context, title: 'Failed to write config', error: e.toString());
       }
     } finally {
       setState(() {
