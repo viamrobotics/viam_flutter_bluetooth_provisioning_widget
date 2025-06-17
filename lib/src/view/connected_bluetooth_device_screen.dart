@@ -24,7 +24,7 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
       await Provider.of<ConnectedBluetoothDeviceScreenViewModel>(context, listen: false).readNetworkList();
     } catch (e) {
       if (mounted) {
-        showErrorDialog(context, title: 'Error reading network list', error: e.toString());
+        _showErrorDialog(context, title: 'Error reading network list', error: e.toString());
       }
     }
   }

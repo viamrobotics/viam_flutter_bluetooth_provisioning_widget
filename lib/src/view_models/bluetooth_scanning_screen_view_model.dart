@@ -17,7 +17,6 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
   bool _isConnecting = false;
   bool get isConnecting => _isConnecting;
   set isConnecting(bool value) {
-    debugPrint('isConnecting setter called with: $value');
     _isConnecting = value;
     notifyListeners();
   }
@@ -25,7 +24,6 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
   bool _isScanning = false;
   bool get isScanning => _isScanning;
   set isScanning(bool value) {
-    debugPrint('isScanning setter called with: $value');
     _isScanning = value;
     notifyListeners();
   }
