@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/kevin.johnson@viam.com/fvm/versions/3.29.2/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/kevin.johnson@viam.com/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/kevin.johnson@viam.com/Desktop/projects/viam_flutter_bluetooth_provisioning_widget/example/bluetooth_provisioning/android/app/.cxx/Debug/4l5t1a5j/arm64-v8a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/kevin.johnson@viam.com/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/kevin.johnson@viam.com/Desktop/projects/viam_flutter_bluetooth_provisioning_widget/example/bluetooth_provisioning/android/app/.cxx/Debug/4l5t1a5j/arm64-v8a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}
