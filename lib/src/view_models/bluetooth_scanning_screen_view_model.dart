@@ -50,7 +50,8 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
   void _checkPermissions() async {
     final scanStatus = await Permission.bluetoothScan.request();
     final connectStatus = await Permission.bluetoothConnect.request();
-    if (scanStatus == PermissionStatus.granted && connectStatus == PermissionStatus.granted) {
+    final locationStatus = await Permission.locationWhenInUse.request();
+    if (scanStatus == PermissionStatus.granted && connectStatus == PermissionStatus.granted && locationStatus == PermissionStatus.granted) {
       _initialize();
     }
   }
