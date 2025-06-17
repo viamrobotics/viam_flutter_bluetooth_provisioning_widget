@@ -141,9 +141,9 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
                       itemBuilder: (context, _) {
                         return Card(
                           elevation: 0,
-                          color: const Color(0xFFF5F7F8),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
+                            side: BorderSide(color: Colors.grey.shade300),
                           ),
                           child: const ScanningListTile(),
                         );
