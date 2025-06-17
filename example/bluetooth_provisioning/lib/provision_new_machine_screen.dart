@@ -76,7 +76,13 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
             if (_robotName != null) const SizedBox(height: 16),
             FilledButton(
               onPressed: _createRobot,
-              child: _isLoading ? const CircularProgressIndicator.adaptive(backgroundColor: Colors.white) : const Text('Start Flow'),
+              child: _isLoading
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator.adaptive(backgroundColor: Colors.white),
+                    )
+                  : const Text('Start Flow'),
             ),
           ],
         ),
