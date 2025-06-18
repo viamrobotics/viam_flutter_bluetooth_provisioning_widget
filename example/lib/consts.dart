@@ -1,7 +1,5 @@
 class Consts {
-  static const String hotspotPrefix = '';
-  static const String hotspotPassword = '';
-
+  // TODO: Populate with your own api Keys.
   static const String apiKeyId = '';
   static const String apiKey = '';
 
