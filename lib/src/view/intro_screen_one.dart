@@ -25,9 +25,8 @@ class IntroScreenOne extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Text(
-              'We\'ll walk you through a short setup process to get your VC Box up and running.',
+              'We\'ll walk you through a short setup process to get your device up and running.',
               textAlign: TextAlign.center,
-              maxLines: 2,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.grey.shade600),
             ),
           ),
