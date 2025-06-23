@@ -30,7 +30,7 @@ class IntroScreenTwo extends StatelessWidget {
                 text: TextSpan(
                   style: Theme.of(context).textTheme.bodyLarge,
                   children: [
-                    TextSpan(text: 'VC Box is '),
+                    TextSpan(text: 'Your device is '),
                     TextSpan(
                       text: 'plugged in ',
                       style: const TextStyle(fontWeight: FontWeight.bold),
@@ -40,7 +40,6 @@ class IntroScreenTwo extends StatelessWidget {
                       text: 'powered on',
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    TextSpan(text: '. The light should be slowly flashing blue.'),
                   ],
                 ),
               ),
