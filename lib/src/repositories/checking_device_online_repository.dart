@@ -23,16 +23,15 @@ class CheckingDeviceOnlineRepository {
     required this.viam,
     required this.robot,
   }) {
-    _initTimers();
+    _initTimer();
   }
 
-  /// Dispose the repository and clean up resources
   void dispose() {
     _onlineTimer?.cancel();
     _stateController.close();
   }
 
-  void _initTimers() {
+  void _initTimer() {
     _onlineTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
       _checkOnline();
       _checkAgentStatus();
