@@ -45,4 +45,4 @@ part 'src/view_models/bluetooth_scanning_screen_view_model.dart';
 part 'src/models/device_online_state.dart';
 
 // repositories
-part 'src/repositories/scanning_networks_repository.dart';
+part 'src/repositories/scan_bluetooth_devices_repository.dart';

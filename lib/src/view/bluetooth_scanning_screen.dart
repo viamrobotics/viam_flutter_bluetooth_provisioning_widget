@@ -125,7 +125,7 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
                       children: [
                         const SizedBox(height: 8),
                         OutlinedButton.icon(
-                          onPressed: viewModel.scanNetworkAgain,
+                          onPressed: viewModel.scanDevicesAgain,
                           icon: const Icon(Icons.refresh),
                           label: const Text('Scan network again'),
                         ),
