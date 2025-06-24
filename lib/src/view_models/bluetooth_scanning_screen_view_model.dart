@@ -3,7 +3,12 @@ part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 class BluetoothScanningScreenViewModel extends ChangeNotifier {
   BluetoothScanningScreenViewModel({required this.onDeviceSelected, required ScanBluetoothDevicesRepository scanBluetoothDevicesRepository})
       : _scanBluetoothDevicesRepository = scanBluetoothDevicesRepository {
-    _setupStreamListeners();
+    _scanBluetoothDevicesRepository.devicesStream.listen((devices) {
+      uniqueDevices = devices;
+    });
+    _scanBluetoothDevicesRepository.scanningStream.listen((scanning) {
+      isScanning = scanning;
+    });
   }
 
   final Function(BluetoothDevice) onDeviceSelected;
@@ -28,15 +33,6 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
   set isScanning(bool value) {
     _isScanning = value;
     notifyListeners();
-  }
-
-  void _setupStreamListeners() {
-    _scanBluetoothDevicesRepository.devicesStream.listen((devices) {
-      uniqueDevices = devices;
-    });
-    _scanBluetoothDevicesRepository.scanningStream.listen((scanning) {
-      isScanning = scanning;
-    });
   }
 
   @override
