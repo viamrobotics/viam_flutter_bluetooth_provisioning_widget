@@ -56,7 +56,7 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
     isConnecting = false;
   }
 
-  void scanNetworkAgain() {
-    _scanBluetoothDevicesRepository.scanNetworkAgain();
+  void scanDevicesAgain() {
+    _scanBluetoothDevicesRepository.scanDevicesAgain();
   }
 }

@@ -42,7 +42,7 @@ class ScanBluetoothDevicesRepository {
     }
   }
 
-  void scanNetworkAgain() {
+  void scanDevicesAgain() {
     _stopScan();
     _deviceIds.clear();
     _uniqueDevices.clear();
