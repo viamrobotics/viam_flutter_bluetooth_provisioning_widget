@@ -68,7 +68,7 @@ class ScanningNetworksRepository {
   }
 
   void _startScan() async {
-    _isScanning = true;
+    isScanning = true;
     final stream = await ViamBluetoothProvisioning.scanForPeripherals();
     _scanSubscription = stream.listen((device) {
       for (final result in device) {
