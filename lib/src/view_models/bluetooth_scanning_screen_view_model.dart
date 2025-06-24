@@ -45,7 +45,7 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
     super.dispose();
   }
 
-  void start() {
+  void startScanning() {
     _scanBluetoothDevicesRepository.start();
   }
 

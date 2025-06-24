@@ -12,7 +12,7 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<BluetoothScanningScreenViewModel>().start();
+      context.read<BluetoothScanningScreenViewModel>().startScanning();
     });
   }
 
