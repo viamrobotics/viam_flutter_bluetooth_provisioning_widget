@@ -5,7 +5,6 @@ class CheckingDeviceOnlineRepository {
   final Robot robot;
   final BluetoothDevice connectedDevice;
 
-  /// Stream that emits whenever the device online state changes
   Stream<DeviceOnlineState> get deviceOnlineStateStream => _stateController.stream;
   DeviceOnlineState get deviceOnlineState => _deviceOnlineState;
 
