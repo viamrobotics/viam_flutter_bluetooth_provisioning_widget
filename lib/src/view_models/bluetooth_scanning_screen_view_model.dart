@@ -1,18 +1,20 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class BluetoothScanningScreenViewModel extends ChangeNotifier {
-  BluetoothScanningScreenViewModel({required this.onDeviceSelected});
+  BluetoothScanningScreenViewModel({required this.onDeviceSelected, required ScanningNetworksRepository scanningNetworksRepository})
+      : _scanningNetworksRepository = scanningNetworksRepository {
+    _setupStreamListeners();
+  }
 
   final Function(BluetoothDevice) onDeviceSelected;
-  StreamSubscription<List<ScanResult>>? _scanSubscription;
+
+  final ScanningNetworksRepository _scanningNetworksRepository;
   List<BluetoothDevice> _uniqueDevices = [];
   List<BluetoothDevice> get uniqueDevices => _uniqueDevices;
   set uniqueDevices(List<BluetoothDevice> devices) {
     _uniqueDevices = devices;
     notifyListeners();
   }
-
-  final Set<String> _deviceIds = {};
 
   bool _isConnecting = false;
   bool get isConnecting => _isConnecting;
@@ -28,62 +30,23 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool _isDisposed = false;
+  void _setupStreamListeners() {
+    _scanningNetworksRepository.devicesStream.listen((devices) {
+      uniqueDevices = devices;
+    });
+    _scanningNetworksRepository.scanningStream.listen((scanning) {
+      isScanning = scanning;
+    });
+  }
 
   @override
   void dispose() {
-    _isDisposed = true;
-    _stopScan();
+    _scanningNetworksRepository.dispose();
     super.dispose();
   }
 
   void start() {
-    if (Platform.isAndroid) {
-      // Need to explicitly request permissions on Android
-      // iOS handles this automatically when you initialize bluetoothProvisioning
-      _checkPermissions();
-    } else {
-      _initialize();
-    }
-  }
-
-  void _checkPermissions() async {
-    final scanStatus = await Permission.bluetoothScan.request();
-    final connectStatus = await Permission.bluetoothConnect.request();
-    final locationStatus = await Permission.locationWhenInUse.request();
-    if (scanStatus == PermissionStatus.granted && connectStatus == PermissionStatus.granted && locationStatus == PermissionStatus.granted) {
-      _initialize();
-    }
-  }
-
-  void _initialize() async {
-    await ViamBluetoothProvisioning.initialize(poweredOn: (poweredOn) {
-      if (poweredOn) {
-        _startScan();
-      }
-    });
-  }
-
-  void _startScan() async {
-    _isScanning = true;
-    final stream = await ViamBluetoothProvisioning.scanForPeripherals();
-    _scanSubscription = stream.listen((device) {
-      for (final result in device) {
-        if (!_deviceIds.contains(result.device.remoteId.str)) {
-          _deviceIds.add(result.device.remoteId.str);
-          _uniqueDevices.add(result.device);
-        }
-      }
-      uniqueDevices = _uniqueDevices;
-    });
-  }
-
-  void _stopScan() {
-    _scanSubscription?.cancel();
-    _scanSubscription = null;
-    if (!_isDisposed) {
-      isScanning = false;
-    }
+    _scanningNetworksRepository.start();
   }
 
   Future<void> connect(BluetoothDevice device) async {
@@ -94,9 +57,6 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
   }
 
   void scanNetworkAgain() {
-    _stopScan();
-    _deviceIds.clear();
-    _uniqueDevices.clear();
-    _startScan();
+    _scanningNetworksRepository.scanNetworkAgain();
   }
 }
