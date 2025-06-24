@@ -1,6 +1,6 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
-class ScanningNetworksRepository {
+class ScanBluetoothDevicesRepository {
   StreamSubscription<List<ScanResult>>? _scanSubscription;
   List<BluetoothDevice> _uniqueDevices = [];
   final Set<String> _deviceIds = {};

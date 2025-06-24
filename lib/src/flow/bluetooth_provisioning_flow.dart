@@ -83,7 +83,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                       ChangeNotifierProvider.value(
                         value: BluetoothScanningScreenViewModel(
                           onDeviceSelected: _onDeviceConnected,
-                          scanningNetworksRepository: ScanningNetworksRepository(),
+                          scanBluetoothDevicesRepository: ScanBluetoothDevicesRepository(),
                         ),
                         child: BluetoothScanningScreen(),
                       ),

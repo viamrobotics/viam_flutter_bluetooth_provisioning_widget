@@ -1,14 +1,14 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class BluetoothScanningScreenViewModel extends ChangeNotifier {
-  BluetoothScanningScreenViewModel({required this.onDeviceSelected, required ScanningNetworksRepository scanningNetworksRepository})
-      : _scanningNetworksRepository = scanningNetworksRepository {
+  BluetoothScanningScreenViewModel({required this.onDeviceSelected, required ScanBluetoothDevicesRepository scanBluetoothDevicesRepository})
+      : _scanBluetoothDevicesRepository = scanBluetoothDevicesRepository {
     _setupStreamListeners();
   }
 
   final Function(BluetoothDevice) onDeviceSelected;
 
-  final ScanningNetworksRepository _scanningNetworksRepository;
+  final ScanBluetoothDevicesRepository _scanBluetoothDevicesRepository;
   List<BluetoothDevice> _uniqueDevices = [];
   List<BluetoothDevice> get uniqueDevices => _uniqueDevices;
   set uniqueDevices(List<BluetoothDevice> devices) {
@@ -31,22 +31,22 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
   }
 
   void _setupStreamListeners() {
-    _scanningNetworksRepository.devicesStream.listen((devices) {
+    _scanBluetoothDevicesRepository.devicesStream.listen((devices) {
       uniqueDevices = devices;
     });
-    _scanningNetworksRepository.scanningStream.listen((scanning) {
+    _scanBluetoothDevicesRepository.scanningStream.listen((scanning) {
       isScanning = scanning;
     });
   }
 
   @override
   void dispose() {
-    _scanningNetworksRepository.dispose();
+    _scanBluetoothDevicesRepository.dispose();
     super.dispose();
   }
 
   void start() {
-    _scanningNetworksRepository.start();
+    _scanBluetoothDevicesRepository.start();
   }
 
   Future<void> connect(BluetoothDevice device) async {
@@ -57,6 +57,6 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
   }
 
   void scanNetworkAgain() {
-    _scanningNetworksRepository.scanNetworkAgain();
+    _scanBluetoothDevicesRepository.scanNetworkAgain();
   }
 }
