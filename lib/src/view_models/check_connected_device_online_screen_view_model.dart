@@ -21,9 +21,7 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
     required this.robot,
     required CheckingDeviceOnlineRepository checkingDeviceOnlineRepository,
   })  : _checkingDeviceOnlineRepository = checkingDeviceOnlineRepository,
-        _deviceOnlineState = checkingDeviceOnlineRepository.deviceOnlineState {
-    _startListening();
-  }
+        _deviceOnlineState = checkingDeviceOnlineRepository.deviceOnlineState;
 
   @override
   void dispose() {
@@ -32,7 +30,8 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
     super.dispose();
   }
 
-  void _startListening() {
+  void startChecking() {
+    _checkingDeviceOnlineRepository.startChecking();
     _deviceOnlineSubscription = _checkingDeviceOnlineRepository.deviceOnlineStateStream.listen((state) {
       deviceOnlineState = state;
     });

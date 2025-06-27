@@ -3,7 +3,13 @@ part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 class CheckingDeviceOnlineRepository {
   final Viam viam;
   final Robot robot;
-  final BluetoothDevice connectedDevice;
+  final BluetoothDevice device;
+
+  CheckingDeviceOnlineRepository({
+    required this.viam,
+    required this.robot,
+    required this.device,
+  });
 
   Stream<DeviceOnlineState> get deviceOnlineStateStream => _stateController.stream;
   DeviceOnlineState get deviceOnlineState => _deviceOnlineState;
@@ -13,16 +19,10 @@ class CheckingDeviceOnlineRepository {
   Timer? _onlineTimer;
 
   set deviceOnlineState(DeviceOnlineState state) {
-    _deviceOnlineState = state;
-    _stateController.add(state);
-  }
-
-  CheckingDeviceOnlineRepository({
-    required this.connectedDevice,
-    required this.viam,
-    required this.robot,
-  }) {
-    _initTimer();
+    if (_deviceOnlineState != state) {
+      _deviceOnlineState = state;
+      _stateController.add(state);
+    }
   }
 
   void dispose() {
@@ -30,8 +30,12 @@ class CheckingDeviceOnlineRepository {
     _stateController.close();
   }
 
-  void _initTimer() {
+  void startChecking() {
     _onlineTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      if (_deviceOnlineState == DeviceOnlineState.success) {
+        timer.cancel();
+        return;
+      }
       _checkOnline();
       _checkAgentStatus();
     });
@@ -39,9 +43,11 @@ class CheckingDeviceOnlineRepository {
 
   Future<void> _checkAgentStatus() async {
     try {
-      final status = await connectedDevice.readStatus();
-      if (status.isConnected && status.isConfigured && deviceOnlineState != DeviceOnlineState.success) {
-        deviceOnlineState = DeviceOnlineState.agentConnected;
+      if (device.isConnected) {
+        final status = await device.readStatus();
+        if (status.isConnected && status.isConfigured && deviceOnlineState != DeviceOnlineState.success) {
+          deviceOnlineState = DeviceOnlineState.agentConnected;
+        }
       }
     } on Exception catch (e) {
       debugPrint(e.toString());
@@ -53,8 +59,12 @@ class CheckingDeviceOnlineRepository {
     final seconds = refreshedRobot.lastAccess.seconds.toInt();
     final actual = DateTime.now().microsecondsSinceEpoch / Duration.microsecondsPerSecond;
     if ((actual - seconds) < 10) {
-      deviceOnlineState = DeviceOnlineState.success;
       _onlineTimer?.cancel();
+      deviceOnlineState = DeviceOnlineState.success;
+      // fire and forget disconnect device
+      if (device.isConnected) {
+        device.disconnect();
+      }
     }
   }
 }
