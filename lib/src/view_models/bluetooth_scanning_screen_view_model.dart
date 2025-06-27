@@ -3,10 +3,10 @@ part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 class BluetoothScanningScreenViewModel extends ChangeNotifier {
   BluetoothScanningScreenViewModel({required this.onDeviceSelected, required ScanBluetoothDevicesRepository scanBluetoothDevicesRepository})
       : _scanBluetoothDevicesRepository = scanBluetoothDevicesRepository {
-    _scanBluetoothDevicesRepository.devicesStream.listen((devices) {
+    _devicesSubscription = _scanBluetoothDevicesRepository.devicesStream.listen((devices) {
       uniqueDevices = devices;
     });
-    _scanBluetoothDevicesRepository.scanningStream.listen((scanning) {
+    _scanningSubscription = _scanBluetoothDevicesRepository.scanningStream.listen((scanning) {
       isScanning = scanning;
     });
   }
@@ -35,8 +35,13 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  StreamSubscription<List<BluetoothDevice>>? _devicesSubscription;
+  StreamSubscription<bool>? _scanningSubscription;
+
   @override
   void dispose() {
+    _devicesSubscription?.cancel();
+    _scanningSubscription?.cancel();
     _scanBluetoothDevicesRepository.dispose();
     super.dispose();
   }
