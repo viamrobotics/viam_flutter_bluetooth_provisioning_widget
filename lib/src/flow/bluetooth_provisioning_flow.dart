@@ -81,7 +81,10 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                       IntroScreenOne(handleGetStartedTapped: _onNextPage),
                       IntroScreenTwo(handleNextTapped: _onNextPage),
                       ChangeNotifierProvider.value(
-                        value: BluetoothScanningScreenViewModel(onDeviceSelected: _onDeviceConnected),
+                        value: BluetoothScanningScreenViewModel(
+                          onDeviceSelected: _onDeviceConnected,
+                          scanBluetoothDevicesRepository: ScanBluetoothDevicesRepository(),
+                        ),
                         child: BluetoothScanningScreen(),
                       ),
                       if (viewModel.connectedDevice != null)
