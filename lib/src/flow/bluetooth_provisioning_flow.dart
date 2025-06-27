@@ -99,7 +99,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                           value: CheckConnectedDeviceOnlineScreenViewModel(
                             handleSuccess: widget.onSuccess,
                             checkingDeviceOnlineRepository: CheckingDeviceOnlineRepository(
-                              connectedDevice: viewModel.connectedDevice!,
+                              device: viewModel.connectedDevice!,
                               viam: viewModel.viam,
                               robot: viewModel.robot,
                             ),
