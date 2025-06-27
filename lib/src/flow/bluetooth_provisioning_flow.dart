@@ -44,8 +44,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
         _isLoading = true;
       });
       await viewModel.writeConfig(ssid: ssid, psk: psk);
-      // can safely disconnect after writing config
-      await viewModel.connectedDevice!.disconnect();
+      // you can safely disconnect now, but then you can't read the agent status from the connected device while we're waiting to get online
       _onNextPage();
     } catch (e) {
       if (mounted) {
@@ -99,9 +98,12 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                         ChangeNotifierProvider.value(
                           value: CheckConnectedDeviceOnlineScreenViewModel(
                             handleSuccess: widget.onSuccess,
-                            viam: viewModel.viam,
+                            checkingDeviceOnlineRepository: CheckingDeviceOnlineRepository(
+                              connectedDevice: viewModel.connectedDevice!,
+                              viam: viewModel.viam,
+                              robot: viewModel.robot,
+                            ),
                             robot: viewModel.robot,
-                            connectedDevice: viewModel.connectedDevice!,
                           ),
                           child: CheckConnectedDeviceOnlineScreen(),
                         ),

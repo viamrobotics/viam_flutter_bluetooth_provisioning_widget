@@ -1,7 +1,20 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
-class CheckConnectedDeviceOnlineScreen extends StatelessWidget {
+class CheckConnectedDeviceOnlineScreen extends StatefulWidget {
   const CheckConnectedDeviceOnlineScreen({super.key});
+
+  @override
+  State<CheckConnectedDeviceOnlineScreen> createState() => _CheckConnectedDeviceOnlineScreenState();
+}
+
+class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceOnlineScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<CheckConnectedDeviceOnlineScreenViewModel>().startChecking();
+    });
+  }
 
   Widget _buildCheckingState(BuildContext context) {
     return Center(
