@@ -28,5 +28,9 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
       );
     }
     await _connectedDevice!.writeNetworkConfig(ssid: ssid, pw: psk);
+
+    // TODO: Can compare version > 0.19.2 like force upgrade before calling
+    // final version = await _connectedDevice!.readAgentVersion();
+    await _connectedDevice!.exitProvisioning();
   }
 }
