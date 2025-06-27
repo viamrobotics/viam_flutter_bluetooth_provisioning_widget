@@ -28,5 +28,6 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
       );
     }
     await _connectedDevice!.writeNetworkConfig(ssid: ssid, pw: psk);
+    await _connectedDevice!.exitProvisioning();
   }
 }
