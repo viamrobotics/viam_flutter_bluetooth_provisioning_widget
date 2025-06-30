@@ -38,18 +38,31 @@ class CheckingDeviceOnlineRepository {
         timer.cancel();
         return;
       }
-      _checkError();
       _checkOnline();
       _checkAgentStatus();
     });
   }
 
-  Future<void> _checkError() async {
-    _startingErrors ??= await device.readErrors();
-    final errors = await device.readErrors();
-    if (errors.length > _startingErrors!.length) {
+  /// We want to read these sequentially for now, some errors observed trying to read ble characteristics in parallel
+  Future<void> _checkAgentStatus() async {
+    if (!device.isConnected) {
+      return;
+    }
+
+    await _readAgentErrors();
+    await _readAgentStatus();
+  }
+
+  Future<void> _readAgentErrors() async {
+    if (_startingErrors == null) {
+      _startingErrors = await device.readErrors();
+      return; // nothing to compare, return
+    }
+
+    final newErrors = await device.readErrors();
+    if (newErrors.length > _startingErrors!.length) {
       // a new error was appended to the error list, let's check if it's a new error
-      debugPrint('Error connecting machine: ${errors.last}');
+      debugPrint('Error connecting machine: ${newErrors.last}');
       _onlineTimer?.cancel();
       deviceOnlineState = DeviceOnlineState.errorConnecting;
       // fire and forget disconnect device
@@ -59,13 +72,11 @@ class CheckingDeviceOnlineRepository {
     }
   }
 
-  Future<void> _checkAgentStatus() async {
+  Future<void> _readAgentStatus() async {
     try {
-      if (device.isConnected) {
-        final status = await device.readStatus();
-        if (status.isConnected && status.isConfigured && deviceOnlineState != DeviceOnlineState.success) {
-          deviceOnlineState = DeviceOnlineState.agentConnected;
-        }
+      final status = await device.readStatus();
+      if (status.isConnected && status.isConfigured && deviceOnlineState != DeviceOnlineState.success) {
+        deviceOnlineState = DeviceOnlineState.agentConnected; // timer still allowed to run for the online check
       }
     } on Exception catch (e) {
       debugPrint(e.toString());
