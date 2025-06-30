@@ -14,7 +14,10 @@ dependencies:
   permission_handler: ^12.0.0+1
   viam_sdk: ^0.6.4
   collection: ^1.18.0
-  viam_flutter_provisioning: ^0.0.9
+  viam_flutter_provisioning:
+    git:
+      url: https://github.com/viamrobotics/viam_flutter_provisioning.git
+      ref: kevin/read-errors-change
   flutter_platform_widgets: ^8.0.0
   provider: ^6.1.5
   

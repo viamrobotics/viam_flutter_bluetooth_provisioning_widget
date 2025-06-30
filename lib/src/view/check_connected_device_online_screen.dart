@@ -104,6 +104,13 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
     );
   }
 
+  Widget _buildErrorConnectingState(BuildContext context) {
+    // TODO: button and "X" icon, goes back to network selection
+    return Center(
+      child: Text('Error connecting to device'),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<CheckConnectedDeviceOnlineScreenViewModel>(
@@ -114,6 +121,7 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
             DeviceOnlineState.checking => _buildCheckingState(context),
             DeviceOnlineState.agentConnected => _buildAgentConnectedState(context),
             DeviceOnlineState.success => _buildSuccessState(context),
+            DeviceOnlineState.errorConnecting => _buildErrorConnectingState(context),
           },
         );
       },

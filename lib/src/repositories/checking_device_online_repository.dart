@@ -18,6 +18,8 @@ class CheckingDeviceOnlineRepository {
   DeviceOnlineState _deviceOnlineState = DeviceOnlineState.checking;
   Timer? _onlineTimer;
 
+  List<String>? _startingErrors;
+
   set deviceOnlineState(DeviceOnlineState state) {
     if (_deviceOnlineState != state) {
       _deviceOnlineState = state;
@@ -30,15 +32,31 @@ class CheckingDeviceOnlineRepository {
     _stateController.close();
   }
 
-  void startChecking() {
+  Future<void> startChecking() async {
     _onlineTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
       if (_deviceOnlineState == DeviceOnlineState.success) {
         timer.cancel();
         return;
       }
+      _checkError();
       _checkOnline();
       _checkAgentStatus();
     });
+  }
+
+  Future<void> _checkError() async {
+    _startingErrors ??= await device.readErrors();
+    final errors = await device.readErrors();
+    if (errors.length > _startingErrors!.length) {
+      // a new error was appended to the error list, let's check if it's a new error
+      debugPrint('Error connecting machine: ${errors.last}');
+      _onlineTimer?.cancel();
+      deviceOnlineState = DeviceOnlineState.errorConnecting;
+      // fire and forget disconnect device
+      if (device.isConnected) {
+        device.disconnect();
+      }
+    }
   }
 
   Future<void> _checkAgentStatus() async {
@@ -54,7 +72,7 @@ class CheckingDeviceOnlineRepository {
     }
   }
 
-  void _checkOnline() async {
+  Future<void> _checkOnline() async {
     final refreshedRobot = await viam.appClient.getRobot(robot.id);
     final seconds = refreshedRobot.lastAccess.seconds.toInt();
     final actual = DateTime.now().microsecondsSinceEpoch / Duration.microsecondsPerSecond;

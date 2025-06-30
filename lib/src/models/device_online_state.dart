@@ -4,4 +4,5 @@ enum DeviceOnlineState {
   checking,
   agentConnected,
   success,
+  errorConnecting,
 }
