@@ -62,7 +62,6 @@ class CheckingDeviceOnlineRepository {
       }
 
       final newErrors = await device.readErrors();
-      debugPrint('newErrors: $newErrors');
       if (newErrors.length > _startingErrors!.length) {
         // a new error was appended to the error list
         _onlineTimer?.cancel();
