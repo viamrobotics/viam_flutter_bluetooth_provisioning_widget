@@ -5,7 +5,11 @@ class CheckingDeviceOnlineRepository {
   final Robot robot;
   final BluetoothDevice device;
 
-  CheckingDeviceOnlineRepository({required this.viam, required this.robot, required this.device});
+  CheckingDeviceOnlineRepository({
+    required this.viam,
+    required this.robot,
+    required this.device,
+  });
 
   Stream<DeviceOnlineState> get deviceOnlineStateStream => _stateController.stream;
   DeviceOnlineState get deviceOnlineState => _deviceOnlineState;
@@ -29,7 +33,7 @@ class CheckingDeviceOnlineRepository {
     _stateController.close();
   }
 
-  Future<void> startChecking() async {
+  void startChecking() {
     _onlineTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
       if (_deviceOnlineState == DeviceOnlineState.success) {
         timer.cancel();
