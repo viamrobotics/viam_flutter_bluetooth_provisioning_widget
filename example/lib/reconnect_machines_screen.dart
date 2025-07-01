@@ -48,13 +48,11 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
     });
     try {
       _viam = await Viam.withApiKey(Consts.apiKeyId, Consts.apiKey);
-      final locations =
-          await _viam!.appClient.listLocations(Consts.organizationId);
+      final locations = await _viam!.appClient.listLocations(Consts.organizationId);
       final newList = <_ListRobot>[];
       for (final location in locations) {
         final locationRobots = await _viam!.appClient.listRobots(location.id);
-        newList.addAll(locationRobots
-            .map((e) => _ListRobot(robot: e, locationName: location.name)));
+        newList.addAll(locationRobots.map((e) => _ListRobot(robot: e, locationName: location.name)));
       }
       for (final robot in newList) {
         _robotStatuses[robot.robot.id] = robot.robot.status;
@@ -86,8 +84,7 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
           final reloadRobot = await _viam!.appClient.getRobot(robot.robot.id);
           final newStatus = reloadRobot.status;
           if (newStatus != _robotStatuses[reloadRobot.id]) {
-            debugPrint(
-                'New status for robot ${reloadRobot.name} from ${_robotStatuses[reloadRobot.id]} to $newStatus');
+            debugPrint('New status for robot ${reloadRobot.name} from ${_robotStatuses[reloadRobot.id]} to $newStatus');
             setState(() {
               _robotStatuses[reloadRobot.id] = newStatus;
             });
@@ -103,10 +100,8 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
     }
   }
 
-  void _goToBluetoothProvisioningFlow(
-      BuildContext context, Viam viam, Robot robot) async {
-    final mainPart = (await viam.appClient.listRobotParts(robot.id))
-        .firstWhere((element) => element.mainPart);
+  void _goToBluetoothProvisioningFlow(BuildContext context, Viam viam, Robot robot) async {
+    final mainPart = (await viam.appClient.listRobotParts(robot.id)).firstWhere((element) => element.mainPart);
     if (context.mounted) {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => ChangeNotifierProvider(
@@ -114,6 +109,7 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
             viam: viam,
             robot: robot,
             mainRobotPart: mainPart,
+            psk: Consts.psk,
           ),
           builder: (context, child) => BluetoothProvisioningFlow(onSuccess: () {
             Navigator.of(context).pop();
@@ -130,9 +126,7 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
         title: const Text('Reconnect Machines'),
       ),
       body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator.adaptive(
-                  backgroundColor: Colors.black))
+          ? const Center(child: CircularProgressIndicator.adaptive(backgroundColor: Colors.black))
           : ListView.builder(
               padding: const EdgeInsets.all(8),
               itemCount: _robots.length,
@@ -140,8 +134,7 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
                 title: Text(_robots[index].robot.name),
                 subtitle: Text('location: ${_robots[index].locationName}'),
                 trailing: _robotStatuses[_robots[index].robot.id]?.statusIcon,
-                onTap: () => _goToBluetoothProvisioningFlow(
-                    context, _viam!, _robots[index].robot),
+                onTap: () => _goToBluetoothProvisioningFlow(context, _viam!, _robots[index].robot),
               ),
             ),
     );
@@ -151,14 +144,12 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
 extension _RobotStatusCalculation on Robot {
   _RobotStatus get status {
     final seconds = lastAccess.seconds.toInt();
-    final actual =
-        DateTime.now().microsecondsSinceEpoch / Duration.microsecondsPerSecond;
+    final actual = DateTime.now().microsecondsSinceEpoch / Duration.microsecondsPerSecond;
     if ((actual - seconds) < 60) {
       return _RobotStatus.online;
     }
 
-    if (!lastAccess.hasNanos() && !lastAccess.hasSeconds())
-      return _RobotStatus.awaitingSetup;
+    if (!lastAccess.hasNanos() && !lastAccess.hasSeconds()) return _RobotStatus.awaitingSetup;
     if ((actual - seconds) > 60) return _RobotStatus.offline;
     return _RobotStatus.loading;
   }
