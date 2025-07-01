@@ -5,20 +5,17 @@ class CheckingDeviceOnlineRepository {
   final Robot robot;
   final BluetoothDevice device;
 
-  CheckingDeviceOnlineRepository({
-    required this.viam,
-    required this.robot,
-    required this.device,
-  });
+  CheckingDeviceOnlineRepository({required this.viam, required this.robot, required this.device});
 
   Stream<DeviceOnlineState> get deviceOnlineStateStream => _stateController.stream;
   DeviceOnlineState get deviceOnlineState => _deviceOnlineState;
+  String? get errorMessage => _errorMessage;
 
   final StreamController<DeviceOnlineState> _stateController = StreamController<DeviceOnlineState>.broadcast();
   DeviceOnlineState _deviceOnlineState = DeviceOnlineState.checking;
   Timer? _onlineTimer;
-
   List<String>? _startingErrors;
+  String? _errorMessage;
 
   set deviceOnlineState(DeviceOnlineState state) {
     if (_deviceOnlineState != state) {
@@ -54,21 +51,23 @@ class CheckingDeviceOnlineRepository {
   }
 
   Future<void> _readAgentErrors() async {
-    if (_startingErrors == null) {
-      _startingErrors = await device.readErrors();
-      return; // nothing to compare, return
-    }
-
-    final newErrors = await device.readErrors();
-    if (newErrors.length > _startingErrors!.length) {
-      // a new error was appended to the error list, let's check if it's a new error
-      debugPrint('Error connecting machine: ${newErrors.last}');
-      _onlineTimer?.cancel();
-      deviceOnlineState = DeviceOnlineState.errorConnecting;
-      // fire and forget disconnect device
-      if (device.isConnected) {
-        device.disconnect();
+    try {
+      if (_startingErrors == null) {
+        _startingErrors = await device.readErrors();
+        return; // nothing to compare, return
       }
+
+      final newErrors = await device.readErrors();
+      debugPrint('newErrors: $newErrors');
+      if (newErrors.length > _startingErrors!.length) {
+        // a new error was appended to the error list
+        _onlineTimer?.cancel();
+        deviceOnlineState = DeviceOnlineState.errorConnecting;
+        _errorMessage = newErrors.last.capitalize();
+        debugPrint('Error connecting machine: $_errorMessage');
+      }
+    } catch (e) {
+      debugPrint('Error reading agent errors: $e');
     }
   }
 
@@ -79,7 +78,7 @@ class CheckingDeviceOnlineRepository {
         deviceOnlineState = DeviceOnlineState.agentConnected; // timer still allowed to run for the online check
       }
     } on Exception catch (e) {
-      debugPrint(e.toString());
+      debugPrint('Error reading agent status: $e');
     }
   }
 

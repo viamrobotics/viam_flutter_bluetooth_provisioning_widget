@@ -105,9 +105,32 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
   }
 
   Widget _buildErrorConnectingState(BuildContext context) {
-    // TODO: button and "X" icon, goes back to network selection
-    return Center(
-      child: Text('Error connecting to device'),
+    final viewModel = Provider.of<CheckConnectedDeviceOnlineScreenViewModel>(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Spacer(),
+          Icon(Icons.error, color: Colors.red, size: 40),
+          SizedBox(height: 24),
+          Text('Error during setup', style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center),
+          SizedBox(height: 8),
+          Text(
+            viewModel.errorMessage ?? 'There was an error getting your machine online. Please try again.',
+            style: Theme.of(context).textTheme.bodyLarge,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+          ),
+          Spacer(),
+          FilledButton(
+            onPressed: viewModel.handleError,
+            child: Text('Try again'),
+          ),
+          SizedBox(height: 16),
+        ],
+      ),
     );
   }
 
