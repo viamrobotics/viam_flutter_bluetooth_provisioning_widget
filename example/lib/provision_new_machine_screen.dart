@@ -29,7 +29,7 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
       setState(() {
         _robotName = robotName;
       });
-      debugPrint('robotName: $robotName, locationName: $location.name}');
+      debugPrint('robotName: $robotName, locationName: ${location.name}');
       final robotId = await viam.appClient.newMachine(robotName, location.id);
       final robot = await viam.appClient.getRobot(robotId);
       final mainPart = (await viam.appClient.listRobotParts(robotId)).firstWhere((element) => element.mainPart);
