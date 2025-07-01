@@ -25,9 +25,10 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
       await _connectedDevice!.writeRobotPartConfig(
         partId: _mainRobotPart.id,
         secret: _mainRobotPart.secret,
+        psk: 'canyonrunner',
       );
     }
-    await _connectedDevice!.writeNetworkConfig(ssid: ssid, pw: psk);
+    await _connectedDevice!.writeNetworkConfig(ssid: ssid, pw: psk, psk: 'canyonrunner');
     await _connectedDevice!.exitProvisioning();
   }
 }
