@@ -63,7 +63,7 @@ class CheckingDeviceOnlineRepository {
         // a new error was appended to the error list
         _onlineTimer?.cancel();
         deviceOnlineState = DeviceOnlineState.errorConnecting;
-        _errorMessage = newErrors.last.capitalize();
+        _errorMessage = newErrors.last;
         debugPrint('Error connecting machine: $_errorMessage');
       }
     } catch (e) {
