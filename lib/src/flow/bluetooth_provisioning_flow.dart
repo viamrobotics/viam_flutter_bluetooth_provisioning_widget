@@ -43,7 +43,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
       setState(() {
         _isLoading = true;
       });
-      await viewModel.writeConfig(ssid: ssid, psk: psk);
+      await viewModel.writeConfig(ssid: ssid, password: psk);
       // you can safely disconnect now, but then you can't read the agent status from the connected device while we're waiting to get online
       _onNextPage();
     } catch (e) {
