@@ -98,6 +98,9 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                         ChangeNotifierProvider.value(
                           value: CheckConnectedDeviceOnlineScreenViewModel(
                             handleSuccess: widget.onSuccess,
+                            handleError: () {
+                              _onPreviousPage(); // back to network selection
+                            },
                             checkingDeviceOnlineRepository: CheckingDeviceOnlineRepository(
                               device: viewModel.connectedDevice!,
                               viam: viewModel.viam,

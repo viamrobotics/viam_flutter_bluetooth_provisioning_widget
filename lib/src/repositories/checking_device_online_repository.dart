@@ -13,10 +13,13 @@ class CheckingDeviceOnlineRepository {
 
   Stream<DeviceOnlineState> get deviceOnlineStateStream => _stateController.stream;
   DeviceOnlineState get deviceOnlineState => _deviceOnlineState;
+  String? get errorMessage => _errorMessage;
 
   final StreamController<DeviceOnlineState> _stateController = StreamController<DeviceOnlineState>.broadcast();
   DeviceOnlineState _deviceOnlineState = DeviceOnlineState.checking;
   Timer? _onlineTimer;
+  List<String>? _startingErrors;
+  String? _errorMessage;
 
   set deviceOnlineState(DeviceOnlineState state) {
     if (_deviceOnlineState != state) {
@@ -41,20 +44,48 @@ class CheckingDeviceOnlineRepository {
     });
   }
 
+  /// We want to read these sequentially for now, some errors observed trying to read ble characteristics in parallel
   Future<void> _checkAgentStatus() async {
+    if (!device.isConnected) {
+      return;
+    }
+
+    await _readAgentErrors();
+    await _readAgentStatus();
+  }
+
+  Future<void> _readAgentErrors() async {
     try {
-      if (device.isConnected) {
-        final status = await device.readStatus();
-        if (status.isConnected && status.isConfigured && deviceOnlineState != DeviceOnlineState.success) {
-          deviceOnlineState = DeviceOnlineState.agentConnected;
-        }
+      if (_startingErrors == null) {
+        _startingErrors = await device.readErrors();
+        return; // nothing to compare, return
       }
-    } on Exception catch (e) {
-      debugPrint(e.toString());
+
+      final newErrors = await device.readErrors();
+      if (newErrors.length > _startingErrors!.length) {
+        // a new error was appended to the error list
+        _onlineTimer?.cancel();
+        deviceOnlineState = DeviceOnlineState.errorConnecting;
+        _errorMessage = newErrors.last;
+        debugPrint('Error connecting machine: $_errorMessage');
+      }
+    } catch (e) {
+      debugPrint('Error reading agent errors: $e');
     }
   }
 
-  void _checkOnline() async {
+  Future<void> _readAgentStatus() async {
+    try {
+      final status = await device.readStatus();
+      if (status.isConnected && status.isConfigured && deviceOnlineState != DeviceOnlineState.success) {
+        deviceOnlineState = DeviceOnlineState.agentConnected; // timer still allowed to run for the online check
+      }
+    } on Exception catch (e) {
+      debugPrint('Error reading agent status: $e');
+    }
+  }
+
+  Future<void> _checkOnline() async {
     final refreshedRobot = await viam.appClient.getRobot(robot.id);
     final seconds = refreshedRobot.lastAccess.seconds.toInt();
     final actual = DateTime.now().microsecondsSinceEpoch / Duration.microsecondsPerSecond;

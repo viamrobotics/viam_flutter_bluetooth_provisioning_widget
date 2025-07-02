@@ -2,10 +2,10 @@ part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
   final VoidCallback handleSuccess;
-  final CheckingDeviceOnlineRepository _checkingDeviceOnlineRepository;
+  final VoidCallback handleError;
   final Robot robot;
+  String? get errorMessage => _checkingDeviceOnlineRepository.errorMessage;
 
-  DeviceOnlineState _deviceOnlineState;
   DeviceOnlineState get deviceOnlineState => _deviceOnlineState;
   set deviceOnlineState(DeviceOnlineState state) {
     if (_deviceOnlineState != state) {
@@ -14,10 +14,13 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
     }
   }
 
+  final CheckingDeviceOnlineRepository _checkingDeviceOnlineRepository;
+  DeviceOnlineState _deviceOnlineState;
   StreamSubscription<DeviceOnlineState>? _deviceOnlineSubscription;
 
   CheckConnectedDeviceOnlineScreenViewModel({
     required this.handleSuccess,
+    required this.handleError,
     required this.robot,
     required CheckingDeviceOnlineRepository checkingDeviceOnlineRepository,
   })  : _checkingDeviceOnlineRepository = checkingDeviceOnlineRepository,
