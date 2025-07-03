@@ -17,10 +17,12 @@ class ProvisionNewRobotScreen extends StatefulWidget {
 class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
   String? _robotName;
   bool _isLoading = false;
+  String? _errorString;
 
   Future<void> _createRobot() async {
     setState(() {
       _isLoading = true;
+      _errorString = null;
     });
     try {
       final viam = await Viam.withApiKey(Consts.apiKeyId, Consts.apiKey);
@@ -38,7 +40,10 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
         _goToBluetoothProvisioningFlow(context, viam, robot, mainPart);
       }
     } catch (e) {
-      debugPrint('Error initializing Viam: $e');
+      debugPrint('Error creating robot: ${e.toString()}');
+      setState(() {
+        _errorString = e.toString();
+      });
     } finally {
       setState(() {
         _isLoading = false;
@@ -69,7 +74,8 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
       appBar: AppBar(
         title: const Text('Bluetooth Provisioning'),
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -85,6 +91,8 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
                     )
                   : const Text('Start Flow'),
             ),
+            if (_errorString != null) const SizedBox(height: 16),
+            if (_errorString != null) Text(_errorString!),
           ],
         ),
       ),
