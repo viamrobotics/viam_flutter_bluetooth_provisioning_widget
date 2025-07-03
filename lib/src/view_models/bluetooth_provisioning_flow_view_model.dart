@@ -4,6 +4,7 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
   BluetoothProvisioningFlowViewModel({
     required this.viam,
     required this.robot,
+    required this.isNewMachine,
     required mainRobotPart,
     required String psk,
   })  : _mainRobotPart = mainRobotPart,
@@ -11,6 +12,7 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
 
   final Viam viam;
   final Robot robot;
+  final bool isNewMachine;
   final RobotPart _mainRobotPart;
   final String _psk;
 

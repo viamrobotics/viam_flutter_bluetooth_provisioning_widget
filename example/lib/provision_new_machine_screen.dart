@@ -24,13 +24,13 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
     });
     try {
       final viam = await Viam.withApiKey(Consts.apiKeyId, Consts.apiKey);
-      final location = await viam.appClient.createLocation(Consts.organizationId, 'test-location-${Random().nextInt(1000)}');
+      // final location = await viam.appClient.createLocation(Consts.organizationId, 'test-location-${Random().nextInt(1000)}');
       final String robotName = "tester-${Random().nextInt(1000)}";
       setState(() {
         _robotName = robotName;
       });
-      debugPrint('robotName: $robotName, locationName: ${location.name}');
-      final robotId = await viam.appClient.newMachine(robotName, location.id);
+      debugPrint('robotName: $robotName, locationName: Jimmy Butler');
+      final robotId = await viam.appClient.newMachine(robotName, 'wquztbf4bx');
       final robot = await viam.appClient.getRobot(robotId);
       final mainPart = (await viam.appClient.listRobotParts(robotId)).firstWhere((element) => element.mainPart);
       await Future.delayed(const Duration(seconds: 3)); // delay is intentional, so you can see the robot name
@@ -38,7 +38,7 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
         _goToBluetoothProvisioningFlow(context, viam, robot, mainPart);
       }
     } catch (e) {
-      debugPrint('Error initializing Viam: $e');
+      debugPrint('Error setting Viam: $e');
     } finally {
       setState(() {
         _isLoading = false;
@@ -53,10 +53,13 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
         create: (context) => BluetoothProvisioningFlowViewModel(
           viam: viam,
           robot: robot,
+          isNewMachine: true,
           mainRobotPart: mainPart,
           psk: Consts.psk,
         ),
         builder: (context, child) => BluetoothProvisioningFlow(onSuccess: () {
+          Navigator.of(context).pop();
+        }, existingMachineExit: () {
           Navigator.of(context).pop();
         }),
       ),

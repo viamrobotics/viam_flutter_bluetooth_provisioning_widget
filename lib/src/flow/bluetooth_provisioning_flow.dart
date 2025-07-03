@@ -1,9 +1,10 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class BluetoothProvisioningFlow extends StatefulWidget {
-  const BluetoothProvisioningFlow({super.key, required this.onSuccess});
+  const BluetoothProvisioningFlow({super.key, required this.onSuccess, required this.existingMachineExit});
 
   final VoidCallback onSuccess;
+  final VoidCallback existingMachineExit;
 
   @override
   State<BluetoothProvisioningFlow> createState() => _BluetoothProvisioningFlowState();
@@ -31,9 +32,20 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
     }
   }
 
-  void _onDeviceConnected(BluetoothDevice device) {
+  void _onDeviceConnected(BluetoothDevice device) async {
     final viewModel = Provider.of<BluetoothProvisioningFlowViewModel>(context, listen: false);
     viewModel.connectedDevice = device;
+    if (viewModel.isNewMachine) {
+      try {
+        final status = await device.readStatus();
+        if (status.isConfigured && mounted) {
+          _avoidOverwritingExistingMachineDialog(context);
+          return;
+        }
+      } catch (e) {
+        debugPrint('Error reading device status: $e');
+      }
+    }
     _onNextPage();
   }
 
@@ -55,6 +67,30 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
         _isLoading = false;
       });
     }
+  }
+
+  Future<void> _avoidOverwritingExistingMachineDialog(BuildContext context) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Existing Machine'),
+          content: const Text(
+            'This machine has credentials set.\n\nYou can find and re-connect this machine in your list of machines if you\'re the owner.',
+          ),
+          actions: <Widget>[
+            OutlinedButton(
+              child: const Text('Exit'),
+              onPressed: () {
+                Navigator.pop(context);
+                widget.existingMachineExit();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
