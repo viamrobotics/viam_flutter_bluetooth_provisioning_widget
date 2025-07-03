@@ -116,6 +116,8 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
             Navigator.of(context).pop();
           }, existingMachineExit: () {
             Navigator.of(context).pop();
+          }, nonexistentMachineExit: () {
+            Navigator.of(context).pop();
           }),
         ),
       ));

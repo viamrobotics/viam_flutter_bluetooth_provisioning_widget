@@ -1,10 +1,16 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class BluetoothProvisioningFlow extends StatefulWidget {
-  const BluetoothProvisioningFlow({super.key, required this.onSuccess, required this.existingMachineExit});
+  const BluetoothProvisioningFlow({
+    super.key,
+    required this.onSuccess,
+    required this.existingMachineExit,
+    required this.nonexistentMachineExit,
+  });
 
   final VoidCallback onSuccess;
   final VoidCallback existingMachineExit;
+  final VoidCallback nonexistentMachineExit;
 
   @override
   State<BluetoothProvisioningFlow> createState() => _BluetoothProvisioningFlowState();
@@ -35,16 +41,17 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
   void _onDeviceConnected(BluetoothDevice device) async {
     final viewModel = Provider.of<BluetoothProvisioningFlowViewModel>(context, listen: false);
     viewModel.connectedDevice = device;
-    if (viewModel.isNewMachine) {
-      try {
-        final status = await device.readStatus();
-        if (status.isConfigured && mounted) {
-          _avoidOverwritingExistingMachineDialog(context);
-          return;
-        }
-      } catch (e) {
-        debugPrint('Error reading device status: $e');
+    try {
+      final status = await device.readStatus();
+      if (viewModel.isNewMachine && status.isConfigured && mounted) {
+        _avoidOverwritingExistingMachineDialog(context);
+        return;
+      } else if (!viewModel.isNewMachine && !status.isConfigured && mounted) {
+        _reconnectingNonexistentMachineDialog(context);
+        return;
       }
+    } catch (e) {
+      debugPrint('Error reading device status: $e');
     }
     _onNextPage();
   }
@@ -85,6 +92,30 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
               onPressed: () {
                 Navigator.pop(context);
                 widget.existingMachineExit();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _reconnectingNonexistentMachineDialog(BuildContext context) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Machine Not Found'),
+          content: const Text(
+            'This machine does not have credentials set.\n\nIt can be setup as a new machine, but not re-connected.',
+          ),
+          actions: <Widget>[
+            OutlinedButton(
+              child: const Text('Exit'),
+              onPressed: () {
+                Navigator.pop(context);
+                widget.nonexistentMachineExit();
               },
             ),
           ],
