@@ -12,7 +12,7 @@ class BluetoothProvisioningFlow extends StatefulWidget {
   final VoidCallback onSuccess;
 
   /// agent has indicated the machine is online and has machine credentials
-  /// though it's still not online in app.viam.com
+  /// though it may not be online in app.viam.com yet
   final VoidCallback handleAgentConfigured;
 
   final VoidCallback existingMachineExit;

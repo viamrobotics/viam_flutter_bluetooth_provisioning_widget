@@ -4,9 +4,9 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
   final VoidCallback handleSuccess;
 
   /// agent has indicated the machine is online and has machine credentials
-  /// though it's still not online in app.viam.com
-  final VoidCallback handleAgentConfigured
-  
+  /// though it may not be online in app.viam.com yet
+  final VoidCallback handleAgentConfigured;
+
   final VoidCallback handleError;
   final Robot robot;
   String? get errorMessage => _checkingDeviceOnlineRepository.errorMessage;
