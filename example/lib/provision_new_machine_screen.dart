@@ -58,10 +58,15 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
         create: (context) => BluetoothProvisioningFlowViewModel(
           viam: viam,
           robot: robot,
+          isNewMachine: true,
           mainRobotPart: mainPart,
           psk: Consts.psk,
         ),
         builder: (context, child) => BluetoothProvisioningFlow(onSuccess: () {
+          Navigator.of(context).pop();
+        }, existingMachineExit: () {
+          Navigator.of(context).pop();
+        }, nonexistentMachineExit: () {
           Navigator.of(context).pop();
         }),
       ),

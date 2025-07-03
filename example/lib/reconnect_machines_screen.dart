@@ -108,10 +108,15 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
           create: (context) => BluetoothProvisioningFlowViewModel(
             viam: viam,
             robot: robot,
+            isNewMachine: false,
             mainRobotPart: mainPart,
             psk: Consts.psk,
           ),
           builder: (context, child) => BluetoothProvisioningFlow(onSuccess: () {
+            Navigator.of(context).pop();
+          }, existingMachineExit: () {
+            Navigator.of(context).pop();
+          }, nonexistentMachineExit: () {
             Navigator.of(context).pop();
           }),
         ),
