@@ -43,7 +43,6 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
   }
 
   Widget _buildAgentConnectedState(BuildContext context) {
-    // Currently same as checking, can customize later if needed
     final viewModel = Provider.of<CheckConnectedDeviceOnlineScreenViewModel>(context);
     return Center(
       child: Column(
@@ -64,7 +63,7 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
           ),
           Spacer(),
           FilledButton(
-            onPressed: viewModel.handleSuccess,
+            onPressed: viewModel.handleAgentConfigured,
             child: Text('Close'),
           ),
           SizedBox(height: 16),
@@ -73,7 +72,6 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
     );
   }
 
-  // Helper method for the 'success' state
   Widget _buildSuccessState(BuildContext context) {
     final viewModel = Provider.of<CheckConnectedDeviceOnlineScreenViewModel>(context);
     return Padding(

@@ -4,11 +4,17 @@ class BluetoothProvisioningFlow extends StatefulWidget {
   const BluetoothProvisioningFlow({
     super.key,
     required this.onSuccess,
+    required this.handleAgentConfigured,
     required this.existingMachineExit,
     required this.nonexistentMachineExit,
   });
 
   final VoidCallback onSuccess;
+
+  /// agent has indicated the machine is online and has machine credentials
+  /// though it's still not online in app.viam.com
+  final VoidCallback handleAgentConfigured;
+
   final VoidCallback existingMachineExit;
   final VoidCallback nonexistentMachineExit;
 
@@ -165,6 +171,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                         ChangeNotifierProvider.value(
                           value: CheckConnectedDeviceOnlineScreenViewModel(
                             handleSuccess: widget.onSuccess,
+                            handleAgentConfigured: widget.handleAgentConfigured,
                             handleError: () {
                               _onPreviousPage(); // back to network selection
                             },
