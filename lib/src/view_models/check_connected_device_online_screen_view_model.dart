@@ -2,6 +2,11 @@ part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
   final VoidCallback handleSuccess;
+
+  /// agent has indicated the machine is online and has machine credentials
+  /// though it may not be online in app.viam.com yet
+  final VoidCallback handleAgentConfigured;
+
   final VoidCallback handleError;
   final Robot robot;
   String? get errorMessage => _checkingDeviceOnlineRepository.errorMessage;
@@ -20,6 +25,7 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
 
   CheckConnectedDeviceOnlineScreenViewModel({
     required this.handleSuccess,
+    required this.handleAgentConfigured,
     required this.handleError,
     required this.robot,
     required CheckingDeviceOnlineRepository checkingDeviceOnlineRepository,

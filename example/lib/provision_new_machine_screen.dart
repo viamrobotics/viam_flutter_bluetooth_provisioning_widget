@@ -64,6 +64,8 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
         ),
         builder: (context, child) => BluetoothProvisioningFlow(onSuccess: () {
           Navigator.of(context).pop();
+        }, handleAgentConfigured: () {
+          Navigator.of(context).pop();
         }, existingMachineExit: () {
           Navigator.of(context).pop();
         }, nonexistentMachineExit: () {
