@@ -17,9 +17,6 @@ class ConnectBluetoothDeviceRepository {
   BluetoothDevice? _device;
 
   void dispose() {
-    if (_device?.isConnected ?? false) {
-      _device?.disconnect();
-    }
     _connectionStateSubscription?.cancel();
     _connectionStateSubscription = null;
     _stateController.close();
