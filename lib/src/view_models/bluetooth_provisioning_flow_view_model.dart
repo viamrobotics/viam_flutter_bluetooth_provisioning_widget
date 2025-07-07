@@ -5,24 +5,22 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
     required this.viam,
     required this.robot,
     required this.isNewMachine,
-    required ConnectedBluetoothDeviceRepository connectedBluetoothDeviceRepository,
+    required this.connectedBluetoothDeviceRepository,
     required mainRobotPart,
     required String psk,
   })  : _mainRobotPart = mainRobotPart,
-        _psk = psk,
-        _connectedBluetoothDeviceRepository = connectedBluetoothDeviceRepository;
-
+        _psk = psk;
   final Viam viam;
   final Robot robot;
   final bool isNewMachine;
+  final ConnectedBluetoothDeviceRepository connectedBluetoothDeviceRepository;
+
   final RobotPart _mainRobotPart;
   final String _psk;
-  BluetoothDevice? get connectedDevice => _connectedBluetoothDeviceRepository.connectedDevice;
-
-  final ConnectedBluetoothDeviceRepository _connectedBluetoothDeviceRepository;
+  BluetoothDevice? get connectedDevice => connectedBluetoothDeviceRepository.connectedDevice;
 
   Future<void> writeConfig({required String ssid, required String? password}) async {
-    await _connectedBluetoothDeviceRepository.writeConfig(
+    await connectedBluetoothDeviceRepository.writeConfig(
       ssid: ssid,
       password: password,
       mainRobotPart: _mainRobotPart,
