@@ -1,8 +1,12 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class BluetoothScanningScreenViewModel extends ChangeNotifier {
-  BluetoothScanningScreenViewModel({required this.onDeviceSelected, required ScanBluetoothDevicesRepository scanBluetoothDevicesRepository})
-      : _scanBluetoothDevicesRepository = scanBluetoothDevicesRepository {
+  BluetoothScanningScreenViewModel({
+    required this.onDeviceSelected,
+    required ScanBluetoothDevicesRepository scanBluetoothDevicesRepository,
+    required ConnectedBluetoothDeviceRepository connectedBluetoothDeviceRepository,
+  })  : _scanBluetoothDevicesRepository = scanBluetoothDevicesRepository,
+        _connectedBluetoothDeviceRepository = connectedBluetoothDeviceRepository {
     _devicesSubscription = _scanBluetoothDevicesRepository.devicesStream.listen((devices) {
       uniqueDevices = devices;
     });
@@ -14,6 +18,7 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
   final Function(BluetoothDevice) onDeviceSelected;
 
   final ScanBluetoothDevicesRepository _scanBluetoothDevicesRepository;
+  final ConnectedBluetoothDeviceRepository _connectedBluetoothDeviceRepository;
   List<BluetoothDevice> _uniqueDevices = [];
   List<BluetoothDevice> get uniqueDevices => _uniqueDevices;
   set uniqueDevices(List<BluetoothDevice> devices) {
@@ -52,7 +57,7 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
 
   Future<void> connect(BluetoothDevice device) async {
     isConnecting = true;
-    await device.connect();
+    await _connectedBluetoothDeviceRepository.connect(device);
     onDeviceSelected(device);
     isConnecting = false;
   }

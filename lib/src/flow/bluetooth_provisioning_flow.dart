@@ -46,7 +46,6 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
 
   void _onDeviceConnected(BluetoothDevice device) async {
     final viewModel = Provider.of<BluetoothProvisioningFlowViewModel>(context, listen: false);
-    viewModel.connectedDevice = device;
     try {
       final status = await device.readStatus();
       if (viewModel.isNewMachine && status.isConfigured && mounted) {
@@ -156,6 +155,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                         value: BluetoothScanningScreenViewModel(
                           onDeviceSelected: _onDeviceConnected,
                           scanBluetoothDevicesRepository: ScanBluetoothDevicesRepository(),
+                          connectedBluetoothDeviceRepository: context.read<ConnectedBluetoothDeviceRepository>(),
                         ),
                         child: BluetoothScanningScreen(),
                       ),
@@ -163,7 +163,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                         ChangeNotifierProvider.value(
                           value: ConnectedBluetoothDeviceScreenViewModel(
                             handleWifiCredentials: _onWifiCredentials,
-                            connectedDevice: viewModel.connectedDevice!,
+                            connectedBluetoothDeviceRepository: context.read<ConnectedBluetoothDeviceRepository>(),
                           ),
                           child: ConnectedBluetoothDeviceScreen(),
                         ),

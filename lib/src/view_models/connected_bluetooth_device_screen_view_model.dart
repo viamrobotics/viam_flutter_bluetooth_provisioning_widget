@@ -3,8 +3,6 @@ part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 class ConnectedBluetoothDeviceScreenViewModel extends ChangeNotifier {
   final void Function(String ssid, String? psk) handleWifiCredentials;
 
-  final BluetoothDevice connectedDevice;
-
   List<WifiNetwork> _wifiNetworks = [];
   List<WifiNetwork> get wifiNetworks => _wifiNetworks;
   set wifiNetworks(List<WifiNetwork> networks) {
@@ -19,14 +17,18 @@ class ConnectedBluetoothDeviceScreenViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  ConnectedBluetoothDeviceScreenViewModel({required this.handleWifiCredentials, required this.connectedDevice});
+  final ConnectedBluetoothDeviceRepository _connectedBluetoothDeviceRepository;
+
+  ConnectedBluetoothDeviceScreenViewModel({
+    required this.handleWifiCredentials,
+    required ConnectedBluetoothDeviceRepository connectedBluetoothDeviceRepository,
+  }) : _connectedBluetoothDeviceRepository = connectedBluetoothDeviceRepository;
 
   Future<void> readNetworkList() async {
-    this.wifiNetworks.clear();
+    wifiNetworks.clear();
     isLoadingNetworks = true;
     await Future.delayed(const Duration(milliseconds: 500)); // delay to see "scanning" ui
-    final wifiNetworks = await connectedDevice.readNetworkList();
-    this.wifiNetworks = wifiNetworks.sorted((a, b) => b.signalStrength.compareTo(a.signalStrength));
+    wifiNetworks = await _connectedBluetoothDeviceRepository.readNetworkList();
     isLoadingNetworks = false;
   }
 }

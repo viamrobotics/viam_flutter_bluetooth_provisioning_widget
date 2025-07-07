@@ -111,6 +111,7 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
             isNewMachine: false,
             mainRobotPart: mainPart,
             psk: Consts.psk,
+            connectedBluetoothDeviceRepository: ConnectedBluetoothDeviceRepository(),
           ),
           builder: (context, child) => BluetoothProvisioningFlow(onSuccess: () {
             Navigator.of(context).pop();

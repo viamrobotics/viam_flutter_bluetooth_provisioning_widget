@@ -5,39 +5,28 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
     required this.viam,
     required this.robot,
     required this.isNewMachine,
+    required ConnectedBluetoothDeviceRepository connectedBluetoothDeviceRepository,
     required mainRobotPart,
     required String psk,
   })  : _mainRobotPart = mainRobotPart,
-        _psk = psk;
+        _psk = psk,
+        _connectedBluetoothDeviceRepository = connectedBluetoothDeviceRepository;
 
   final Viam viam;
   final Robot robot;
   final bool isNewMachine;
   final RobotPart _mainRobotPart;
   final String _psk;
+  BluetoothDevice? get connectedDevice => _connectedBluetoothDeviceRepository.connectedDevice;
 
-  BluetoothDevice? _connectedDevice;
-  BluetoothDevice? get connectedDevice => _connectedDevice;
-  set connectedDevice(BluetoothDevice? device) {
-    _connectedDevice = device;
-    notifyListeners();
-  }
+  final ConnectedBluetoothDeviceRepository _connectedBluetoothDeviceRepository;
 
   Future<void> writeConfig({required String ssid, required String? password}) async {
-    if (_connectedDevice == null) {
-      throw Exception('No connected device');
-    }
-
-    final status = await _connectedDevice!.readStatus();
-    // don't overwrite existing machine, hotspot provisioning also does this check
-    if (!status.isConfigured) {
-      await _connectedDevice!.writeRobotPartConfig(
-        partId: _mainRobotPart.id,
-        secret: _mainRobotPart.secret,
-        psk: _psk,
-      );
-    }
-    await _connectedDevice!.writeNetworkConfig(ssid: ssid, pw: password, psk: _psk);
-    await _connectedDevice!.exitProvisioning(psk: _psk);
+    await _connectedBluetoothDeviceRepository.writeConfig(
+      ssid: ssid,
+      password: password,
+      mainRobotPart: _mainRobotPart,
+      psk: _psk,
+    );
   }
 }
