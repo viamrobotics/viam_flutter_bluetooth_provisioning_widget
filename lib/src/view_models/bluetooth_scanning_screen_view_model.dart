@@ -4,9 +4,9 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
   BluetoothScanningScreenViewModel({
     required this.onDeviceSelected,
     required ScanBluetoothDevicesRepository scanBluetoothDevicesRepository,
-    required ConnectedBluetoothDeviceRepository connectedBluetoothDeviceRepository,
+    required ConnectBluetoothDeviceRepository connectBluetoothDeviceRepository,
   })  : _scanBluetoothDevicesRepository = scanBluetoothDevicesRepository,
-        _connectedBluetoothDeviceRepository = connectedBluetoothDeviceRepository {
+        _connectBluetoothDeviceRepository = connectBluetoothDeviceRepository {
     _devicesSubscription = _scanBluetoothDevicesRepository.devicesStream.listen((devices) {
       uniqueDevices = devices;
     });
@@ -18,7 +18,7 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
   final Function(BluetoothDevice) onDeviceSelected;
 
   final ScanBluetoothDevicesRepository _scanBluetoothDevicesRepository;
-  final ConnectedBluetoothDeviceRepository _connectedBluetoothDeviceRepository;
+  final ConnectBluetoothDeviceRepository _connectBluetoothDeviceRepository;
   List<BluetoothDevice> _uniqueDevices = [];
   List<BluetoothDevice> get uniqueDevices => _uniqueDevices;
   set uniqueDevices(List<BluetoothDevice> devices) {
@@ -57,7 +57,7 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
 
   Future<void> connect(BluetoothDevice device) async {
     isConnecting = true;
-    await _connectedBluetoothDeviceRepository.connect(device);
+    await _connectBluetoothDeviceRepository.connect(device);
     onDeviceSelected(device);
     isConnecting = false;
   }

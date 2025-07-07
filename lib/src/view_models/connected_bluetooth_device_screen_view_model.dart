@@ -17,18 +17,18 @@ class ConnectedBluetoothDeviceScreenViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  final ConnectedBluetoothDeviceRepository _connectedBluetoothDeviceRepository;
+  final ConnectBluetoothDeviceRepository _connectBluetoothDeviceRepository;
 
   ConnectedBluetoothDeviceScreenViewModel({
     required this.handleWifiCredentials,
-    required ConnectedBluetoothDeviceRepository connectedBluetoothDeviceRepository,
-  }) : _connectedBluetoothDeviceRepository = connectedBluetoothDeviceRepository;
+    required ConnectBluetoothDeviceRepository connectBluetoothDeviceRepository,
+  }) : _connectBluetoothDeviceRepository = connectBluetoothDeviceRepository;
 
   Future<void> readNetworkList() async {
     wifiNetworks.clear();
     isLoadingNetworks = true;
     await Future.delayed(const Duration(milliseconds: 500)); // delay to see "scanning" ui
-    wifiNetworks = await _connectedBluetoothDeviceRepository.readNetworkList();
+    wifiNetworks = await _connectBluetoothDeviceRepository.readNetworkList();
     isLoadingNetworks = false;
   }
 }

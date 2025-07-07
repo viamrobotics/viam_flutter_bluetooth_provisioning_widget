@@ -1,7 +1,7 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
-class ConnectedBluetoothDeviceRepository {
-  BluetoothDevice? get connectedDevice => _connectedDevice;
+class ConnectBluetoothDeviceRepository {
+  BluetoothDevice? get device => _device;
   Stream<BluetoothConnectionState?> get bluetoothConnectionStateStream => _stateController.stream;
   BluetoothConnectionState? get bluetoothConnectionState => _bluetoothConnectionState;
   set bluetoothConnectionState(BluetoothConnectionState? state) {
@@ -14,11 +14,11 @@ class ConnectedBluetoothDeviceRepository {
   final StreamController<BluetoothConnectionState?> _stateController = StreamController<BluetoothConnectionState>.broadcast();
   BluetoothConnectionState? _bluetoothConnectionState;
   StreamSubscription<BluetoothConnectionState>? _connectionStateSubscription;
-  BluetoothDevice? _connectedDevice;
+  BluetoothDevice? _device;
 
   void dispose() {
-    if (_connectedDevice?.isConnected ?? false) {
-      _connectedDevice?.disconnect();
+    if (_device?.isConnected ?? false) {
+      _device?.disconnect();
     }
     _connectionStateSubscription?.cancel();
     _connectionStateSubscription = null;
@@ -40,29 +40,29 @@ class ConnectedBluetoothDeviceRepository {
     required RobotPart mainRobotPart,
     required String psk,
   }) async {
-    if (_connectedDevice == null) {
+    if (_device == null || _device?.isConnected == false) {
       throw Exception('No connected device');
     }
 
-    final status = await _connectedDevice!.readStatus();
+    final status = await _device!.readStatus();
     // don't overwrite existing machine, hotspot provisioning also does this check
     if (!status.isConfigured) {
-      await _connectedDevice!.writeRobotPartConfig(
+      await _device!.writeRobotPartConfig(
         partId: mainRobotPart.id,
         secret: mainRobotPart.secret,
         psk: psk,
       );
     }
-    await _connectedDevice!.writeNetworkConfig(ssid: ssid, pw: password, psk: psk);
-    await _connectedDevice!.exitProvisioning(psk: psk);
+    await _device!.writeNetworkConfig(ssid: ssid, pw: password, psk: psk);
+    await _device!.exitProvisioning(psk: psk);
   }
 
   Future<List<WifiNetwork>> readNetworkList() async {
-    if (_connectedDevice == null) {
+    if (_device == null || _device?.isConnected == false) {
       throw Exception('No connected device');
     }
 
-    final wifiNetworks = await _connectedDevice!.readNetworkList();
+    final wifiNetworks = await _device!.readNetworkList();
     return wifiNetworks.sorted((a, b) => b.signalStrength.compareTo(a.signalStrength));
   }
 
@@ -70,9 +70,9 @@ class ConnectedBluetoothDeviceRepository {
     _connectionStateSubscription = device.connectionState.listen((state) {
       bluetoothConnectionState = state;
       if (state == BluetoothConnectionState.disconnected) {
-        _connectedDevice = null;
+        _device = null;
       }
     });
-    _connectedDevice = device;
+    _device = device;
   }
 }

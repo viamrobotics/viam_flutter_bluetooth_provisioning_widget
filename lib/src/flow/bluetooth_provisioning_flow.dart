@@ -155,18 +155,18 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                         value: BluetoothScanningScreenViewModel(
                           onDeviceSelected: _onDeviceConnected,
                           scanBluetoothDevicesRepository: ScanBluetoothDevicesRepository(),
-                          connectedBluetoothDeviceRepository: viewModel.connectedBluetoothDeviceRepository,
+                          connectBluetoothDeviceRepository: viewModel.connectBluetoothDeviceRepository,
                         ),
                         child: BluetoothScanningScreen(),
                       ),
                       ChangeNotifierProvider.value(
                         value: ConnectedBluetoothDeviceScreenViewModel(
                           handleWifiCredentials: _onWifiCredentials,
-                          connectedBluetoothDeviceRepository: viewModel.connectedBluetoothDeviceRepository,
+                          connectBluetoothDeviceRepository: viewModel.connectBluetoothDeviceRepository,
                         ),
                         child: ConnectedBluetoothDeviceScreen(),
                       ),
-                      if (viewModel.connectedDevice != null)
+                      if (viewModel.device != null)
                         ChangeNotifierProvider.value(
                           value: CheckConnectedDeviceOnlineScreenViewModel(
                             handleSuccess: widget.onSuccess,
@@ -175,7 +175,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                               _onPreviousPage(); // back to network selection
                             },
                             checkingDeviceOnlineRepository: CheckingDeviceOnlineRepository(
-                              device: viewModel.connectedDevice!,
+                              device: viewModel.device!,
                               viam: viewModel.viam,
                               robot: viewModel.robot,
                             ),
