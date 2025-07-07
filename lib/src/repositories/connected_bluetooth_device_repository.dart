@@ -27,17 +27,11 @@ class ConnectedBluetoothDeviceRepository {
 
   Future<void> connect(BluetoothDevice device) async {
     if (device.isConnected) {
-      _connectedDevice = device;
+      _successfullyConnected(device);
       return;
     }
     await device.connect();
-    _connectionStateSubscription = device.connectionState.listen((state) {
-      bluetoothConnectionState = state;
-      if (state == BluetoothConnectionState.disconnected) {
-        _connectedDevice = null;
-      }
-    });
-    _connectedDevice = device;
+    _successfullyConnected(device);
   }
 
   Future<void> writeConfig({
@@ -70,5 +64,15 @@ class ConnectedBluetoothDeviceRepository {
 
     final wifiNetworks = await _connectedDevice!.readNetworkList();
     return wifiNetworks.sorted((a, b) => b.signalStrength.compareTo(a.signalStrength));
+  }
+
+  void _successfullyConnected(BluetoothDevice device) {
+    _connectionStateSubscription = device.connectionState.listen((state) {
+      bluetoothConnectionState = state;
+      if (state == BluetoothConnectionState.disconnected) {
+        _connectedDevice = null;
+      }
+    });
+    _connectedDevice = device;
   }
 }
