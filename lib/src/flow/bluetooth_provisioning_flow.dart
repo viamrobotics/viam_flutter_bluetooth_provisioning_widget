@@ -46,7 +46,6 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
 
   void _onDeviceConnected(BluetoothDevice device) async {
     final viewModel = Provider.of<BluetoothProvisioningFlowViewModel>(context, listen: false);
-    viewModel.connectedDevice = device;
     try {
       final status = await device.readStatus();
       if (viewModel.isNewMachine && status.isConfigured && mounted) {
@@ -156,18 +155,18 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                         value: BluetoothScanningScreenViewModel(
                           onDeviceSelected: _onDeviceConnected,
                           scanBluetoothDevicesRepository: ScanBluetoothDevicesRepository(),
+                          connectBluetoothDeviceRepository: viewModel.connectBluetoothDeviceRepository,
                         ),
                         child: BluetoothScanningScreen(),
                       ),
-                      if (viewModel.connectedDevice != null)
-                        ChangeNotifierProvider.value(
-                          value: ConnectedBluetoothDeviceScreenViewModel(
-                            handleWifiCredentials: _onWifiCredentials,
-                            connectedDevice: viewModel.connectedDevice!,
-                          ),
-                          child: ConnectedBluetoothDeviceScreen(),
+                      ChangeNotifierProvider.value(
+                        value: ConnectedBluetoothDeviceScreenViewModel(
+                          handleWifiCredentials: _onWifiCredentials,
+                          connectBluetoothDeviceRepository: viewModel.connectBluetoothDeviceRepository,
                         ),
-                      if (viewModel.connectedDevice != null)
+                        child: ConnectedBluetoothDeviceScreen(),
+                      ),
+                      if (viewModel.device != null)
                         ChangeNotifierProvider.value(
                           value: CheckConnectedDeviceOnlineScreenViewModel(
                             handleSuccess: widget.onSuccess,
@@ -176,7 +175,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                               _onPreviousPage(); // back to network selection
                             },
                             checkingDeviceOnlineRepository: CheckingDeviceOnlineRepository(
-                              device: viewModel.connectedDevice!,
+                              device: viewModel.device!,
                               viam: viewModel.viam,
                               robot: viewModel.robot,
                             ),

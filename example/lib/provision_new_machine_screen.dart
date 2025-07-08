@@ -61,6 +61,7 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
           isNewMachine: true,
           mainRobotPart: mainPart,
           psk: Consts.psk,
+          connectBluetoothDeviceRepository: ConnectBluetoothDeviceRepository(),
         ),
         builder: (context, child) => BluetoothProvisioningFlow(onSuccess: () {
           Navigator.of(context).pop();
