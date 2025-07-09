@@ -32,10 +32,13 @@ class ConnectBluetoothDeviceRepository {
   }
 
   Future<void> writeConfig({
+    required Viam viam,
+    required Robot robot,
+    required RobotPart mainRobotPart,
     required String ssid,
     required String? password,
-    required RobotPart mainRobotPart,
     required String psk,
+    required String? fragmentId,
   }) async {
     if (_device == null || _device?.isConnected == false) {
       throw Exception('No connected device');
@@ -51,6 +54,10 @@ class ConnectBluetoothDeviceRepository {
       );
     }
     await _device!.writeNetworkConfig(ssid: ssid, pw: password, psk: psk);
+    final fragmentIdToWrite = fragmentId ?? await _device!.readFragmentId();
+    if (fragmentIdToWrite.isNotEmpty) {
+      await _fragmentOverride(viam, fragmentIdToWrite, mainRobotPart, robot);
+    }
     await _device!.exitProvisioning(psk: psk);
   }
 
@@ -71,5 +78,12 @@ class ConnectBluetoothDeviceRepository {
       }
     });
     _device = device;
+  }
+
+  Future<void> _fragmentOverride(Viam viam, String fragmentId, RobotPart robotPart, Robot robot) async {
+    Map<String, dynamic> config = {
+      "fragments": [fragmentId]
+    };
+    await viam.appClient.updateRobotPart(robotPart.id, robot.name, config);
   }
 }
