@@ -59,18 +59,7 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: RichText(
-                      text: TextSpan(
-                        style: Theme.of(context).textTheme.titleLarge,
-                        children: [
-                          TextSpan(text: 'Choose your '),
-                          TextSpan(
-                            text: 'Device Name',
-                            style: const TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ],
-                      ),
-                    ),
+                    child: Text('Select your Device', style: Theme.of(context).textTheme.titleLarge),
                   ),
                   viewModel.isScanning && viewModel.uniqueDevices.isEmpty
                       ? Expanded(
