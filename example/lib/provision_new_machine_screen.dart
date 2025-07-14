@@ -87,18 +87,21 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (_robotName != null) Text('Provisioning machine named: $_robotName'),
             if (_robotName != null) const SizedBox(height: 16),
-            FilledButton(
-              onPressed: _createRobot,
-              child: _isLoading
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator.adaptive(backgroundColor: Colors.white),
-                    )
-                  : const Text('Start Flow'),
+            Center(
+              child: FilledButton(
+                onPressed: _createRobot,
+                child: _isLoading
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator.adaptive(backgroundColor: Colors.white),
+                      )
+                    : const Text('Start Flow'),
+              ),
             ),
             if (_errorString != null) const SizedBox(height: 16),
             if (_errorString != null) Text(_errorString!),
