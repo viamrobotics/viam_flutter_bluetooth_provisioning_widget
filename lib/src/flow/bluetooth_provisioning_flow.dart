@@ -18,7 +18,7 @@ class BluetoothProvisioningFlow extends StatefulWidget {
 
   final VoidCallback existingMachineExit;
   final VoidCallback nonexistentMachineExit;
-  final VoidCallback? agentMinimumExit;
+  final VoidCallback agentMinimumExit;
 
   @override
   State<BluetoothProvisioningFlow> createState() => _BluetoothProvisioningFlowState();

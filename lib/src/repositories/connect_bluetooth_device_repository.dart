@@ -80,13 +80,20 @@ class ConnectBluetoothDeviceRepository {
     _device = device;
   }
 
+  /// Version check to compare against a specified minimum version
+  /// If we can't read the version, it's also in a version below what we support
   Future<bool> isAgentVersionBelowMinimum(String minimumVersion) async {
     if (_device == null || _device?.isConnected == false) {
       throw Exception('No connected device');
     }
 
-    final agentVersion = await _device!.readAgentVersion();
-    return _isVersionLower(agentVersion, minimumVersion);
+    try {
+      final agentVersion = await _device!.readAgentVersion();
+      return _isVersionLower(agentVersion, minimumVersion);
+    } catch (e) {
+      debugPrint('Error reading agent version: $e');
+      return false;
+    }
   }
 
   bool _isVersionLower(String currentVersion, String minimumVersion) {
