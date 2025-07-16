@@ -9,12 +9,14 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
     required mainRobotPart,
     required String psk,
     required this.fragmentId,
+    this.agentMinimumVersion,
   })  : _mainRobotPart = mainRobotPart,
         _psk = psk;
   final Viam viam;
   final Robot robot;
   final bool isNewMachine;
   final ConnectBluetoothDeviceRepository connectBluetoothDeviceRepository;
+  final String? agentMinimumVersion;
 
   /// if not specified, the fragmentId read from the connected device will be used instead
   final String? fragmentId;
@@ -33,5 +35,12 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
       psk: _psk,
       fragmentId: fragmentId,
     );
+  }
+
+  Future<bool> agentVersionBelowMinimum() async {
+    if (agentMinimumVersion != null) {
+      return await connectBluetoothDeviceRepository.isAgentVersionBelowMinimum(agentMinimumVersion!);
+    }
+    return false;
   }
 }

@@ -7,6 +7,7 @@ class BluetoothProvisioningFlow extends StatefulWidget {
     required this.handleAgentConfigured,
     required this.existingMachineExit,
     required this.nonexistentMachineExit,
+    required this.agentMinimumExit,
   });
 
   final VoidCallback onSuccess;
@@ -17,6 +18,7 @@ class BluetoothProvisioningFlow extends StatefulWidget {
 
   final VoidCallback existingMachineExit;
   final VoidCallback nonexistentMachineExit;
+  final VoidCallback? agentMinimumExit;
 
   @override
   State<BluetoothProvisioningFlow> createState() => _BluetoothProvisioningFlowState();
@@ -67,6 +69,12 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
       setState(() {
         _isLoading = true;
       });
+      if (widget.agentMinimumExit != null) {
+        if (await viewModel.agentVersionBelowMinimum()) {
+          widget.agentMinimumExit!();
+          return;
+        }
+      }
       await viewModel.writeConfig(ssid: ssid, password: psk);
       // you can safely disconnect now, but then you can't read the agent status from the connected device while we're waiting to get online
       _onNextPage();
