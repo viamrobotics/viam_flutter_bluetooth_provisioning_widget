@@ -49,6 +49,12 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
   void _onDeviceConnected(BluetoothDevice device) async {
     final viewModel = Provider.of<BluetoothProvisioningFlowViewModel>(context, listen: false);
     try {
+      // agent minimum check
+      if (widget.agentMinimumExit != null && await viewModel.agentVersionBelowMinimum() && mounted) {
+        _agentMinimumVersionDialog(context, widget.agentMinimumExit!);
+        return;
+      }
+      // status check
       final status = await device.readStatus();
       if (viewModel.isNewMachine && status.isConfigured && mounted) {
         _avoidOverwritingExistingMachineDialog(context);
@@ -69,12 +75,6 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
       setState(() {
         _isLoading = true;
       });
-      if (widget.agentMinimumExit != null) {
-        if (await viewModel.agentVersionBelowMinimum()) {
-          widget.agentMinimumExit!();
-          return;
-        }
-      }
       await viewModel.writeConfig(ssid: ssid, password: psk);
       // you can safely disconnect now, but then you can't read the agent status from the connected device while we're waiting to get online
       _onNextPage();
@@ -105,6 +105,30 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
               onPressed: () {
                 Navigator.pop(context);
                 widget.existingMachineExit();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _agentMinimumVersionDialog(BuildContext context, VoidCallback exitFunction) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Machine Incompatible'),
+          content: const Text(
+            'This machine\'s version is too low to connect via Bluetooth.\n\nPlease try a different provisioning method such as hotspot.',
+          ),
+          actions: <Widget>[
+            OutlinedButton(
+              child: const Text('Exit'),
+              onPressed: () {
+                Navigator.pop(context);
+                exitFunction();
               },
             ),
           ],
