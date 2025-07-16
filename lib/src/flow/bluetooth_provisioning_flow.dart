@@ -50,8 +50,8 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
     final viewModel = Provider.of<BluetoothProvisioningFlowViewModel>(context, listen: false);
     try {
       // agent minimum check
-      if (widget.agentMinimumExit != null && await viewModel.agentVersionBelowMinimum() && mounted) {
-        _agentMinimumVersionDialog(context, widget.agentMinimumExit!);
+      if (await viewModel.agentVersionBelowMinimum() && mounted) {
+        _agentMinimumVersionDialog(context, widget.agentMinimumExit);
         return;
       }
       // status check
