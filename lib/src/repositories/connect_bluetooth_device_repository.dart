@@ -92,7 +92,7 @@ class ConnectBluetoothDeviceRepository {
       return _isVersionLower(agentVersion, minimumVersion);
     } catch (e) {
       debugPrint('Error reading agent version: $e');
-      return false;
+      return true;
     }
   }
 
