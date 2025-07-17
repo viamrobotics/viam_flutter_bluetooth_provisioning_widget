@@ -7,7 +7,7 @@ class BluetoothProvisioningFlow extends StatefulWidget {
     required this.handleAgentConfigured,
     required this.existingMachineExit,
     required this.nonexistentMachineExit,
-    required this.agentMinimumExit,
+    required this.agentMinimumVersionExit,
   });
 
   final VoidCallback onSuccess;
@@ -18,7 +18,9 @@ class BluetoothProvisioningFlow extends StatefulWidget {
 
   final VoidCallback existingMachineExit;
   final VoidCallback nonexistentMachineExit;
-  final VoidCallback agentMinimumExit;
+
+  /// called when the connected machine's agent version is lower (or we can't read it) compared to the agentMinimumVersion in the view model
+  final VoidCallback agentMinimumVersionExit;
 
   @override
   State<BluetoothProvisioningFlow> createState() => _BluetoothProvisioningFlowState();
@@ -51,7 +53,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
     try {
       // agent minimum check
       if (await viewModel.agentVersionBelowMinimum() && mounted) {
-        _agentMinimumVersionDialog(context, widget.agentMinimumExit);
+        _agentMinimumVersionDialog(context, widget.agentMinimumVersionExit);
         return;
       }
       // status check
