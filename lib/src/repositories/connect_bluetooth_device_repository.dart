@@ -80,6 +80,36 @@ class ConnectBluetoothDeviceRepository {
     _device = device;
   }
 
+  /// Version check to compare against a specified minimum version
+  /// If we can't read the version, it's also in a version below what we support
+  Future<bool> isAgentVersionBelowMinimum(String minimumVersion) async {
+    if (_device == null || _device?.isConnected == false) {
+      throw Exception('No connected device');
+    }
+
+    try {
+      final agentVersion = await _device!.readAgentVersion();
+      return _isVersionLower(agentVersion, minimumVersion);
+    } catch (e) {
+      debugPrint('Error reading agent version: $e');
+      return true;
+    }
+  }
+
+  bool _isVersionLower(String currentVersion, String minimumVersion) {
+    List<int> current = currentVersion.split('.').map(int.parse).toList();
+    List<int> minimum = minimumVersion.split('.').map(int.parse).toList();
+
+    for (int i = 0; i < minimum.length; i++) {
+      if (current[i] < minimum[i]) {
+        return true; // Current version is lower
+      } else if (current[i] > minimum[i]) {
+        return false; // Current version is higher
+      }
+    }
+    return false; // Versions are equal
+  }
+
   Future<void> _fragmentOverride(Viam viam, String fragmentId, RobotPart robotPart, Robot robot) async {
     Map<String, dynamic> config = {
       "fragments": [fragmentId]

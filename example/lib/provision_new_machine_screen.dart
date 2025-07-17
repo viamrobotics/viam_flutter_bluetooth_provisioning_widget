@@ -72,6 +72,8 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
           Navigator.of(context).pop();
         }, nonexistentMachineExit: () {
           Navigator.of(context).pop();
+        }, agentMinimumExit: () {
+          Navigator.of(context).pop();
         }),
       ),
     ));
