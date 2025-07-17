@@ -1,11 +1,10 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 import 'package:viam_flutter_bluetooth_provisioning_widget/viam_flutter_bluetooth_provisioning_widget.dart';
 
 import 'consts.dart';
+import 'utils.dart';
 
 class ProvisionNewRobotScreen extends StatefulWidget {
   const ProvisionNewRobotScreen({super.key});
@@ -26,15 +25,10 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
     });
     try {
       final viam = await Viam.withApiKey(Consts.apiKeyId, Consts.apiKey);
-      final location = await viam.appClient.createLocation(Consts.organizationId, 'test-location-${Random().nextInt(1000)}');
-      final String robotName = "tester-${Random().nextInt(1000)}";
+      final (robot, mainPart) = await Utils.createRobot(viam);
       setState(() {
-        _robotName = robotName;
+        _robotName = robot.name;
       });
-      debugPrint('robotName: $robotName, locationName: ${location.name}');
-      final robotId = await viam.appClient.newMachine(robotName, location.id);
-      final robot = await viam.appClient.getRobot(robotId);
-      final mainPart = (await viam.appClient.listRobotParts(robotId)).firstWhere((element) => element.mainPart);
       await Future.delayed(const Duration(seconds: 3)); // delay is intentional, so you can see the robot name
       if (mounted) {
         _goToBluetoothProvisioningFlow(context, viam, robot, mainPart);
