@@ -32,7 +32,7 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
             SizedBox(height: 16),
             Text(
               'Please keep this screen open until setup is complete. This should take a minute or two.',
-              maxLines: 3,
+              maxLines: null,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
@@ -59,7 +59,7 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
             '${viewModel.robot.name} is connected and almost ready to use. You can leave this screen now and it will automatically come online in a few minutes.',
             style: Theme.of(context).textTheme.bodyLarge,
             textAlign: TextAlign.center,
-            maxLines: 4,
+            maxLines: null,
           ),
           Spacer(),
           FilledButton(
@@ -89,7 +89,7 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
             '${viewModel.robot.name} is connected and ready to use.',
             style: Theme.of(context).textTheme.bodyLarge,
             textAlign: TextAlign.center,
-            maxLines: 2,
+            maxLines: null,
           ),
           Spacer(),
           FilledButton(
