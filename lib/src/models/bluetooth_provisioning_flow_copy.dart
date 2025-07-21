@@ -33,7 +33,7 @@ class BluetoothProvisioningFlowCopy {
     this.agentIncompatibleDialogSubtitle =
         'This machine\'s version is too low to connect via Bluetooth.\n\nPlease try a different provisioning method such as hotspot.',
     this.agentIncompatibleDialogCta = 'Exit',
-    // Mahcine not found dialog
+    // Machine not found dialog
     this.machineNotFoundDialogTitle = 'Machine Not Found',
     this.machineNotFoundDialogSubtitle =
         'This machine does not have credentials set.\n\nIt can be setup as a new machine, but not re-connected.',
