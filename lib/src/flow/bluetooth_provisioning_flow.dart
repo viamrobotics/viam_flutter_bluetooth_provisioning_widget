@@ -217,7 +217,13 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                         subtitle: viewModel.copy.introScreenSubtitle,
                         ctaText: viewModel.copy.introScreenCtaText,
                       ),
-                      IntroScreenTwo(handleNextTapped: _onNextPage),
+                      IntroScreenTwo(
+                        handleNextTapped: _onNextPage,
+                        turnOnTitle: viewModel.copy.introScreenTwoTurnOnTitle,
+                        turnOnSubtitle: viewModel.copy.introScreenTwoTurnOnSubtitle,
+                        bluetoothTitle: viewModel.copy.introScreenTwoBluetoothTitle,
+                        bluetoothSubtitle: viewModel.copy.introScreenTwoBluetoothSubtitle,
+                      ),
                       ChangeNotifierProvider.value(
                         value: BluetoothScanningScreenViewModel(
                           onDeviceSelected: _onDeviceConnected,

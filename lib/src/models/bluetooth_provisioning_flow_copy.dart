@@ -6,6 +6,12 @@ class BluetoothProvisioningFlowCopy {
     this.introScreenTitle = 'Connect your device',
     this.introScreenSubtitle = 'We\'ll walk you through a short setup process to get your device up and running.',
     this.introScreenCtaText = 'Get started',
+    // Intro screen tow
+    this.introScreenTwoTurnOnTitle = 'Turn on your VC Box',
+    this.introScreenTwoTurnOnSubtitle = 'Plug in the VC Box and power it on. The light should be slowly flashing blue.',
+    this.introScreenTwoBluetoothTitle = 'Pair via Bluetooth',
+    // TODO: add markdown package so we can have italicized text
+    this.introScreenTwoBluetoothSubtitle = 'Open your phone’s settings app and go to Settings > Bluetooth. Make sure it is set to “ON.”',
     // Bluetooth scanning
     this.bluetoothScanningTitle = 'Select your Device',
     this.bluetoothScanningScanCtaText = 'Scan network again',
@@ -44,6 +50,12 @@ class BluetoothProvisioningFlowCopy {
   final String introScreenTitle;
   final String introScreenSubtitle;
   final String introScreenCtaText;
+
+  // Intro screen two
+  final String introScreenTwoTurnOnTitle;
+  final String introScreenTwoTurnOnSubtitle;
+  final String introScreenTwoBluetoothTitle;
+  final String introScreenTwoBluetoothSubtitle;
 
   // Bluetooth scanning screen
   final String bluetoothScanningTitle;
