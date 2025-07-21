@@ -16,19 +16,19 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
     });
   }
 
-  Future<void> _notSeeingDevice(BuildContext context) async {
+  Future<void> _notSeeingDevice(BuildContext context, String title, String subtitle, String ctaText) async {
     await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Tips'),
-          content: const Text(
-            'If the device isn\'t showing up, ensure Bluetooth is on and that the device is plugged in and turned on.\n\nYou may also need to change your phone\'s Bluetooth settings to allow it to connect to new devices.',
+          title: Text(title),
+          content: Text(
+            subtitle,
           ),
           actions: <Widget>[
             OutlinedButton(
-              child: const Text('Close'),
+              child: Text(ctaText),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -59,7 +59,7 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: Text('Select your Device', style: Theme.of(context).textTheme.titleLarge),
+                    child: Text(viewModel.title, style: Theme.of(context).textTheme.titleLarge),
                   ),
                   viewModel.isScanning && viewModel.uniqueDevices.isEmpty
                       ? Expanded(
@@ -116,11 +116,16 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
                         OutlinedButton.icon(
                           onPressed: viewModel.scanDevicesAgain,
                           icon: const Icon(Icons.refresh),
-                          label: const Text('Scan network again'),
+                          label: Text(viewModel.scanCtaText),
                         ),
                         TextButton(
-                          onPressed: () => _notSeeingDevice(context),
-                          child: const Text('Not seeing your device?'),
+                          onPressed: () => _notSeeingDevice(
+                            context,
+                            viewModel.tipsDialogTitle,
+                            viewModel.tipsDialogSubtitle,
+                            viewModel.tipsDialogCtaText,
+                          ),
+                          child: Text(viewModel.notSeeingDeviceCtaText),
                         ),
                       ],
                     ),

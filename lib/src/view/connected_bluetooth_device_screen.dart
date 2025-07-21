@@ -18,7 +18,7 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
     });
   }
 
-  // would be in view model, but want to handle error and show dialog w/ the context
+  // would be in view model, but want to handle error and show dialog w/ the context (TODO: you can pass context to the view model)
   Future<void> _readNetworkList() async {
     try {
       await Provider.of<ConnectedBluetoothDeviceScreenViewModel>(context, listen: false).readNetworkList();
@@ -73,7 +73,7 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
     );
   }
 
-  Future<void> _notSeeingYourNetwork() async {
+  Future<void> _notSeeingYourNetwork(String title, String subtitle, String ctaText) async {
     setState(() {
       _showingDialog = true;
     });
@@ -82,13 +82,11 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Tips'),
-          content: const Text(
-            'Make sure that the network isn\'t hidden and that your device is within range of your Wi-Fi router.\n\nPlease note that a 2.4GHz network is required.',
-          ),
+          title: Text(title),
+          content: Text(subtitle),
           actions: <Widget>[
             OutlinedButton(
-              child: const Text('Close'),
+              child: Text(ctaText),
               onPressed: () {
                 Navigator.pop(context);
                 setState(() {
@@ -122,12 +120,12 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
           children: [
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text('Choose your Wi-Fi', style: Theme.of(context).textTheme.titleLarge),
+              child: Text(viewModel.title, style: Theme.of(context).textTheme.titleLarge),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 24.0),
               child: Text(
-                'Choose the Wi-Fi network you\'d like to use to connect your device.',
+                viewModel.subtitle,
                 style: Theme.of(context).textTheme.bodyLarge,
                 maxLines: 2,
               ),
@@ -193,11 +191,15 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
                     OutlinedButton.icon(
                       onPressed: _readNetworkList,
                       icon: const Icon(Icons.refresh),
-                      label: const Text('Scan network again'),
+                      label: Text(viewModel.scanCtaText),
                     ),
                     TextButton(
-                      onPressed: _notSeeingYourNetwork,
-                      child: const Text('Not seeing your network?'),
+                      onPressed: () => _notSeeingYourNetwork(
+                        viewModel.tipsDialogTitle,
+                        viewModel.tipsDialogSubtitle,
+                        viewModel.tipsDialogCtaText,
+                      ),
+                      child: Text(viewModel.notSeeingDeviceCtaText),
                     ),
                   ],
                 ),

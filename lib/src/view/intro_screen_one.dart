@@ -1,9 +1,18 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class IntroScreenOne extends StatelessWidget {
-  final VoidCallback handleGetStartedTapped;
+  final VoidCallback handleCtaTapped;
+  final String title;
+  final String subtitle;
+  final String ctaText;
 
-  const IntroScreenOne({super.key, required this.handleGetStartedTapped});
+  const IntroScreenOne({
+    super.key,
+    required this.handleCtaTapped,
+    required this.title,
+    required this.subtitle,
+    required this.ctaText,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +26,7 @@ class IntroScreenOne extends StatelessWidget {
           Icon(Icons.tap_and_play, size: 64),
           const SizedBox(height: 24),
           Text(
-            'Connect your device',
+            title,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
@@ -25,7 +34,7 @@ class IntroScreenOne extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Text(
-              'We\'ll walk you through a short setup process to get your device up and running.',
+              subtitle,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.grey.shade600),
             ),
@@ -33,8 +42,8 @@ class IntroScreenOne extends StatelessWidget {
           const Spacer(),
           const Spacer(),
           FilledButton(
-            onPressed: handleGetStartedTapped,
-            child: const Text('Get started'),
+            onPressed: handleCtaTapped,
+            child: Text(ctaText),
           ),
         ],
       ),

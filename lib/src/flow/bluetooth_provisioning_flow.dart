@@ -53,16 +53,32 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
     try {
       // agent minimum check
       if (await viewModel.agentVersionBelowMinimum() && mounted) {
-        _agentMinimumVersionDialog(context, widget.agentMinimumVersionExit);
+        _agentMinimumVersionDialog(
+          context,
+          widget.agentMinimumVersionExit,
+          viewModel.copy.agentIncompatibleDialogTitle,
+          viewModel.copy.agentIncompatibleDialogSubtitle,
+          viewModel.copy.agentIncompatibleDialogCta,
+        );
         return;
       }
       // status check
       final status = await device.readStatus();
       if (viewModel.isNewMachine && status.isConfigured && mounted) {
-        _avoidOverwritingExistingMachineDialog(context);
+        _avoidOverwritingExistingMachineDialog(
+          context,
+          viewModel.copy.existingMachineDialogTitle,
+          viewModel.copy.existingMachineDialogSubtitle,
+          viewModel.copy.existingMachineDialogCta,
+        );
         return;
       } else if (!viewModel.isNewMachine && !status.isConfigured && mounted) {
-        _reconnectingNonexistentMachineDialog(context);
+        _reconnectingNonexistentMachineDialog(
+          context,
+          viewModel.copy.machineNotFoundDialogTitle,
+          viewModel.copy.machineNotFoundDialogSubtitle,
+          viewModel.copy.machineNotFoundDialogCta,
+        );
         return;
       }
     } catch (e) {
@@ -91,19 +107,24 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
     }
   }
 
-  Future<void> _avoidOverwritingExistingMachineDialog(BuildContext context) async {
+  Future<void> _avoidOverwritingExistingMachineDialog(
+    BuildContext context,
+    String title,
+    String subtitle,
+    String ctaText,
+  ) async {
     await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Existing Machine'),
-          content: const Text(
-            'This machine has credentials set.\n\nYou can find and re-connect this machine in your list of machines if you\'re the owner.',
+          title: Text(title),
+          content: Text(
+            subtitle,
           ),
           actions: <Widget>[
             OutlinedButton(
-              child: const Text('Exit'),
+              child: Text(ctaText),
               onPressed: () {
                 Navigator.pop(context);
                 widget.existingMachineExit();
@@ -115,19 +136,23 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
     );
   }
 
-  Future<void> _agentMinimumVersionDialog(BuildContext context, VoidCallback exitFunction) async {
+  Future<void> _agentMinimumVersionDialog(
+    BuildContext context,
+    VoidCallback exitFunction,
+    String title,
+    String subtitle,
+    String ctaText,
+  ) async {
     await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Machine Incompatible'),
-          content: const Text(
-            'This machine\'s version is too low to connect via Bluetooth.\n\nPlease try a different provisioning method such as hotspot.',
-          ),
+          title: Text(title),
+          content: Text(subtitle),
           actions: <Widget>[
             OutlinedButton(
-              child: const Text('Exit'),
+              child: Text(ctaText),
               onPressed: () {
                 Navigator.pop(context);
                 exitFunction();
@@ -139,19 +164,22 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
     );
   }
 
-  Future<void> _reconnectingNonexistentMachineDialog(BuildContext context) async {
+  Future<void> _reconnectingNonexistentMachineDialog(
+    BuildContext context,
+    String title,
+    String subtitle,
+    String ctaText,
+  ) async {
     await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Machine Not Found'),
-          content: const Text(
-            'This machine does not have credentials set.\n\nIt can be setup as a new machine, but not re-connected.',
-          ),
+          title: Text(title),
+          content: Text(subtitle),
           actions: <Widget>[
             OutlinedButton(
-              child: const Text('Exit'),
+              child: Text(ctaText),
               onPressed: () {
                 Navigator.pop(context);
                 widget.nonexistentMachineExit();
@@ -183,13 +211,24 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                     controller: _pageController,
                     physics: NeverScrollableScrollPhysics(),
                     children: [
-                      IntroScreenOne(handleGetStartedTapped: _onNextPage),
+                      IntroScreenOne(
+                        handleCtaTapped: _onNextPage,
+                        title: viewModel.copy.introScreenTitle,
+                        subtitle: viewModel.copy.introScreenSubtitle,
+                        ctaText: viewModel.copy.introScreenCtaText,
+                      ),
                       IntroScreenTwo(handleNextTapped: _onNextPage),
                       ChangeNotifierProvider.value(
                         value: BluetoothScanningScreenViewModel(
                           onDeviceSelected: _onDeviceConnected,
                           scanBluetoothDevicesRepository: ScanBluetoothDevicesRepository(),
                           connectBluetoothDeviceRepository: viewModel.connectBluetoothDeviceRepository,
+                          title: viewModel.copy.bluetoothScanningTitle,
+                          scanCtaText: viewModel.copy.bluetoothScanningScanCtaText,
+                          notSeeingDeviceCtaText: viewModel.copy.bluetoothScanningNotSeeingDeviceCtaText,
+                          tipsDialogTitle: viewModel.copy.bluetoothScanningTipsDialogTitle,
+                          tipsDialogSubtitle: viewModel.copy.bluetoothScanningTipsDialogSubtitle,
+                          tipsDialogCtaText: viewModel.copy.bluetoothScanningTipsDialogCtaText,
                         ),
                         child: BluetoothScanningScreen(),
                       ),
@@ -197,6 +236,13 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                         value: ConnectedBluetoothDeviceScreenViewModel(
                           handleWifiCredentials: _onWifiCredentials,
                           connectBluetoothDeviceRepository: viewModel.connectBluetoothDeviceRepository,
+                          title: viewModel.copy.connectedDeviceTitle,
+                          subtitle: viewModel.copy.connectedDeviceSubtitle,
+                          scanCtaText: viewModel.copy.connectedDeviceScanCtaText,
+                          notSeeingDeviceCtaText: viewModel.copy.connectedDeviceNotSeeingDeviceCtaText,
+                          tipsDialogTitle: viewModel.copy.connectedDeviceTipsDialogTitle,
+                          tipsDialogSubtitle: viewModel.copy.connectedDeviceTipsDialogSubtitle,
+                          tipsDialogCtaText: viewModel.copy.connectedDeviceTipsDialogCtaText,
                         ),
                         child: ConnectedBluetoothDeviceScreen(),
                       ),
@@ -205,9 +251,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                           value: CheckConnectedDeviceOnlineScreenViewModel(
                             handleSuccess: widget.onSuccess,
                             handleAgentConfigured: widget.handleAgentConfigured,
-                            handleError: () {
-                              _onPreviousPage(); // back to network selection
-                            },
+                            handleError: _onPreviousPage, // back to network selection
                             checkingDeviceOnlineRepository: CheckingDeviceOnlineRepository(
                               device: viewModel.device!,
                               viam: viewModel.viam,
