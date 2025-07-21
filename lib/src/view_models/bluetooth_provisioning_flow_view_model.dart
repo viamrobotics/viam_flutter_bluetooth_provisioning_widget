@@ -10,6 +10,7 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
     required String psk,
     required this.fragmentId,
     this.agentMinimumVersion = '0.20.0',
+    this.copy = const BluetoothProvisioningFlowCopy(),
   })  : _mainRobotPart = mainRobotPart,
         _psk = psk;
   final Viam viam;
@@ -17,6 +18,7 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
   final bool isNewMachine;
   final ConnectBluetoothDeviceRepository connectBluetoothDeviceRepository;
   final String agentMinimumVersion;
+  final BluetoothProvisioningFlowCopy copy;
 
   /// if not specified, the fragmentId read from the connected device will be used instead
   final String? fragmentId;

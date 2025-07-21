@@ -183,7 +183,12 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                     controller: _pageController,
                     physics: NeverScrollableScrollPhysics(),
                     children: [
-                      IntroScreenOne(handleGetStartedTapped: _onNextPage),
+                      IntroScreenOne(
+                        handleCtaTapped: _onNextPage,
+                        title: viewModel.copy.introScreenTitle,
+                        subtitle: viewModel.copy.introScreenSubtitle,
+                        ctaText: viewModel.copy.introScreenCtaText,
+                      ),
                       IntroScreenTwo(handleNextTapped: _onNextPage),
                       ChangeNotifierProvider.value(
                         value: BluetoothScanningScreenViewModel(

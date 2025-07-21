@@ -43,6 +43,7 @@ part 'src/view_models/bluetooth_scanning_screen_view_model.dart';
 
 // models
 part 'src/models/device_online_state.dart';
+part 'src/models/bluetooth_provisioning_flow_copy.dart';
 
 // repositories
 part 'src/repositories/connect_bluetooth_device_repository.dart';
