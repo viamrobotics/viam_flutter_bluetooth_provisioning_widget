@@ -57,6 +57,9 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
           psk: Consts.psk,
           fragmentId: null,
           connectBluetoothDeviceRepository: ConnectBluetoothDeviceRepository(),
+          copy: BluetoothProvisioningFlowCopy(
+            checkingOnlineSuccessSubtitle: '${robot.name} is connected and ready to use.',
+          ),
         ),
         builder: (context, child) => BluetoothProvisioningFlow(onSuccess: () {
           Navigator.of(context).pop();

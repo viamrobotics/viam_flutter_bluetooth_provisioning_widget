@@ -7,8 +7,8 @@ class BluetoothProvisioningFlowCopy {
     this.introScreenSubtitle = 'We\'ll walk you through a short setup process to get your device up and running.',
     this.introScreenCtaText = 'Get started',
     // Intro screen tow
-    this.introScreenTwoTurnOnTitle = 'Turn on your VC Box',
-    this.introScreenTwoTurnOnSubtitle = 'Plug in the VC Box and power it on. The light should be slowly flashing blue.',
+    this.introScreenTwoTurnOnTitle = 'Turn on your machine',
+    this.introScreenTwoTurnOnSubtitle = 'Plug in the machine and power it on. The light should be slowly flashing blue.',
     this.introScreenTwoBluetoothTitle = 'Pair via Bluetooth',
     // TODO: add markdown package so we can have italicized text
     this.introScreenTwoBluetoothSubtitle = 'Open your phone’s settings app and go to Settings > Bluetooth. Make sure it is set to “ON.”',
@@ -44,6 +44,10 @@ class BluetoothProvisioningFlowCopy {
     this.machineNotFoundDialogSubtitle =
         'This machine does not have credentials set.\n\nIt can be setup as a new machine, but not re-connected.',
     this.machineNotFoundDialogCta = 'Exit',
+    // Checking online
+    this.checkingOnlineSuccessTitle = 'All set!',
+    this.checkingOnlineSuccessSubtitle = 'Your machine is connected and ready to use.',
+    this.checkingOnlineSuccessCta = 'Close',
   });
 
   // Intro screen one
@@ -90,4 +94,9 @@ class BluetoothProvisioningFlowCopy {
   final String machineNotFoundDialogTitle;
   final String machineNotFoundDialogSubtitle;
   final String machineNotFoundDialogCta;
+
+  // Checking online
+  final String checkingOnlineSuccessTitle;
+  final String checkingOnlineSuccessSubtitle;
+  final String checkingOnlineSuccessCta;
 }
