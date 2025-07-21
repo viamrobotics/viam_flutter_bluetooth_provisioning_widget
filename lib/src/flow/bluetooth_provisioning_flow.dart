@@ -164,7 +164,12 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
     );
   }
 
-  Future<void> _reconnectingNonexistentMachineDialog(BuildContext context, String title, String subtitle, String ctaText) async {
+  Future<void> _reconnectingNonexistentMachineDialog(
+    BuildContext context,
+    String title,
+    String subtitle,
+    String ctaText,
+  ) async {
     await showDialog(
       context: context,
       barrierDismissible: false,
@@ -246,9 +251,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                           value: CheckConnectedDeviceOnlineScreenViewModel(
                             handleSuccess: widget.onSuccess,
                             handleAgentConfigured: widget.handleAgentConfigured,
-                            handleError: () {
-                              _onPreviousPage(); // back to network selection
-                            },
+                            handleError: _onPreviousPage, // back to network selection
                             checkingDeviceOnlineRepository: CheckingDeviceOnlineRepository(
                               device: viewModel.device!,
                               viam: viewModel.viam,
