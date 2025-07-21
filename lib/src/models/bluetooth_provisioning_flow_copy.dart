@@ -15,20 +15,14 @@ class BluetoothProvisioningFlowCopy {
         'If the device isn\'t showing up, ensure Bluetooth is on and that the device is plugged in and turned on.\n\nYou may also need to change your phone\'s Bluetooth settings to allow it to connect to new devices.',
     this.bluetoothScanningTipsDialogCtaText = 'Close',
     // Connected device screen strings
-    this.connectedDeviceErrorReadingNetworks = 'Error reading network list',
-    this.connectedDevicePasswordLabel = 'Password',
-    this.connectedDeviceConnectButton = 'Connect',
     this.connectedDeviceTitle = 'Choose your Wi-Fi',
     this.connectedDeviceSubtitle = 'Choose the Wi-Fi network you\'d like to use to connect your device.',
-    this.connectedDeviceNotSeeingNetworkButton = 'Not seeing your network?',
-    this.connectedDeviceNetworkTipsContent =
+    this.connectedDeviceNotSeeingDeviceCtaText = 'Not seeing your network?',
+    this.connectedDeviceScanCtaText = 'Scan network again',
+    this.connectedDeviceTipsDialogTitle = 'Tips',
+    this.connectedDeviceTipsDialogSubtitle =
         'Make sure that the network isn\'t hidden and that your device is within range of your Wi-Fi router.\n\nPlease note that a 2.4GHz network is required.',
-    this.connectedDeviceCancelButton = 'Cancel',
-    // Name device screen strings
-    this.nameDeviceTitle = 'Name your vessel',
-    this.nameDeviceNameLabel = 'Name',
-    this.nameDeviceValidationText = 'Name must contain a letter or number. Cannot start with \'-\' or \'_\'. Spaces are allowed.',
-    this.nameDeviceDoneButton = 'Done',
+    this.connectedDeviceTipsDialogCtaText = 'Close',
     // Check device online strings
     this.checkDeviceOnlineFinishingUp = 'Finishing up...',
     this.checkDeviceOnlineKeepScreenOpenText = 'Please keep this screen open until setup is complete. This should take a minute or two.',
@@ -52,11 +46,6 @@ class BluetoothProvisioningFlowCopy {
     this.flowDialogMachineNotFoundTitle = 'Machine Not Found',
     this.flowDialogMachineNotFoundContent =
         'This machine does not have credentials set.\n\nIt can be setup as a new machine, but not re-connected.',
-    // Widget strings
-    this.widgetScanningText = 'Scanning...',
-    // Error dialog strings
-    this.errorDialogTitle = 'An Error Occurred',
-    this.errorDialogOkButton = 'OK',
   });
 
   // Intro screen one
@@ -74,20 +63,14 @@ class BluetoothProvisioningFlowCopy {
   final String bluetoothScanningTipsDialogCtaText;
 
   // Connected device screen
-  final String connectedDeviceErrorReadingNetworks;
-  final String connectedDevicePasswordLabel;
-  final String connectedDeviceConnectButton;
   final String connectedDeviceTitle;
   final String connectedDeviceSubtitle;
-  final String connectedDeviceNotSeeingNetworkButton;
-  final String connectedDeviceNetworkTipsContent;
-  final String connectedDeviceCancelButton;
+  final String connectedDeviceScanCtaText;
+  final String connectedDeviceNotSeeingDeviceCtaText;
 
-  // Name device screen
-  final String nameDeviceTitle;
-  final String nameDeviceNameLabel;
-  final String nameDeviceValidationText;
-  final String nameDeviceDoneButton;
+  final String connectedDeviceTipsDialogTitle;
+  final String connectedDeviceTipsDialogSubtitle;
+  final String connectedDeviceTipsDialogCtaText;
 
   // Check device online
   final String checkDeviceOnlineFinishingUp;
@@ -100,7 +83,7 @@ class BluetoothProvisioningFlowCopy {
   final String checkDeviceOnlineErrorText;
   final String checkDeviceOnlineTryAgainButton;
 
-  // Flow dialog strings (???)
+  // Flow dialog strings
   final String flowDialogFailedToWriteConfig;
   final String flowDialogExistingMachineTitle;
   final String flowDialogExistingMachineContent;
@@ -109,9 +92,4 @@ class BluetoothProvisioningFlowCopy {
   final String flowDialogMachineIncompatibleContent;
   final String flowDialogMachineNotFoundTitle;
   final String flowDialogMachineNotFoundContent;
-  // Widget strings (???)
-  final String widgetScanningText;
-  // Error dialog strings (???)
-  final String errorDialogTitle;
-  final String errorDialogOkButton;
 }

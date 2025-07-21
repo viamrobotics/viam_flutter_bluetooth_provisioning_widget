@@ -1,22 +1,7 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class BluetoothScanningScreen extends StatefulWidget {
-  final String title;
-  final String scanCtaText;
-  final String notSeeingDeviceCtaText;
-  final String tipsDialogTitle;
-  final String tipsDialogSubtitle;
-  final String tipsDialogCtaText;
-
-  const BluetoothScanningScreen({
-    super.key,
-    required this.title,
-    required this.scanCtaText,
-    required this.notSeeingDeviceCtaText,
-    required this.tipsDialogTitle,
-    required this.tipsDialogSubtitle,
-    required this.tipsDialogCtaText,
-  });
+  const BluetoothScanningScreen({super.key});
 
   @override
   State<BluetoothScanningScreen> createState() => _BluetoothScanningScreenState();
@@ -31,19 +16,19 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
     });
   }
 
-  Future<void> _notSeeingDevice(BuildContext context) async {
+  Future<void> _notSeeingDevice(BuildContext context, String title, String subtitle, String ctaText) async {
     await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(widget.tipsDialogTitle),
+          title: Text(title),
           content: Text(
-            widget.tipsDialogSubtitle,
+            subtitle,
           ),
           actions: <Widget>[
             OutlinedButton(
-              child: Text(widget.tipsDialogCtaText),
+              child: Text(ctaText),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -74,7 +59,7 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: Text(widget.title, style: Theme.of(context).textTheme.titleLarge),
+                    child: Text(viewModel.title, style: Theme.of(context).textTheme.titleLarge),
                   ),
                   viewModel.isScanning && viewModel.uniqueDevices.isEmpty
                       ? Expanded(
@@ -131,11 +116,16 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
                         OutlinedButton.icon(
                           onPressed: viewModel.scanDevicesAgain,
                           icon: const Icon(Icons.refresh),
-                          label: Text(widget.scanCtaText),
+                          label: Text(viewModel.scanCtaText),
                         ),
                         TextButton(
-                          onPressed: () => _notSeeingDevice(context),
-                          child: Text(widget.notSeeingDeviceCtaText),
+                          onPressed: () => _notSeeingDevice(
+                            context,
+                            viewModel.tipsDialogTitle,
+                            viewModel.tipsDialogSubtitle,
+                            viewModel.tipsDialogCtaText,
+                          ),
+                          child: Text(viewModel.notSeeingDeviceCtaText),
                         ),
                       ],
                     ),

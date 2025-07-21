@@ -2,6 +2,13 @@ part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class ConnectedBluetoothDeviceScreenViewModel extends ChangeNotifier {
   final void Function(String ssid, String? psk) handleWifiCredentials;
+  final String title;
+  final String subtitle;
+  final String scanCtaText;
+  final String notSeeingDeviceCtaText;
+  final String tipsDialogTitle;
+  final String tipsDialogSubtitle;
+  final String tipsDialogCtaText;
 
   List<WifiNetwork> _wifiNetworks = [];
   List<WifiNetwork> get wifiNetworks => _wifiNetworks;
@@ -22,6 +29,13 @@ class ConnectedBluetoothDeviceScreenViewModel extends ChangeNotifier {
   ConnectedBluetoothDeviceScreenViewModel({
     required this.handleWifiCredentials,
     required ConnectBluetoothDeviceRepository connectBluetoothDeviceRepository,
+    required this.title,
+    required this.subtitle,
+    required this.scanCtaText,
+    required this.notSeeingDeviceCtaText,
+    required this.tipsDialogTitle,
+    required this.tipsDialogSubtitle,
+    required this.tipsDialogCtaText,
   }) : _connectBluetoothDeviceRepository = connectBluetoothDeviceRepository;
 
   Future<void> readNetworkList() async {

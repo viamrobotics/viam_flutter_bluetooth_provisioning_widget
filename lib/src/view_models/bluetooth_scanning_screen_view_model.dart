@@ -5,6 +5,12 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
     required this.onDeviceSelected,
     required ScanBluetoothDevicesRepository scanBluetoothDevicesRepository,
     required ConnectBluetoothDeviceRepository connectBluetoothDeviceRepository,
+    required this.title,
+    required this.scanCtaText,
+    required this.notSeeingDeviceCtaText,
+    required this.tipsDialogTitle,
+    required this.tipsDialogSubtitle,
+    required this.tipsDialogCtaText,
   })  : _scanBluetoothDevicesRepository = scanBluetoothDevicesRepository,
         _connectBluetoothDeviceRepository = connectBluetoothDeviceRepository {
     _devicesSubscription = _scanBluetoothDevicesRepository.devicesStream.listen((devices) {
@@ -16,6 +22,12 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
   }
 
   final Function(BluetoothDevice) onDeviceSelected;
+  final String title;
+  final String scanCtaText;
+  final String notSeeingDeviceCtaText;
+  final String tipsDialogTitle;
+  final String tipsDialogSubtitle;
+  final String tipsDialogCtaText;
 
   final ScanBluetoothDevicesRepository _scanBluetoothDevicesRepository;
   final ConnectBluetoothDeviceRepository _connectBluetoothDeviceRepository;

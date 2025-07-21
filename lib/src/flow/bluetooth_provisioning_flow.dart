@@ -195,8 +195,6 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                           onDeviceSelected: _onDeviceConnected,
                           scanBluetoothDevicesRepository: ScanBluetoothDevicesRepository(),
                           connectBluetoothDeviceRepository: viewModel.connectBluetoothDeviceRepository,
-                        ),
-                        child: BluetoothScanningScreen(
                           title: viewModel.copy.bluetoothScanningTitle,
                           scanCtaText: viewModel.copy.bluetoothScanningScanCtaText,
                           notSeeingDeviceCtaText: viewModel.copy.bluetoothScanningNotSeeingDeviceCtaText,
@@ -204,11 +202,19 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                           tipsDialogSubtitle: viewModel.copy.bluetoothScanningTipsDialogSubtitle,
                           tipsDialogCtaText: viewModel.copy.bluetoothScanningTipsDialogCtaText,
                         ),
+                        child: BluetoothScanningScreen(),
                       ),
                       ChangeNotifierProvider.value(
                         value: ConnectedBluetoothDeviceScreenViewModel(
                           handleWifiCredentials: _onWifiCredentials,
                           connectBluetoothDeviceRepository: viewModel.connectBluetoothDeviceRepository,
+                          title: viewModel.copy.connectedDeviceTitle,
+                          subtitle: viewModel.copy.connectedDeviceSubtitle,
+                          scanCtaText: viewModel.copy.connectedDeviceScanCtaText,
+                          notSeeingDeviceCtaText: viewModel.copy.connectedDeviceNotSeeingDeviceCtaText,
+                          tipsDialogTitle: viewModel.copy.connectedDeviceTipsDialogTitle,
+                          tipsDialogSubtitle: viewModel.copy.connectedDeviceTipsDialogSubtitle,
+                          tipsDialogCtaText: viewModel.copy.connectedDeviceTipsDialogCtaText,
                         ),
                         child: ConnectedBluetoothDeviceScreen(),
                       ),
