@@ -6,16 +6,6 @@ class BluetoothProvisioningFlowCopy {
     this.introScreenTitle = 'Connect your device',
     this.introScreenSubtitle = 'We\'ll walk you through a short setup process to get your device up and running.',
     this.introScreenCtaText = 'Get started',
-    // Intro screen two
-    this.introScreenTwoTitle = 'Make sure that...',
-    this.introScreenTwoDeviceText = 'Your device is ',
-    this.introScreenTwoPluggedIn = 'plugged in ',
-    this.introScreenTwoAndText = 'and ',
-    this.introScreenTwoPoweredOn = 'powered on',
-    this.introScreenTwoBluetoothText = 'Bluetooth ',
-    this.introScreenTwoBluetoothEnabledText = 'is enabled on your phone. You can do this in ',
-    this.introScreenTwoSettingsBluetooth = 'Settings > Bluetooth',
-    this.introScreenTwoButtonText = 'Next',
     // Bluetooth scanning strings
     this.bluetoothScanningTipsTitle = 'Tips',
     this.bluetoothScanningTipsContent =
@@ -75,17 +65,6 @@ class BluetoothProvisioningFlowCopy {
   final String introScreenTitle;
   final String introScreenSubtitle;
   final String introScreenCtaText;
-
-  // Intro screen two
-  final String introScreenTwoTitle;
-  final String introScreenTwoDeviceText;
-  final String introScreenTwoPluggedIn;
-  final String introScreenTwoAndText;
-  final String introScreenTwoPoweredOn;
-  final String introScreenTwoBluetoothText;
-  final String introScreenTwoBluetoothEnabledText;
-  final String introScreenTwoSettingsBluetooth;
-  final String introScreenTwoButtonText;
 
   // Bluetooth scanning screen
   final String bluetoothScanningTipsTitle;
