@@ -2,11 +2,11 @@ part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class BluetoothProvisioningFlowCopy {
   const BluetoothProvisioningFlowCopy({
-    // Intro screen one
+    // Intro screen
     this.introScreenTitle = 'Connect your device',
     this.introScreenSubtitle = 'We\'ll walk you through a short setup process to get your device up and running.',
     this.introScreenCtaText = 'Get started',
-    // Bluetooth scanning strings
+    // Bluetooth scanning
     this.bluetoothScanningTitle = 'Select your Device',
     this.bluetoothScanningScanCtaText = 'Scan network again',
     this.bluetoothScanningNotSeeingDeviceCtaText = 'Not seeing your device?',
@@ -14,7 +14,7 @@ class BluetoothProvisioningFlowCopy {
     this.bluetoothScanningTipsDialogSubtitle =
         'If the device isn\'t showing up, ensure Bluetooth is on and that the device is plugged in and turned on.\n\nYou may also need to change your phone\'s Bluetooth settings to allow it to connect to new devices.',
     this.bluetoothScanningTipsDialogCtaText = 'Close',
-    // Connected device screen strings
+    // Connected device screen
     this.connectedDeviceTitle = 'Choose your Wi-Fi',
     this.connectedDeviceSubtitle = 'Choose the Wi-Fi network you\'d like to use to connect your device.',
     this.connectedDeviceNotSeeingDeviceCtaText = 'Not seeing your network?',
@@ -23,29 +23,21 @@ class BluetoothProvisioningFlowCopy {
     this.connectedDeviceTipsDialogSubtitle =
         'Make sure that the network isn\'t hidden and that your device is within range of your Wi-Fi router.\n\nPlease note that a 2.4GHz network is required.',
     this.connectedDeviceTipsDialogCtaText = 'Close',
-    // Check device online strings
-    this.checkDeviceOnlineFinishingUp = 'Finishing up...',
-    this.checkDeviceOnlineKeepScreenOpenText = 'Please keep this screen open until setup is complete. This should take a minute or two.',
-    this.checkDeviceOnlineConnectedTitle = 'Connected!',
-    this.checkDeviceOnlineConnectedAlmostReadyText =
-        'is connected and almost ready to use. You can leave this screen now and it will automatically come online in a few minutes.',
-    this.checkDeviceOnlineAllSetTitle = 'All set!',
-    this.checkDeviceOnlineConnectedReadyText = 'is connected and ready to use.',
-    this.checkDeviceOnlineErrorTitle = 'Error during setup',
-    this.checkDeviceOnlineErrorText = 'There was an error getting your machine online. Please try again.',
-    this.checkDeviceOnlineTryAgainButton = 'Try again',
-    // Flow dialog strings
-    this.flowDialogFailedToWriteConfig = 'Failed to write config',
-    this.flowDialogExistingMachineTitle = 'Existing Machine',
-    this.flowDialogExistingMachineContent =
+    // Existing machine dialog
+    this.existingMachineDialogTitle = 'Existing Machine',
+    this.existingMachineDialogSubtitle =
         'This machine has credentials set.\n\nYou can find and re-connect this machine in your list of machines if you\'re the owner.',
-    this.flowDialogExitButton = 'Exit',
-    this.flowDialogMachineIncompatibleTitle = 'Machine Incompatible',
-    this.flowDialogMachineIncompatibleContent =
+    this.existingMachineDialogCta = 'Exit',
+    // Agent incompatible dialog
+    this.agentIncompatibleDialogTitle = 'Machine Incompatible',
+    this.agentIncompatibleDialogSubtitle =
         'This machine\'s version is too low to connect via Bluetooth.\n\nPlease try a different provisioning method such as hotspot.',
-    this.flowDialogMachineNotFoundTitle = 'Machine Not Found',
-    this.flowDialogMachineNotFoundContent =
+    this.agentIncompatibleDialogCta = 'Exit',
+    // Mahcine not found dialog
+    this.machineNotFoundDialogTitle = 'Machine Not Found',
+    this.machineNotFoundDialogSubtitle =
         'This machine does not have credentials set.\n\nIt can be setup as a new machine, but not re-connected.',
+    this.machineNotFoundDialogCta = 'Exit',
   });
 
   // Intro screen one
@@ -72,24 +64,18 @@ class BluetoothProvisioningFlowCopy {
   final String connectedDeviceTipsDialogSubtitle;
   final String connectedDeviceTipsDialogCtaText;
 
-  // Check device online
-  final String checkDeviceOnlineFinishingUp;
-  final String checkDeviceOnlineKeepScreenOpenText;
-  final String checkDeviceOnlineConnectedTitle;
-  final String checkDeviceOnlineConnectedAlmostReadyText;
-  final String checkDeviceOnlineAllSetTitle;
-  final String checkDeviceOnlineConnectedReadyText;
-  final String checkDeviceOnlineErrorTitle;
-  final String checkDeviceOnlineErrorText;
-  final String checkDeviceOnlineTryAgainButton;
+  // Existing machine
+  final String existingMachineDialogTitle;
+  final String existingMachineDialogSubtitle;
+  final String existingMachineDialogCta;
 
-  // Flow dialog strings
-  final String flowDialogFailedToWriteConfig;
-  final String flowDialogExistingMachineTitle;
-  final String flowDialogExistingMachineContent;
-  final String flowDialogExitButton;
-  final String flowDialogMachineIncompatibleTitle;
-  final String flowDialogMachineIncompatibleContent;
-  final String flowDialogMachineNotFoundTitle;
-  final String flowDialogMachineNotFoundContent;
+  // Agent incompatible
+  final String agentIncompatibleDialogTitle;
+  final String agentIncompatibleDialogSubtitle;
+  final String agentIncompatibleDialogCta;
+
+  // Machine not found
+  final String machineNotFoundDialogTitle;
+  final String machineNotFoundDialogSubtitle;
+  final String machineNotFoundDialogCta;
 }
