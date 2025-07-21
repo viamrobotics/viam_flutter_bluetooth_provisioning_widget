@@ -23,7 +23,7 @@ class IntroScreenOne extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Spacer(),
-          Icon(Icons.tap_and_play, size: 64),
+          Icon(Icons.tap_and_play, size: 64, color: const Color(0xFF9C9CA4)),
           const SizedBox(height: 24),
           Text(
             title,
