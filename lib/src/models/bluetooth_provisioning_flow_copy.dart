@@ -7,15 +7,13 @@ class BluetoothProvisioningFlowCopy {
     this.introScreenSubtitle = 'We\'ll walk you through a short setup process to get your device up and running.',
     this.introScreenCtaText = 'Get started',
     // Bluetooth scanning strings
-    this.bluetoothScanningTipsTitle = 'Tips',
-    this.bluetoothScanningTipsContent =
-        'If the device isn\'t showing up, ensure Bluetooth is on and that the device is plugged in and turned on.\n\nYou may also need to change your phone\'s Bluetooth settings to allow it to connect to new devices.',
-    this.bluetoothScanningCloseButton = 'Close',
-    this.bluetoothScanningConnectingText = 'Connecting...',
     this.bluetoothScanningTitle = 'Select your Device',
-    this.bluetoothScanningUntitledDevice = 'untitled',
-    this.bluetoothScanningScanAgainButton = 'Scan network again',
-    this.bluetoothScanningNotSeeingDeviceButton = 'Not seeing your device?',
+    this.bluetoothScanningScanCtaText = 'Scan network again',
+    this.bluetoothScanningNotSeeingDeviceCtaText = 'Not seeing your device?',
+    this.bluetoothScanningTipsDialogTitle = 'Tips',
+    this.bluetoothScanningTipsDialogSubtitle =
+        'If the device isn\'t showing up, ensure Bluetooth is on and that the device is plugged in and turned on.\n\nYou may also need to change your phone\'s Bluetooth settings to allow it to connect to new devices.',
+    this.bluetoothScanningTipsDialogCtaText = 'Close',
     // Connected device screen strings
     this.connectedDeviceErrorReadingNetworks = 'Error reading network list',
     this.connectedDevicePasswordLabel = 'Password',
@@ -67,14 +65,13 @@ class BluetoothProvisioningFlowCopy {
   final String introScreenCtaText;
 
   // Bluetooth scanning screen
-  final String bluetoothScanningTipsTitle;
-  final String bluetoothScanningTipsContent;
-  final String bluetoothScanningCloseButton;
-  final String bluetoothScanningConnectingText;
   final String bluetoothScanningTitle;
-  final String bluetoothScanningUntitledDevice;
-  final String bluetoothScanningScanAgainButton;
-  final String bluetoothScanningNotSeeingDeviceButton;
+  final String bluetoothScanningScanCtaText;
+  final String bluetoothScanningNotSeeingDeviceCtaText;
+
+  final String bluetoothScanningTipsDialogTitle;
+  final String bluetoothScanningTipsDialogSubtitle;
+  final String bluetoothScanningTipsDialogCtaText;
 
   // Connected device screen
   final String connectedDeviceErrorReadingNetworks;

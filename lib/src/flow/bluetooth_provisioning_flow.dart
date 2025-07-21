@@ -196,7 +196,14 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                           scanBluetoothDevicesRepository: ScanBluetoothDevicesRepository(),
                           connectBluetoothDeviceRepository: viewModel.connectBluetoothDeviceRepository,
                         ),
-                        child: BluetoothScanningScreen(),
+                        child: BluetoothScanningScreen(
+                          title: viewModel.copy.bluetoothScanningTitle,
+                          scanCtaText: viewModel.copy.bluetoothScanningScanCtaText,
+                          notSeeingDeviceCtaText: viewModel.copy.bluetoothScanningNotSeeingDeviceCtaText,
+                          tipsDialogTitle: viewModel.copy.bluetoothScanningTipsDialogTitle,
+                          tipsDialogSubtitle: viewModel.copy.bluetoothScanningTipsDialogSubtitle,
+                          tipsDialogCtaText: viewModel.copy.bluetoothScanningTipsDialogCtaText,
+                        ),
                       ),
                       ChangeNotifierProvider.value(
                         value: ConnectedBluetoothDeviceScreenViewModel(

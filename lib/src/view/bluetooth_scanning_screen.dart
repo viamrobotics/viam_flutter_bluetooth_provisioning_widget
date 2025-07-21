@@ -1,7 +1,22 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class BluetoothScanningScreen extends StatefulWidget {
-  const BluetoothScanningScreen({super.key});
+  final String title;
+  final String scanCtaText;
+  final String notSeeingDeviceCtaText;
+  final String tipsDialogTitle;
+  final String tipsDialogSubtitle;
+  final String tipsDialogCtaText;
+
+  const BluetoothScanningScreen({
+    super.key,
+    required this.title,
+    required this.scanCtaText,
+    required this.notSeeingDeviceCtaText,
+    required this.tipsDialogTitle,
+    required this.tipsDialogSubtitle,
+    required this.tipsDialogCtaText,
+  });
 
   @override
   State<BluetoothScanningScreen> createState() => _BluetoothScanningScreenState();
@@ -22,13 +37,13 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Tips'),
-          content: const Text(
-            'If the device isn\'t showing up, ensure Bluetooth is on and that the device is plugged in and turned on.\n\nYou may also need to change your phone\'s Bluetooth settings to allow it to connect to new devices.',
+          title: Text(widget.tipsDialogTitle),
+          content: Text(
+            widget.tipsDialogSubtitle,
           ),
           actions: <Widget>[
             OutlinedButton(
-              child: const Text('Close'),
+              child: Text(widget.tipsDialogCtaText),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -59,7 +74,7 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: Text('Select your Device', style: Theme.of(context).textTheme.titleLarge),
+                    child: Text(widget.title, style: Theme.of(context).textTheme.titleLarge),
                   ),
                   viewModel.isScanning && viewModel.uniqueDevices.isEmpty
                       ? Expanded(
@@ -116,11 +131,11 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
                         OutlinedButton.icon(
                           onPressed: viewModel.scanDevicesAgain,
                           icon: const Icon(Icons.refresh),
-                          label: const Text('Scan network again'),
+                          label: Text(widget.scanCtaText),
                         ),
                         TextButton(
                           onPressed: () => _notSeeingDevice(context),
-                          child: const Text('Not seeing your device?'),
+                          child: Text(widget.notSeeingDeviceCtaText),
                         ),
                       ],
                     ),
