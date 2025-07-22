@@ -27,6 +27,7 @@ part 'src/view/connected_bluetooth_device_screen.dart';
 part 'src/view/intro_screen_one.dart';
 part 'src/view/intro_screen_two.dart';
 part 'src/view/name_connected_device_screen.dart';
+part 'src/view/internet_yes_no_screen.dart';
 
 // widgets
 part 'src/widgets/scanning_list_tile.dart';
