@@ -1,7 +1,16 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class CheckConnectedDeviceOnlineScreen extends StatefulWidget {
-  const CheckConnectedDeviceOnlineScreen({super.key});
+  const CheckConnectedDeviceOnlineScreen({
+    super.key,
+    required this.successTitle,
+    required this.successSubtitle,
+    required this.successCta,
+  });
+
+  final String successTitle;
+  final String successSubtitle;
+  final String successCta;
 
   @override
   State<CheckConnectedDeviceOnlineScreen> createState() => _CheckConnectedDeviceOnlineScreenState();
@@ -83,10 +92,10 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
           Spacer(),
           Icon(Icons.check_circle, color: Colors.green, size: 40),
           SizedBox(height: 24),
-          Text('All set!', style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center),
+          Text(widget.successTitle, style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center),
           SizedBox(height: 8),
           Text(
-            '${viewModel.robot.name} is connected and ready to use.',
+            widget.successSubtitle,
             style: Theme.of(context).textTheme.bodyLarge,
             textAlign: TextAlign.center,
             maxLines: null,
@@ -94,7 +103,7 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
           Spacer(),
           FilledButton(
             onPressed: viewModel.handleSuccess,
-            child: Text('Close'),
+            child: Text(widget.successCta),
           ),
           SizedBox(height: 16),
         ],
