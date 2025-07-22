@@ -61,12 +61,9 @@ class IntroScreenTwo extends StatelessWidget {
             ),
             const Spacer(),
             const Spacer(),
-            SizedBox(
-              height: 60,
-              child: FilledButton(
-                onPressed: handleNextTapped,
-                child: Text('Next'),
-              ),
+            FilledButton(
+              onPressed: handleNextTapped,
+              child: Text('Next'),
             ),
           ],
         ),

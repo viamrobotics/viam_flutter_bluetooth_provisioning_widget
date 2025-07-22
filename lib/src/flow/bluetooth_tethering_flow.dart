@@ -2,7 +2,7 @@ part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 // TODO: APP-8807 in progress, resolving with this ticket as screens are added
 
-/// Takes you through provisioning flow with addeds support for tethering
+/// Takes you through provisioning flow with added support for tethering
 class BluetoothTetheringFlow extends StatefulWidget {
   const BluetoothTetheringFlow({
     super.key,
