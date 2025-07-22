@@ -1,0 +1,26 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: [self-hosted, x64]
+    container:
+      image: ghcr.io/cirruslabs/flutter:latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: flutter --version
+      - run: flutter pub get
+
+       # Verify formatting in all dart files
+      - name: Verify formatting
+        run: dart format --line-length=140 --set-exit-if-changed $(find ./lib -name "*.dart" -not -path "./lib/proto/*")
+
+      - name: Analyze project source
+        run: dart analyze
