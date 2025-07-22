@@ -36,11 +36,17 @@ class InternetYesNoScreen extends StatelessWidget {
           const SizedBox(height: 40),
           OutlinedButton(
             onPressed: handleYesTapped,
+            style: FilledButton.styleFrom(
+              minimumSize: Size(double.infinity, 60),
+            ),
             child: Text('Yes'),
           ),
           const SizedBox(height: 16),
           OutlinedButton(
             onPressed: handleNoTapped,
+            style: FilledButton.styleFrom(
+              minimumSize: Size(double.infinity, 60),
+            ),
             child: Text('No'),
           ),
           const Spacer(),

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:viam_flutter_bluetooth_provisioning_widget/viam_flutter_bluetooth_provisioning_widget.dart';
-
 import 'reconnect_machines_screen.dart';
 import 'provision_new_machine_screen.dart';
 
@@ -17,17 +15,6 @@ class StartScreen extends StatelessWidget {
   void _goToReconnectMachinesFlow(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => const ReconnectRobotsScreen(),
-    ));
-  }
-
-  void _goToTetheringNewMachineFlow(BuildContext context) {
-    // TODO: APP-8807 go to created tethering flow once new screens are ready
-    // testing what's in progress
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => InternetYesNoScreen(
-        handleYesTapped: () {},
-        handleNoTapped: () {},
-      ),
     ));
   }
 
@@ -49,11 +36,6 @@ class StartScreen extends StatelessWidget {
             FilledButton(
               onPressed: () => _goToReconnectMachinesFlow(context),
               child: const Text('Reconnect Machines'),
-            ),
-            const SizedBox(height: 16),
-            FilledButton(
-              onPressed: () => _goToTetheringNewMachineFlow(context),
-              child: const Text('Tethering New Machine Flow'),
             ),
           ],
         ),

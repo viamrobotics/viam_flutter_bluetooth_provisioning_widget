@@ -19,6 +19,7 @@ export 'package:viam_sdk/protos/app/app.dart';
 
 // flows
 part 'src/flow/bluetooth_provisioning_flow.dart';
+part 'src/flow/bluetooth_tethering_flow.dart';
 
 // views
 part 'src/view/bluetooth_scanning_screen.dart';

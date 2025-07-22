@@ -15,12 +15,17 @@ class ProvisionNewRobotScreen extends StatefulWidget {
 
 class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
   String? _robotName;
-  bool _isLoading = false;
+  bool _isLoadingStandardFlow = false;
+  bool _isLoadingTetheringFlow = false;
   String? _errorString;
 
-  Future<void> _createRobot() async {
+  Future<void> _createRobot({required bool tethering}) async {
     setState(() {
-      _isLoading = true;
+      if (tethering) {
+        _isLoadingTetheringFlow = true;
+      } else {
+        _isLoadingStandardFlow = true;
+      }
       _errorString = null;
     });
     try {
@@ -31,7 +36,11 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
       });
       await Future.delayed(const Duration(seconds: 3)); // delay is intentional, so you can see the robot name
       if (mounted) {
-        _goToBluetoothProvisioningFlow(context, viam, robot, mainPart);
+        if (tethering) {
+          _goToBluetoothTetheringFlow(context, viam, robot, mainPart);
+        } else {
+          _goToBluetoothProvisioningFlow(context, viam, robot, mainPart);
+        }
       }
     } catch (e) {
       debugPrint('Error creating robot: ${e.toString()}');
@@ -40,7 +49,11 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
       });
     } finally {
       setState(() {
-        _isLoading = false;
+        if (tethering) {
+          _isLoadingTetheringFlow = false;
+        } else {
+          _isLoadingStandardFlow = false;
+        }
         _robotName = null;
       });
     }
@@ -76,6 +89,26 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
     ));
   }
 
+  void _goToBluetoothTetheringFlow(BuildContext context, Viam viam, Robot robot, RobotPart mainPart) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => ChangeNotifierProvider(
+        create: (context) => BluetoothProvisioningFlowViewModel(
+          viam: viam,
+          robot: robot,
+          isNewMachine: true,
+          mainRobotPart: mainPart,
+          psk: Consts.psk,
+          fragmentId: null,
+          connectBluetoothDeviceRepository: ConnectBluetoothDeviceRepository(),
+          copy: BluetoothProvisioningFlowCopy(
+            checkingOnlineSuccessSubtitle: '${robot.name} is connected and ready to use.',
+          ),
+        ),
+        builder: (context, child) => BluetoothTetheringFlow(),
+      ),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,15 +124,30 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
             if (_robotName != null) Text('Provisioning machine named: $_robotName'),
             if (_robotName != null) const SizedBox(height: 16),
             Center(
-              child: FilledButton(
-                onPressed: _createRobot,
-                child: _isLoading
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator.adaptive(backgroundColor: Colors.white),
-                      )
-                    : const Text('Start Flow'),
+              child: Column(
+                children: [
+                  FilledButton(
+                    onPressed: () => _createRobot(tethering: false),
+                    child: _isLoadingStandardFlow
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator.adaptive(backgroundColor: Colors.white),
+                          )
+                        : const Text('Start Provisioning Flow'),
+                  ),
+                  const SizedBox(height: 16),
+                  FilledButton(
+                    onPressed: () => _createRobot(tethering: true),
+                    child: _isLoadingTetheringFlow
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator.adaptive(backgroundColor: Colors.white),
+                          )
+                        : const Text('Start Tethering Flow'),
+                  ),
+                ],
               ),
             ),
             if (_errorString != null) const SizedBox(height: 16),
