@@ -22,6 +22,7 @@ class StartScreen extends StatelessWidget {
 
   void _goToTetheringNewMachineFlow(BuildContext context) {
     // TODO: APP-8807 go to created tethering flow once new screens are ready
+    // testing what's in progress
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => InternetYesNoScreen(
         handleYesTapped: () {},
