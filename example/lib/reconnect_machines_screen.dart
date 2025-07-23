@@ -101,33 +101,38 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
   }
 
   void _goToBluetoothProvisioningFlow(BuildContext context, Viam viam, Robot robot) async {
-    // final mainPart = (await viam.appClient.listRobotParts(robot.id)).firstWhere((element) => element.mainPart);
-    // if (context.mounted) {
-    //   Navigator.of(context).push(MaterialPageRoute(
-    //     builder: (context) => ChangeNotifierProvider(
-    //       create: (context) => BluetoothProvisioningFlowViewModel(
-    //         viam: viam,
-    //         robot: robot,
-    //         isNewMachine: false,
-    //         mainRobotPart: mainPart,
-    //         psk: Consts.psk,
-    //         fragmentId: null,
-    //         connectBluetoothDeviceRepository: ConnectBluetoothDeviceRepository(),
-    //       ),
-    //       builder: (context, child) => BluetoothProvisioningFlow(onSuccess: () {
-    //         Navigator.of(context).pop();
-    //       }, handleAgentConfigured: () {
-    //         Navigator.of(context).pop();
-    //       }, existingMachineExit: () {
-    //         Navigator.of(context).pop();
-    //       }, nonexistentMachineExit: () {
-    //         Navigator.of(context).pop();
-    //       }, agentMinimumVersionExit: () {
-    //         Navigator.of(context).pop();
-    //       }),
-    //     ),
-    //   ));
-    // }
+    final mainPart = (await viam.appClient.listRobotParts(robot.id)).firstWhere((element) => element.mainPart);
+    if (context.mounted) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => BluetoothProvisioningFlow(
+          viam: viam,
+          robot: robot,
+          isNewMachine: false,
+          mainRobotPart: mainPart,
+          psk: Consts.psk,
+          fragmentId: null,
+          agentMinimumVersion: '0.20.0',
+          copy: BluetoothProvisioningFlowCopy(
+            checkingOnlineSuccessSubtitle: '${robot.name} is connected and ready to use.',
+          ),
+          onSuccess: () {
+            Navigator.of(context).pop();
+          },
+          handleAgentConfigured: () {
+            Navigator.of(context).pop();
+          },
+          existingMachineExit: () {
+            Navigator.of(context).pop();
+          },
+          nonexistentMachineExit: () {
+            Navigator.of(context).pop();
+          },
+          agentMinimumVersionExit: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ));
+    }
   }
 
   @override
