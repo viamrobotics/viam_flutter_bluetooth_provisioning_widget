@@ -1,15 +1,36 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class BluetoothProvisioningFlow extends StatefulWidget {
-  const BluetoothProvisioningFlow({
+  BluetoothProvisioningFlow({
     super.key,
+    required viam,
+    required robot,
+    required isNewMachine,
+    required mainRobotPart,
+    required String psk,
+    required String? fragmentId,
+    required String agentMinimumVersion,
+    required BluetoothProvisioningFlowCopy copy,
     required this.onSuccess,
     required this.handleAgentConfigured,
     required this.existingMachineExit,
     required this.nonexistentMachineExit,
     required this.agentMinimumVersionExit,
-  });
+  }) {
+    viewModel = BluetoothProvisioningFlowViewModel(
+      viam: viam,
+      robot: robot,
+      isNewMachine: isNewMachine,
+      connectBluetoothDeviceRepository: ConnectBluetoothDeviceRepository(),
+      mainRobotPart: mainRobotPart,
+      psk: psk,
+      fragmentId: fragmentId,
+      agentMinimumVersion: agentMinimumVersion,
+      copy: copy,
+    );
+  }
 
+  late final BluetoothProvisioningFlowViewModel viewModel;
   final VoidCallback onSuccess;
 
   /// agent has indicated the machine is online and has machine credentials
@@ -49,38 +70,37 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
   }
 
   void _onDeviceConnected(BluetoothDevice device) async {
-    final viewModel = Provider.of<BluetoothProvisioningFlowViewModel>(context, listen: false);
     try {
       // agent minimum check
-      if (await viewModel.agentVersionBelowMinimum() && mounted) {
+      if (await widget.viewModel.agentVersionBelowMinimum() && mounted) {
         // disconnect the device to avoid any `pairing request` dialogs.
         device.disconnect();
 
         _agentMinimumVersionDialog(
           context,
           widget.agentMinimumVersionExit,
-          viewModel.copy.agentIncompatibleDialogTitle,
-          viewModel.copy.agentIncompatibleDialogSubtitle,
-          viewModel.copy.agentIncompatibleDialogCta,
+          widget.viewModel.copy.agentIncompatibleDialogTitle,
+          widget.viewModel.copy.agentIncompatibleDialogSubtitle,
+          widget.viewModel.copy.agentIncompatibleDialogCta,
         );
         return;
       }
       // status check
       final status = await device.readStatus();
-      if (viewModel.isNewMachine && status.isConfigured && mounted) {
+      if (widget.viewModel.isNewMachine && status.isConfigured && mounted) {
         _avoidOverwritingExistingMachineDialog(
           context,
-          viewModel.copy.existingMachineDialogTitle,
-          viewModel.copy.existingMachineDialogSubtitle,
-          viewModel.copy.existingMachineDialogCta,
+          widget.viewModel.copy.existingMachineDialogTitle,
+          widget.viewModel.copy.existingMachineDialogSubtitle,
+          widget.viewModel.copy.existingMachineDialogCta,
         );
         return;
-      } else if (!viewModel.isNewMachine && !status.isConfigured && mounted) {
+      } else if (!widget.viewModel.isNewMachine && !status.isConfigured && mounted) {
         _reconnectingNonexistentMachineDialog(
           context,
-          viewModel.copy.machineNotFoundDialogTitle,
-          viewModel.copy.machineNotFoundDialogSubtitle,
-          viewModel.copy.machineNotFoundDialogCta,
+          widget.viewModel.copy.machineNotFoundDialogTitle,
+          widget.viewModel.copy.machineNotFoundDialogSubtitle,
+          widget.viewModel.copy.machineNotFoundDialogCta,
         );
         return;
       }
@@ -91,12 +111,11 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
   }
 
   void _onWifiCredentials(String ssid, String? psk) async {
-    final viewModel = Provider.of<BluetoothProvisioningFlowViewModel>(context, listen: false);
     try {
       setState(() {
         _isLoading = true;
       });
-      await viewModel.writeConfig(ssid: ssid, password: psk);
+      await widget.viewModel.writeConfig(ssid: ssid, password: psk);
       // you can safely disconnect now, but then you can't read the agent status from the connected device while we're waiting to get online
       _onNextPage();
     } catch (e) {
@@ -196,8 +215,9 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<BluetoothProvisioningFlowViewModel>(
-      builder: (context, viewModel, child) {
+    return ListenableBuilder(
+      listenable: widget.viewModel,
+      builder: (context, child) {
         return Scaffold(
           appBar: AppBar(
             leading: IconButton(
@@ -216,62 +236,62 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                     children: [
                       IntroScreenOne(
                         handleCtaTapped: _onNextPage,
-                        title: viewModel.copy.introScreenTitle,
-                        subtitle: viewModel.copy.introScreenSubtitle,
-                        ctaText: viewModel.copy.introScreenCtaText,
+                        title: widget.viewModel.copy.introScreenTitle,
+                        subtitle: widget.viewModel.copy.introScreenSubtitle,
+                        ctaText: widget.viewModel.copy.introScreenCtaText,
                       ),
                       IntroScreenTwo(
                         handleNextTapped: _onNextPage,
-                        turnOnTitle: viewModel.copy.introScreenTwoTurnOnTitle,
-                        turnOnSubtitle: viewModel.copy.introScreenTwoTurnOnSubtitle,
-                        bluetoothTitle: viewModel.copy.introScreenTwoBluetoothTitle,
-                        bluetoothSubtitle: viewModel.copy.introScreenTwoBluetoothSubtitle,
+                        turnOnTitle: widget.viewModel.copy.introScreenTwoTurnOnTitle,
+                        turnOnSubtitle: widget.viewModel.copy.introScreenTwoTurnOnSubtitle,
+                        bluetoothTitle: widget.viewModel.copy.introScreenTwoBluetoothTitle,
+                        bluetoothSubtitle: widget.viewModel.copy.introScreenTwoBluetoothSubtitle,
                       ),
                       ChangeNotifierProvider.value(
                         value: BluetoothScanningScreenViewModel(
                           onDeviceSelected: _onDeviceConnected,
                           scanBluetoothDevicesRepository: ScanBluetoothDevicesRepository(),
-                          connectBluetoothDeviceRepository: viewModel.connectBluetoothDeviceRepository,
-                          title: viewModel.copy.bluetoothScanningTitle,
-                          scanCtaText: viewModel.copy.bluetoothScanningScanCtaText,
-                          notSeeingDeviceCtaText: viewModel.copy.bluetoothScanningNotSeeingDeviceCtaText,
-                          tipsDialogTitle: viewModel.copy.bluetoothScanningTipsDialogTitle,
-                          tipsDialogSubtitle: viewModel.copy.bluetoothScanningTipsDialogSubtitle,
-                          tipsDialogCtaText: viewModel.copy.bluetoothScanningTipsDialogCtaText,
+                          connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
+                          title: widget.viewModel.copy.bluetoothScanningTitle,
+                          scanCtaText: widget.viewModel.copy.bluetoothScanningScanCtaText,
+                          notSeeingDeviceCtaText: widget.viewModel.copy.bluetoothScanningNotSeeingDeviceCtaText,
+                          tipsDialogTitle: widget.viewModel.copy.bluetoothScanningTipsDialogTitle,
+                          tipsDialogSubtitle: widget.viewModel.copy.bluetoothScanningTipsDialogSubtitle,
+                          tipsDialogCtaText: widget.viewModel.copy.bluetoothScanningTipsDialogCtaText,
                         ),
                         child: BluetoothScanningScreen(),
                       ),
                       ChangeNotifierProvider.value(
                         value: ConnectedBluetoothDeviceScreenViewModel(
                           handleWifiCredentials: _onWifiCredentials,
-                          connectBluetoothDeviceRepository: viewModel.connectBluetoothDeviceRepository,
-                          title: viewModel.copy.connectedDeviceTitle,
-                          subtitle: viewModel.copy.connectedDeviceSubtitle,
-                          scanCtaText: viewModel.copy.connectedDeviceScanCtaText,
-                          notSeeingDeviceCtaText: viewModel.copy.connectedDeviceNotSeeingDeviceCtaText,
-                          tipsDialogTitle: viewModel.copy.connectedDeviceTipsDialogTitle,
-                          tipsDialogSubtitle: viewModel.copy.connectedDeviceTipsDialogSubtitle,
-                          tipsDialogCtaText: viewModel.copy.connectedDeviceTipsDialogCtaText,
+                          connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
+                          title: widget.viewModel.copy.connectedDeviceTitle,
+                          subtitle: widget.viewModel.copy.connectedDeviceSubtitle,
+                          scanCtaText: widget.viewModel.copy.connectedDeviceScanCtaText,
+                          notSeeingDeviceCtaText: widget.viewModel.copy.connectedDeviceNotSeeingDeviceCtaText,
+                          tipsDialogTitle: widget.viewModel.copy.connectedDeviceTipsDialogTitle,
+                          tipsDialogSubtitle: widget.viewModel.copy.connectedDeviceTipsDialogSubtitle,
+                          tipsDialogCtaText: widget.viewModel.copy.connectedDeviceTipsDialogCtaText,
                         ),
                         child: ConnectedBluetoothDeviceScreen(),
                       ),
-                      if (viewModel.device != null)
+                      if (widget.viewModel.device != null)
                         ChangeNotifierProvider.value(
                           value: CheckConnectedDeviceOnlineScreenViewModel(
                             handleSuccess: widget.onSuccess,
                             handleAgentConfigured: widget.handleAgentConfigured,
                             handleError: _onPreviousPage, // back to network selection
                             checkingDeviceOnlineRepository: CheckingDeviceOnlineRepository(
-                              device: viewModel.device!,
-                              viam: viewModel.viam,
-                              robot: viewModel.robot,
+                              device: widget.viewModel.device!,
+                              viam: widget.viewModel.viam,
+                              robot: widget.viewModel.robot,
                             ),
-                            robot: viewModel.robot,
+                            robot: widget.viewModel.robot,
                           ),
                           child: CheckConnectedDeviceOnlineScreen(
-                            successTitle: viewModel.copy.checkingOnlineSuccessTitle,
-                            successSubtitle: viewModel.copy.checkingOnlineSuccessSubtitle,
-                            successCta: viewModel.copy.checkingOnlineSuccessCta,
+                            successTitle: widget.viewModel.copy.checkingOnlineSuccessTitle,
+                            successSubtitle: widget.viewModel.copy.checkingOnlineSuccessSubtitle,
+                            successCta: widget.viewModel.copy.checkingOnlineSuccessCta,
                           ),
                         ),
                     ],
