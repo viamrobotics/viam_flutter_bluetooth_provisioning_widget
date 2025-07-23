@@ -30,7 +30,7 @@ class BluetoothCellularInfoScreen extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16), // additional padding
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               subtitle,
               textAlign: TextAlign.center,
