@@ -9,6 +9,9 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
 
   final VoidCallback handleError;
   final Robot robot;
+  final String successTitle;
+  final String successSubtitle;
+  final String successCta;
   String? get errorMessage => _checkingDeviceOnlineRepository.errorMessage;
 
   DeviceOnlineState get deviceOnlineState => _deviceOnlineState;
@@ -27,6 +30,9 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
     required this.handleSuccess,
     required this.handleAgentConfigured,
     required this.handleError,
+    required this.successTitle,
+    required this.successSubtitle,
+    required this.successCta,
     required this.robot,
     required CheckingDeviceOnlineRepository checkingDeviceOnlineRepository,
   })  : _checkingDeviceOnlineRepository = checkingDeviceOnlineRepository,
