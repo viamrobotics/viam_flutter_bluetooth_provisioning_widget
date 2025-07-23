@@ -261,20 +261,18 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                         ),
                         child: BluetoothScanningScreen(),
                       ),
-                      ChangeNotifierProvider.value(
-                        value: ConnectedBluetoothDeviceScreenViewModel(
-                          handleWifiCredentials: _onWifiCredentials,
-                          connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
-                          title: widget.viewModel.copy.connectedDeviceTitle,
-                          subtitle: widget.viewModel.copy.connectedDeviceSubtitle,
-                          scanCtaText: widget.viewModel.copy.connectedDeviceScanCtaText,
-                          notSeeingDeviceCtaText: widget.viewModel.copy.connectedDeviceNotSeeingDeviceCtaText,
-                          tipsDialogTitle: widget.viewModel.copy.connectedDeviceTipsDialogTitle,
-                          tipsDialogSubtitle: widget.viewModel.copy.connectedDeviceTipsDialogSubtitle,
-                          tipsDialogCtaText: widget.viewModel.copy.connectedDeviceTipsDialogCtaText,
-                        ),
-                        child: ConnectedBluetoothDeviceScreen(),
-                      ),
+                      ConnectedBluetoothDeviceScreen(
+                          viewModel: ConnectedBluetoothDeviceScreenViewModel(
+                        handleWifiCredentials: _onWifiCredentials,
+                        connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
+                        title: widget.viewModel.copy.connectedDeviceTitle,
+                        subtitle: widget.viewModel.copy.connectedDeviceSubtitle,
+                        scanCtaText: widget.viewModel.copy.connectedDeviceScanCtaText,
+                        notSeeingDeviceCtaText: widget.viewModel.copy.connectedDeviceNotSeeingDeviceCtaText,
+                        tipsDialogTitle: widget.viewModel.copy.connectedDeviceTipsDialogTitle,
+                        tipsDialogSubtitle: widget.viewModel.copy.connectedDeviceTipsDialogSubtitle,
+                        tipsDialogCtaText: widget.viewModel.copy.connectedDeviceTipsDialogCtaText,
+                      )),
                       if (widget.viewModel.device != null)
                         ChangeNotifierProvider.value(
                           value: CheckConnectedDeviceOnlineScreenViewModel(

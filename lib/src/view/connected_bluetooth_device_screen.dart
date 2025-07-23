@@ -1,7 +1,9 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class ConnectedBluetoothDeviceScreen extends StatefulWidget {
-  const ConnectedBluetoothDeviceScreen({super.key});
+  const ConnectedBluetoothDeviceScreen({super.key, required this.viewModel});
+
+  final ConnectedBluetoothDeviceScreenViewModel viewModel;
 
   @override
   State<ConnectedBluetoothDeviceScreen> createState() => _ConnectedBluetoothDeviceScreenState();
@@ -13,20 +15,7 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _readNetworkList();
-    });
-  }
-
-  // would be in view model, but want to handle error and show dialog w/ the context (TODO: you can pass context to the view model)
-  Future<void> _readNetworkList() async {
-    try {
-      await Provider.of<ConnectedBluetoothDeviceScreenViewModel>(context, listen: false).readNetworkList();
-    } catch (e) {
-      if (mounted) {
-        _showErrorDialog(context, title: 'Error reading network list', error: e.toString());
-      }
-    }
+    widget.viewModel.readNetworkList(context);
   }
 
   Future<void> _presentPasskeyDialog(WifiNetwork wifiNetwork, ConnectedBluetoothDeviceScreenViewModel viewModel) async {
@@ -189,7 +178,7 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
                   children: [
                     const SizedBox(height: 8),
                     OutlinedButton.icon(
-                      onPressed: _readNetworkList,
+                      onPressed: () => widget.viewModel.readNetworkList(context),
                       icon: const Icon(Icons.refresh),
                       label: Text(viewModel.scanCtaText),
                     ),

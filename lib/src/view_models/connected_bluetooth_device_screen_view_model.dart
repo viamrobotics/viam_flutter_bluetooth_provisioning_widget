@@ -38,11 +38,18 @@ class ConnectedBluetoothDeviceScreenViewModel extends ChangeNotifier {
     required this.tipsDialogCtaText,
   }) : _connectBluetoothDeviceRepository = connectBluetoothDeviceRepository;
 
-  Future<void> readNetworkList() async {
-    wifiNetworks.clear();
-    isLoadingNetworks = true;
-    await Future.delayed(const Duration(milliseconds: 500)); // delay to see "scanning" ui
-    wifiNetworks = await _connectBluetoothDeviceRepository.readNetworkList();
-    isLoadingNetworks = false;
+  Future<void> readNetworkList(BuildContext context) async {
+    try {
+      isLoadingNetworks = true;
+      wifiNetworks.clear();
+      await Future.delayed(const Duration(milliseconds: 500)); // delay to see "scanning" ui
+      wifiNetworks = await _connectBluetoothDeviceRepository.readNetworkList();
+    } catch (e) {
+      if (context.mounted) {
+        _showErrorDialog(context, title: 'Error reading network list', error: e.toString());
+      }
+    } finally {
+      isLoadingNetworks = false;
+    }
   }
 }
