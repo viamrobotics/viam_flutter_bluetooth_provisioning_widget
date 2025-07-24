@@ -127,7 +127,7 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
               child: Column(
                 children: [
                   FilledButton(
-                    onPressed: () => _createRobot(tethering: false),
+                    onPressed: () => (!_isLoadingTetheringFlow && !_isLoadingStandardFlow) ? _createRobot(tethering: false) : null,
                     child: _isLoadingStandardFlow
                         ? const SizedBox(
                             width: 20,
@@ -138,7 +138,7 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
                   ),
                   const SizedBox(height: 16),
                   FilledButton(
-                    onPressed: () => _createRobot(tethering: true),
+                    onPressed: () => (!_isLoadingTetheringFlow && !_isLoadingStandardFlow) ? _createRobot(tethering: true) : null,
                     child: _isLoadingTetheringFlow
                         ? const SizedBox(
                             width: 20,
