@@ -11,11 +11,11 @@ class BluetoothProvisioningFlow extends StatefulWidget {
     required String? fragmentId,
     required String agentMinimumVersion,
     required BluetoothProvisioningFlowCopy copy,
-    required this.onSuccess,
-    required this.handleAgentConfigured,
-    required this.existingMachineExit,
-    required this.nonexistentMachineExit,
-    required this.agentMinimumVersionExit,
+    required onSuccess,
+    required handleAgentConfigured,
+    required existingMachineExit,
+    required nonexistentMachineExit,
+    required agentMinimumVersionExit,
   }) {
     viewModel = BluetoothProvisioningFlowViewModel(
       viam: viam,
@@ -27,21 +27,15 @@ class BluetoothProvisioningFlow extends StatefulWidget {
       fragmentId: fragmentId,
       agentMinimumVersion: agentMinimumVersion,
       copy: copy,
+      onSuccess: onSuccess,
+      handleAgentConfigured: handleAgentConfigured,
+      existingMachineExit: existingMachineExit,
+      nonexistentMachineExit: nonexistentMachineExit,
+      agentMinimumVersionExit: agentMinimumVersionExit,
     );
   }
 
   late final BluetoothProvisioningFlowViewModel viewModel;
-  final VoidCallback onSuccess;
-
-  /// agent has indicated the machine is online and has machine credentials
-  /// though it may not be online in app.viam.com yet
-  final VoidCallback handleAgentConfigured;
-
-  final VoidCallback existingMachineExit;
-  final VoidCallback nonexistentMachineExit;
-
-  /// called when the connected machine's agent version is lower (or we can't read it) compared to the agentMinimumVersion in the view model
-  final VoidCallback agentMinimumVersionExit;
 
   @override
   State<BluetoothProvisioningFlow> createState() => _BluetoothProvisioningFlowState();
@@ -70,44 +64,9 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
   }
 
   void _onDeviceConnected(BluetoothDevice device) async {
-    try {
-      // agent minimum check
-      if (await widget.viewModel.agentVersionBelowMinimum() && mounted) {
-        // disconnect the device to avoid any `pairing request` dialogs.
-        device.disconnect();
-
-        _agentMinimumVersionDialog(
-          context,
-          widget.agentMinimumVersionExit,
-          widget.viewModel.copy.agentIncompatibleDialogTitle,
-          widget.viewModel.copy.agentIncompatibleDialogSubtitle,
-          widget.viewModel.copy.agentIncompatibleDialogCta,
-        );
-        return;
-      }
-      // status check
-      final status = await device.readStatus();
-      if (widget.viewModel.isNewMachine && status.isConfigured && mounted) {
-        _avoidOverwritingExistingMachineDialog(
-          context,
-          widget.viewModel.copy.existingMachineDialogTitle,
-          widget.viewModel.copy.existingMachineDialogSubtitle,
-          widget.viewModel.copy.existingMachineDialogCta,
-        );
-        return;
-      } else if (!widget.viewModel.isNewMachine && !status.isConfigured && mounted) {
-        _reconnectingNonexistentMachineDialog(
-          context,
-          widget.viewModel.copy.machineNotFoundDialogTitle,
-          widget.viewModel.copy.machineNotFoundDialogSubtitle,
-          widget.viewModel.copy.machineNotFoundDialogCta,
-        );
-        return;
-      }
-    } catch (e) {
-      debugPrint('Error reading device status: $e');
+    if (await widget.viewModel.isDeviceConnectionValid(context, device)) {
+      _onNextPage();
     }
-    _onNextPage();
   }
 
   void _onWifiCredentials(String ssid, String? psk) async {
@@ -116,7 +75,6 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
         _isLoading = true;
       });
       await widget.viewModel.writeConfig(ssid: ssid, password: psk);
-      // you can safely disconnect now, but then you can't read the agent status from the connected device while we're waiting to get online
       _onNextPage();
     } catch (e) {
       if (mounted) {
@@ -127,90 +85,6 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
         _isLoading = false;
       });
     }
-  }
-
-  Future<void> _avoidOverwritingExistingMachineDialog(
-    BuildContext context,
-    String title,
-    String subtitle,
-    String ctaText,
-  ) async {
-    await showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Text(
-            subtitle,
-          ),
-          actions: <Widget>[
-            OutlinedButton(
-              child: Text(ctaText),
-              onPressed: () {
-                Navigator.pop(context);
-                widget.existingMachineExit();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _agentMinimumVersionDialog(
-    BuildContext context,
-    VoidCallback exitFunction,
-    String title,
-    String subtitle,
-    String ctaText,
-  ) async {
-    await showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Text(subtitle),
-          actions: <Widget>[
-            OutlinedButton(
-              child: Text(ctaText),
-              onPressed: () {
-                Navigator.pop(context);
-                exitFunction();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _reconnectingNonexistentMachineDialog(
-    BuildContext context,
-    String title,
-    String subtitle,
-    String ctaText,
-  ) async {
-    await showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Text(subtitle),
-          actions: <Widget>[
-            OutlinedButton(
-              child: Text(ctaText),
-              onPressed: () {
-                Navigator.pop(context);
-                widget.nonexistentMachineExit();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -281,8 +155,8 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                             successTitle: widget.viewModel.copy.checkingOnlineSuccessTitle,
                             successSubtitle: widget.viewModel.copy.checkingOnlineSuccessSubtitle,
                             successCta: widget.viewModel.copy.checkingOnlineSuccessCta,
-                            handleSuccess: widget.onSuccess,
-                            handleAgentConfigured: widget.handleAgentConfigured,
+                            handleSuccess: widget.viewModel.onSuccess,
+                            handleAgentConfigured: widget.viewModel.handleAgentConfigured,
                             handleError: _onPreviousPage, // back to network selection
                             checkingDeviceOnlineRepository: CheckingDeviceOnlineRepository(
                               device: widget.viewModel.device!,
