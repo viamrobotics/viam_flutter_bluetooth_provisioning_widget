@@ -143,6 +143,7 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                           _onNextPage(); // TODO: go to BluetoothCellularInfoScreen
                         },
                       ),
+                      // TODO: finish showing/connecting as part of flow
                       // BluetoothCellularInfoScreen(
                       //   handleCtaTapped: () {},
                       //   title: widget.viewModel.copy.bluetoothCellularInfoTitle,
