@@ -16,13 +16,6 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
     widget.viewModel.startScanning();
   }
 
-  @override
-  void dispose() {
-    widget.viewModel.dispose();
-    debugPrint('dispose!!!');
-    super.dispose();
-  }
-
   Future<void> _notSeeingDevice(BuildContext context, String title, String subtitle, String ctaText) async {
     await showDialog(
       context: context,
