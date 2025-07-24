@@ -121,8 +121,8 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                         bluetoothTitle: widget.viewModel.copy.introScreenTwoBluetoothTitle,
                         bluetoothSubtitle: widget.viewModel.copy.introScreenTwoBluetoothSubtitle,
                       ),
-                      ChangeNotifierProvider.value(
-                        value: BluetoothScanningScreenViewModel(
+                      BluetoothScanningScreen(
+                        viewModel: BluetoothScanningScreenViewModel(
                           onDeviceSelected: _onDeviceConnected,
                           scanBluetoothDevicesRepository: ScanBluetoothDevicesRepository(),
                           connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
@@ -133,7 +133,6 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                           tipsDialogSubtitle: widget.viewModel.copy.bluetoothScanningTipsDialogSubtitle,
                           tipsDialogCtaText: widget.viewModel.copy.bluetoothScanningTipsDialogCtaText,
                         ),
-                        child: BluetoothScanningScreen(),
                       ),
                       InternetYesNoScreen(
                         handleYesTapped: () {
