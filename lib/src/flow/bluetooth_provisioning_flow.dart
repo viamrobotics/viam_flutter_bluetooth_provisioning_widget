@@ -261,8 +261,8 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                         ),
                         child: BluetoothScanningScreen(),
                       ),
-                      ChangeNotifierProvider.value(
-                        value: ConnectedBluetoothDeviceScreenViewModel(
+                      ConnectedBluetoothDeviceScreen(
+                        viewModel: ConnectedBluetoothDeviceScreenViewModel(
                           handleWifiCredentials: _onWifiCredentials,
                           connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
                           title: widget.viewModel.copy.connectedDeviceTitle,
@@ -273,7 +273,6 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                           tipsDialogSubtitle: widget.viewModel.copy.connectedDeviceTipsDialogSubtitle,
                           tipsDialogCtaText: widget.viewModel.copy.connectedDeviceTipsDialogCtaText,
                         ),
-                        child: ConnectedBluetoothDeviceScreen(),
                       ),
                       if (widget.viewModel.device != null)
                         CheckConnectedDeviceOnlineScreen(
