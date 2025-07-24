@@ -59,6 +59,12 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                         _onNextPage(); // TODO: go to bluetooth/hotspot info screen
                       },
                     ),
+                    BluetoothCellularInfoScreen(
+                      handleCtaTapped: () {},
+                      title: viewModel.copy.bluetoothCellularInfoTitle,
+                      subtitle: viewModel.copy.bluetoothCellularInfoSubtitle,
+                      ctaText: viewModel.copy.bluetoothCellularInfoCta,
+                    ),
                   ],
                 ),
               ],
