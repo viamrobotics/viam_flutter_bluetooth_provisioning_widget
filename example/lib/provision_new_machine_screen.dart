@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import 'package:viam_flutter_bluetooth_provisioning_widget/viam_flutter_bluetooth_provisioning_widget.dart';
 
@@ -93,20 +92,32 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
 
   void _goToBluetoothTetheringFlow(BuildContext context, Viam viam, Robot robot, RobotPart mainPart) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => ChangeNotifierProvider(
-        create: (context) => BluetoothProvisioningFlowViewModel(
-          viam: viam,
-          robot: robot,
-          isNewMachine: true,
-          mainRobotPart: mainPart,
-          psk: Consts.psk,
-          fragmentId: null,
-          connectBluetoothDeviceRepository: ConnectBluetoothDeviceRepository(),
-          copy: BluetoothProvisioningFlowCopy(
-            checkingOnlineSuccessSubtitle: '${robot.name} is connected and ready to use.',
-          ),
+      builder: (context) => BluetoothTetheringFlow(
+        viam: viam,
+        robot: robot,
+        isNewMachine: true,
+        mainRobotPart: mainPart,
+        psk: Consts.psk,
+        fragmentId: null,
+        agentMinimumVersion: '0.22.0',
+        copy: BluetoothProvisioningFlowCopy(
+          checkingOnlineSuccessSubtitle: '${robot.name} is connected and ready to use.',
         ),
-        builder: (context, child) => BluetoothTetheringFlow(),
+        onSuccess: () {
+          Navigator.of(context).pop();
+        },
+        handleAgentConfigured: () {
+          Navigator.of(context).pop();
+        },
+        existingMachineExit: () {
+          Navigator.of(context).pop();
+        },
+        nonexistentMachineExit: () {
+          Navigator.of(context).pop();
+        },
+        agentMinimumVersionExit: () {
+          Navigator.of(context).pop();
+        },
       ),
     ));
   }
