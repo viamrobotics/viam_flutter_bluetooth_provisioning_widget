@@ -10,7 +10,6 @@ import 'package:viam_flutter_provisioning/viam_bluetooth_provisioning.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:viam_sdk/viam_sdk.dart' hide Permission;
 import 'package:viam_sdk/protos/app/app.dart';
-import 'package:provider/provider.dart';
 
 // export
 export 'package:viam_flutter_provisioning/viam_bluetooth_provisioning.dart';
