@@ -48,6 +48,11 @@ class BluetoothProvisioningFlowCopy {
     this.checkingOnlineSuccessTitle = 'All set!',
     this.checkingOnlineSuccessSubtitle = 'Your machine is connected and ready to use.',
     this.checkingOnlineSuccessCta = 'Close',
+    // Bluetooth cellular info
+    this.bluetoothCellularInfoTitle = 'No Wi-Fi? Use Bluetooth instead',
+    this.bluetoothCellularInfoSubtitle =
+        'If your boat doesn\'t have Internet, you can use Bluetooth to share your phone’s cellular connection with the machine.',
+    this.bluetoothCellularInfoCta = 'Continue',
   });
 
   // Intro screen one
@@ -99,4 +104,9 @@ class BluetoothProvisioningFlowCopy {
   final String checkingOnlineSuccessTitle;
   final String checkingOnlineSuccessSubtitle;
   final String checkingOnlineSuccessCta;
+
+  // Bluetooth cellular info
+  final String bluetoothCellularInfoTitle;
+  final String bluetoothCellularInfoSubtitle;
+  final String bluetoothCellularInfoCta;
 }

@@ -275,8 +275,12 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                         ),
                       ),
                       if (widget.viewModel.device != null)
-                        ChangeNotifierProvider.value(
-                          value: CheckConnectedDeviceOnlineScreenViewModel(
+                        CheckConnectedDeviceOnlineScreen(
+                          viewModel: CheckConnectedDeviceOnlineScreenViewModel(
+                            robot: widget.viewModel.robot,
+                            successTitle: widget.viewModel.copy.checkingOnlineSuccessTitle,
+                            successSubtitle: widget.viewModel.copy.checkingOnlineSuccessSubtitle,
+                            successCta: widget.viewModel.copy.checkingOnlineSuccessCta,
                             handleSuccess: widget.onSuccess,
                             handleAgentConfigured: widget.handleAgentConfigured,
                             handleError: _onPreviousPage, // back to network selection
@@ -285,12 +289,6 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                               viam: widget.viewModel.viam,
                               robot: widget.viewModel.robot,
                             ),
-                            robot: widget.viewModel.robot,
-                          ),
-                          child: CheckConnectedDeviceOnlineScreen(
-                            successTitle: widget.viewModel.copy.checkingOnlineSuccessTitle,
-                            successSubtitle: widget.viewModel.copy.checkingOnlineSuccessSubtitle,
-                            successCta: widget.viewModel.copy.checkingOnlineSuccessCta,
                           ),
                         ),
                     ],
