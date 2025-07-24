@@ -99,7 +99,7 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
         mainRobotPart: mainPart,
         psk: Consts.psk,
         fragmentId: null,
-        agentMinimumVersion: '0.22.0',
+        agentMinimumVersion: '0.20.0',
         copy: BluetoothProvisioningFlowCopy(
           checkingOnlineSuccessSubtitle: '${robot.name} is connected and ready to use.',
         ),
