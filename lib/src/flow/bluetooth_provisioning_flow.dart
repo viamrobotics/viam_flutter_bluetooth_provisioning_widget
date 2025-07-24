@@ -53,6 +53,9 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
     try {
       // agent minimum check
       if (await viewModel.agentVersionBelowMinimum() && mounted) {
+        // disconnect the device to avoid any `pairing request` dialogs.
+        device.disconnect();
+
         _agentMinimumVersionDialog(
           context,
           widget.agentMinimumVersionExit,
