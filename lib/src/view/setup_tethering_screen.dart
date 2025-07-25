@@ -71,7 +71,7 @@ class SetupTetheringScreen extends StatelessWidget {
         GestureDetector(
           onTap: AppSettings.openAppSettings,
           behavior: HitTestBehavior.opaque,
-          child: Image.asset('images/ios_wifi_hotspot.png'),
+          child: Image.asset('lib/src/images/ios_wifi_hotspot.png'),
         ),
         const SizedBox(height: 8),
         StepTile(
@@ -138,7 +138,7 @@ class SetupTetheringScreen extends StatelessWidget {
         GestureDetector(
           onTap: AppSettings.openAppSettings,
           behavior: HitTestBehavior.opaque,
-          child: Image.asset('images/android_wifi_hotspot.png'),
+          child: Image.asset('lib/src/images/android_wifi_hotspot.png'),
         ),
       ],
     );

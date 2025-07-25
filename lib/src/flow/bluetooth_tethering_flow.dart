@@ -155,7 +155,8 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                         ),
                       ),
                       InternetYesNoScreen(
-                        handleYesTapped: _onNextPage, // TODO: go to connected device page
+                        handleYesTapped:
+                            _onNextPage, // TODO: go to connected device page, not tethering flow, flip of isTethering prop in flow
                         handleNoTapped: _onNextPage,
                       ),
                       BluetoothCellularInfoScreen(
