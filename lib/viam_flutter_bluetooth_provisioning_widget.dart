@@ -10,6 +10,7 @@ import 'package:viam_flutter_provisioning/viam_bluetooth_provisioning.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:viam_sdk/viam_sdk.dart' hide Permission;
 import 'package:viam_sdk/protos/app/app.dart';
+import 'package:app_settings/app_settings.dart';
 
 // export
 export 'package:viam_flutter_provisioning/viam_bluetooth_provisioning.dart';
@@ -29,6 +30,7 @@ part 'src/view/intro_screen_two.dart';
 part 'src/view/name_connected_device_screen.dart';
 part 'src/view/internet_yes_no_screen.dart';
 part 'src/view/bluetooth_cellular_info_screen.dart';
+part 'src/view/setup_tethering_screen.dart';
 
 // widgets
 part 'src/widgets/scanning_list_tile.dart';
