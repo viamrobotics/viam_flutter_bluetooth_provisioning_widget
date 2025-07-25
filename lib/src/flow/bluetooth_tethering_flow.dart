@@ -87,6 +87,26 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
     }
   }
 
+  void _onSetupTethering() async {
+    debugPrint('onSetupTethering');
+    try {
+      widget.viewModel.device!.unlockPairing();
+      debugPrint('unlocked pairing');
+    } catch (e) {
+      debugPrint('error unlocking pairing: $e');
+    }
+
+    Timer.periodic(Duration(seconds: 5), (timer) async {
+      final status = await widget.viewModel.device!.readStatus();
+      if (status.isConnected) {
+        debugPrint('agent connected ✅');
+        timer.cancel();
+      } else {
+        debugPrint('agent not connected ❌');
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
@@ -135,20 +155,18 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                         ),
                       ),
                       InternetYesNoScreen(
-                        handleYesTapped: () {
-                          _onNextPage(); // TODO: go to normal flow, network list
-                        },
-                        handleNoTapped: () {
-                          _onNextPage(); // TODO: go to BluetoothCellularInfoScreen
-                        },
+                        handleYesTapped: _onNextPage, // TODO: go to connected device page
+                        handleNoTapped: _onNextPage,
                       ),
-                      // TODO: finish showing/connecting as part of flow
-                      // BluetoothCellularInfoScreen(
-                      //   handleCtaTapped: () {},
-                      //   title: widget.viewModel.copy.bluetoothCellularInfoTitle,
-                      //   subtitle: widget.viewModel.copy.bluetoothCellularInfoSubtitle,
-                      //   ctaText: widget.viewModel.copy.bluetoothCellularInfoCta,
-                      // ),
+                      BluetoothCellularInfoScreen(
+                        handleCtaTapped: _onNextPage,
+                        title: widget.viewModel.copy.bluetoothCellularInfoTitle,
+                        subtitle: widget.viewModel.copy.bluetoothCellularInfoSubtitle,
+                        ctaText: widget.viewModel.copy.bluetoothCellularInfoCta,
+                      ),
+                      SetupTetheringScreen(
+                        onCtaTapped: _onSetupTethering,
+                      ),
                       ConnectedBluetoothDeviceScreen(
                         viewModel: ConnectedBluetoothDeviceScreenViewModel(
                           handleWifiCredentials: _onWifiCredentials,

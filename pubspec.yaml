@@ -17,7 +17,8 @@ dependencies:
   viam_flutter_provisioning: ^0.0.12
   flutter_platform_widgets: ^7.0.1
   provider: ^6.1.5
-  
+  app_settings: ^6.1.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
