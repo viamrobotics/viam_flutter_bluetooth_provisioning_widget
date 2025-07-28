@@ -30,7 +30,7 @@ part 'src/view/name_connected_device_screen.dart';
 part 'src/view/internet_yes_no_screen.dart';
 part 'src/view/bluetooth_cellular_info_screen.dart';
 part 'src/view/setup_tethering_screen.dart';
-part 'src/view/check_device_agent_online_screen.dart';
+part 'src/view/check_agent_online_screen.dart';
 
 // widgets
 part 'src/widgets/scanning_list_tile.dart';
