@@ -90,7 +90,9 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
   void _onSetupTethering() async {
     debugPrint('onSetupTethering');
     try {
-      widget.viewModel.device!.unlockPairing();
+      final status = await widget.viewModel.device!.readStatus();
+      debugPrint('status: $status');
+      await widget.viewModel.device!.unlockPairing();
       debugPrint('unlocked pairing');
     } catch (e) {
       debugPrint('error unlocking pairing: $e');
