@@ -31,8 +31,8 @@ class CheckDeviceAgentOnlineScreenViewModel extends ChangeNotifier {
   void startChecking() {
     _checkingAgentOnlineRepository.startChecking();
     _agentOnlineSubscription = _checkingAgentOnlineRepository.agentOnlineStateStream.listen((state) {
-      _agentOnline = state;
-      if (_agentOnline) {
+      agentOnline = state;
+      if (agentOnline) {
         handleOnline();
       }
     });
