@@ -60,7 +60,7 @@ class SetupTetheringScreen extends StatelessWidget {
         GestureDetector(
           onTap: AppSettings.openAppSettings,
           behavior: HitTestBehavior.opaque,
-          child: Image.asset('../images/ios_wifi_hotspot.png'),
+          child: Image.asset('packages/viam_flutter_bluetooth_provisioning_widget/lib/src/assets/ios_wifi_hotspot.png'),
         ),
         const SizedBox(height: 8),
         StepTile(
@@ -94,7 +94,7 @@ class SetupTetheringScreen extends StatelessWidget {
       children: [
         StepTile(
           stepNumber: '1',
-          onTap: AppSettings.openAppSettings,
+          onTap: null,
           children: [
             const TextSpan(text: "In your phone's settings, go to "),
             TextSpan(text: "Network & internet", style: textTheme!.copyWith(fontWeight: FontWeight.bold)),
@@ -127,7 +127,7 @@ class SetupTetheringScreen extends StatelessWidget {
         GestureDetector(
           onTap: AppSettings.openAppSettings,
           behavior: HitTestBehavior.opaque,
-          child: Image.asset('lib/src/images/android_wifi_hotspot.png'),
+          child: Image.asset('packages/viam_flutter_bluetooth_provisioning_widget/lib/src/assets/android_wifi_hotspot.png'),
         ),
       ],
     );
