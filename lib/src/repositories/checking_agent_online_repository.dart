@@ -40,7 +40,7 @@ class CheckingAgentOnlineRepository {
       final status = await device.readStatus();
       debugPrint('status isConnected: ${status.isConnected}');
       if (status.isConnected) {
-        _agentOnline = true;
+        agentOnline = true;
       }
     } on Exception catch (e) {
       debugPrint('Error reading agent status: $e');
