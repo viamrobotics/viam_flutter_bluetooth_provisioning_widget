@@ -69,7 +69,7 @@ class SetupTetheringScreen extends StatelessWidget {
           onTap: null,
           children: [
             const TextSpan(text: 'Go to '),
-            TextSpan(text: 'Settings', style: textTheme!.copyWith(fontStyle: FontStyle.italic)),
+            TextSpan(text: 'Settings', style: textTheme.copyWith(fontStyle: FontStyle.italic)),
             const TextSpan(text: ' > '),
             TextSpan(text: 'Bluetooth.', style: textTheme.copyWith(fontWeight: FontWeight.bold)),
             TextSpan(text: 'You should see your $machineName.'),
@@ -106,7 +106,7 @@ class SetupTetheringScreen extends StatelessWidget {
           onTap: null,
           children: [
             const TextSpan(text: 'Go to '),
-            TextSpan(text: 'Settings', style: textTheme!.copyWith(fontStyle: FontStyle.italic)),
+            TextSpan(text: 'Settings', style: textTheme.copyWith(fontStyle: FontStyle.italic)),
             const TextSpan(text: ' > '),
             TextSpan(text: 'Bluetooth.', style: textTheme.copyWith(fontWeight: FontWeight.bold)),
             TextSpan(text: 'You should see your $machineName.'),
