@@ -15,7 +15,7 @@ class SetupTetheringScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Set up your Wi-Fi hotspot',
+              'Set up personal hotspot',
               textAlign: TextAlign.start,
               style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
             ),
@@ -23,7 +23,7 @@ class SetupTetheringScreen extends StatelessWidget {
             Platform.isIOS ? _buildIOSHotspotSteps(context) : _buildAndroidHotspotSteps(context),
             Spacer(),
             Text(
-              "Once you've completed these steps, come back to this screen and tap ${"Continue."}",
+              "Once you've completed these steps, come back to this screen and tap \"Continue\".",
               textAlign: TextAlign.start,
               style: Theme.of(context).textTheme.bodyLarge,
               overflow: TextOverflow.visible,
@@ -52,9 +52,13 @@ class SetupTetheringScreen extends StatelessWidget {
           stepNumber: '1',
           onTap: AppSettings.openAppSettings,
           children: [
-            const TextSpan(text: "Go to your phone's "),
-            TextSpan(text: "hotspot settings", style: textTheme!.copyWith(fontWeight: FontWeight.bold)),
-            const TextSpan(text: " (Settings > Personal Hotspot) and look for this section:"),
+            const TextSpan(text: 'In your phone\'s settings, go to '),
+            TextSpan(text: 'Settings', style: textTheme!.copyWith(fontStyle: FontStyle.italic)),
+            const TextSpan(text: ' > '),
+            TextSpan(text: 'Personal Hotspot', style: textTheme.copyWith(fontWeight: FontWeight.bold)),
+            const TextSpan(text: '\n\nMake sure "'),
+            TextSpan(text: 'Allow Others to Join', style: textTheme.copyWith(fontWeight: FontWeight.bold)),
+            const TextSpan(text: "\" is enabled"),
           ],
         ),
         GestureDetector(
@@ -67,19 +71,12 @@ class SetupTetheringScreen extends StatelessWidget {
           stepNumber: '2',
           onTap: null,
           children: [
-            const TextSpan(text: 'Make sure "'),
-            TextSpan(text: 'Allow Others to Join"', style: textTheme.copyWith(fontWeight: FontWeight.bold)),
-            const TextSpan(text: " is enabled"),
-          ],
-        ),
-        const SizedBox(height: 8),
-        StepTile(
-          stepNumber: '3',
-          onTap: null,
-          children: [
-            const TextSpan(text: 'Note the '),
-            TextSpan(text: 'Wi-Fi Password', style: textTheme.copyWith(fontWeight: FontWeight.bold)),
-            const TextSpan(text: " shown on this screen and write it down if necessary. You'll need it to connect your device."),
+            const TextSpan(text: 'Go to '),
+            TextSpan(text: 'Settings', style: textTheme!.copyWith(fontStyle: FontStyle.italic)),
+            const TextSpan(text: ' > '),
+            TextSpan(text: 'Bluetooth.', style: textTheme.copyWith(fontWeight: FontWeight.bold)),
+            const TextSpan(text: 'You should see your machine.'), // TODO: custom copy
+            const TextSpan(text: '\n\nTap to pair, and accept any pairing dialogs that pop up.'),
           ],
         ),
       ],
