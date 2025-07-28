@@ -30,6 +30,7 @@ part 'src/view/name_connected_device_screen.dart';
 part 'src/view/internet_yes_no_screen.dart';
 part 'src/view/bluetooth_cellular_info_screen.dart';
 part 'src/view/setup_tethering_screen.dart';
+part 'src/view/check_device_agent_online_screen.dart';
 
 // widgets
 part 'src/widgets/scanning_list_tile.dart';
@@ -43,6 +44,7 @@ part 'src/view_models/connected_bluetooth_device_screen_view_model.dart';
 part 'src/view_models/bluetooth_provisioning_flow_view_model.dart';
 part 'src/view_models/check_connected_device_online_screen_view_model.dart';
 part 'src/view_models/bluetooth_scanning_screen_view_model.dart';
+part 'src/view_models/check_device_agent_online_screen_view_model.dart';
 
 // models
 part 'src/models/device_online_state.dart';
@@ -52,3 +54,4 @@ part 'src/models/bluetooth_provisioning_flow_copy.dart';
 part 'src/repositories/connect_bluetooth_device_repository.dart';
 part 'src/repositories/checking_device_online_repository.dart';
 part 'src/repositories/scan_bluetooth_devices_repository.dart';
+part 'src/repositories/checking_agent_online_repository.dart';

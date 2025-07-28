@@ -44,7 +44,7 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
   /// called when the connected machine's agent version is lower (or we can't read it) compared to the agentMinimumVersion in the view model
   final VoidCallback agentMinimumVersionExit;
 
-  Future<void> writeConfig({required String ssid, required String? password}) async {
+  Future<void> writeConfig({required String? ssid, required String? password}) async {
     await connectBluetoothDeviceRepository.writeConfig(
       viam: viam,
       robot: robot,
