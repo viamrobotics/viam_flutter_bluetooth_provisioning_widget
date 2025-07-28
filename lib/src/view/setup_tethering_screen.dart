@@ -51,7 +51,7 @@ class SetupTetheringScreen extends StatelessWidget {
       children: [
         StepTile(
           stepNumber: '1',
-          onTap: AppSettings.openAppSettings,
+          onTap: null,
           children: [
             const TextSpan(text: 'In your phone\'s settings, go to '),
             TextSpan(text: 'Settings', style: textTheme!.copyWith(fontStyle: FontStyle.italic)),
