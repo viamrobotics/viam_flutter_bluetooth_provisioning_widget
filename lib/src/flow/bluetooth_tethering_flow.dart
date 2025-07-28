@@ -99,6 +99,7 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
         throw Exception('Lost connection to device');
       }
       await widget.viewModel.device!.unlockPairing();
+      debugPrint('unlocked pairing');
       _onNextPage();
     } catch (e) {
       if (mounted) {

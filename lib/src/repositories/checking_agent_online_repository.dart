@@ -38,6 +38,7 @@ class CheckingAgentOnlineRepository {
   Future<void> _readAgentStatus() async {
     try {
       final status = await device.readStatus();
+      debugPrint('status isConnected: ${status.isConnected}');
       if (status.isConnected) {
         _agentOnline = true;
       }
