@@ -61,11 +61,7 @@ class SetupTetheringScreen extends StatelessWidget {
             const TextSpan(text: "\" is enabled"),
           ],
         ),
-        GestureDetector(
-          onTap: AppSettings.openAppSettings,
-          behavior: HitTestBehavior.opaque,
-          child: Image.asset('packages/viam_flutter_bluetooth_provisioning_widget/lib/src/assets/ios_wifi_hotspot.png'),
-        ),
+        Image.asset('packages/viam_flutter_bluetooth_provisioning_widget/lib/src/assets/ios_wifi_hotspot.png'),
         const SizedBox(height: 8),
         StepTile(
           stepNumber: '2',
@@ -97,34 +93,24 @@ class SetupTetheringScreen extends StatelessWidget {
             TextSpan(text: "Network & internet", style: textTheme!.copyWith(fontWeight: FontWeight.bold)),
             const TextSpan(text: ", then "),
             TextSpan(text: "Hotspot & tethering", style: textTheme.copyWith(fontWeight: FontWeight.bold)),
+            const TextSpan(text: '\n\nMake sure '),
+            TextSpan(text: 'Bluetooth tethering', style: textTheme.copyWith(fontWeight: FontWeight.bold)),
+            const TextSpan(text: " is enabled"),
           ],
         ),
+        Image.asset('packages/viam_flutter_bluetooth_provisioning_widget/lib/src/assets/android_wifi_hotspot.png'),
         const SizedBox(height: 8),
         StepTile(
           stepNumber: '2',
           onTap: null,
           children: [
-            const TextSpan(text: 'Make sure '),
-            TextSpan(text: 'Wi-Fi hotspot', style: textTheme.copyWith(fontWeight: FontWeight.bold)),
-            const TextSpan(text: " is enabled"),
+            const TextSpan(text: 'Go to '),
+            TextSpan(text: 'Settings', style: textTheme!.copyWith(fontStyle: FontStyle.italic)),
+            const TextSpan(text: ' > '),
+            TextSpan(text: 'Bluetooth.', style: textTheme.copyWith(fontWeight: FontWeight.bold)),
+            const TextSpan(text: 'You should see your machine.'), // TODO: custom copy
+            const TextSpan(text: '\n\nTap to pair, and accept any pairing dialogs that pop up.'),
           ],
-        ),
-        const SizedBox(height: 8),
-        StepTile(
-          stepNumber: '3',
-          onTap: null,
-          children: [
-            const TextSpan(text: 'Tap on "Wi-Fi hotspot" and note the '),
-            TextSpan(text: 'Hotspot name', style: textTheme.copyWith(fontWeight: FontWeight.bold)),
-            const TextSpan(text: " and "),
-            TextSpan(text: 'Hotspot password.', style: textTheme.copyWith(fontWeight: FontWeight.bold)),
-            const TextSpan(text: " Write them down if necessary—you'll need them to connect your device."),
-          ],
-        ),
-        GestureDetector(
-          onTap: AppSettings.openAppSettings,
-          behavior: HitTestBehavior.opaque,
-          child: Image.asset('packages/viam_flutter_bluetooth_provisioning_widget/lib/src/assets/android_wifi_hotspot.png'),
         ),
       ],
     );
