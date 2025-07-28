@@ -7,47 +7,36 @@ class SetupTetheringScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, size: 24),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ),
-      body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  'Set up your Wi-Fi hotspot',
-                  textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
-                ),
-                Spacer(),
-                Platform.isIOS ? _buildIOSHotspotSteps(context) : _buildAndroidHotspotSteps(context),
-                Spacer(),
-                Text(
-                  "Once you've completed these steps, come back to this screen and tap ${"Continue."}",
-                  textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                  overflow: TextOverflow.visible,
-                ),
-                Spacer(),
-                FilledButton(
-                  onPressed: onCtaTapped,
-                  child: Text(
-                    'Continue',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'Set up your Wi-Fi hotspot',
+              textAlign: TextAlign.start,
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
             ),
-          ),
+            Spacer(),
+            Platform.isIOS ? _buildIOSHotspotSteps(context) : _buildAndroidHotspotSteps(context),
+            Spacer(),
+            Text(
+              "Once you've completed these steps, come back to this screen and tap ${"Continue."}",
+              textAlign: TextAlign.start,
+              style: Theme.of(context).textTheme.bodyLarge,
+              overflow: TextOverflow.visible,
+            ),
+            Spacer(),
+            FilledButton(
+              onPressed: onCtaTapped,
+              child: Text(
+                'Continue',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -71,7 +60,7 @@ class SetupTetheringScreen extends StatelessWidget {
         GestureDetector(
           onTap: AppSettings.openAppSettings,
           behavior: HitTestBehavior.opaque,
-          child: Image.asset('lib/src/images/ios_wifi_hotspot.png'),
+          child: Image.asset('../images/ios_wifi_hotspot.png'),
         ),
         const SizedBox(height: 8),
         StepTile(
