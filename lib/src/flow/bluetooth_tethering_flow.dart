@@ -90,6 +90,27 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
     }
   }
 
+  Future<void> _unlockBluetoothPairing() async {
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      if (widget.viewModel.device == null) {
+        throw Exception('Lost connection to device');
+      }
+      await widget.viewModel.device!.unlockPairing();
+      _onNextPage();
+    } catch (e) {
+      if (mounted) {
+        _showErrorDialog(context, title: 'Failed to unlock pairing', error: e.toString());
+      }
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   void _onInternetYesNo(bool yesInternet) {
     setState(() {
       _useInternetFlow = yesInternet;
@@ -150,7 +171,7 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                       ),
                       if (!_useInternetFlow && widget.viewModel.device != null) ...[
                         BluetoothCellularInfoScreen(
-                          handleCtaTapped: _onNextPage,
+                          handleCtaTapped: _unlockBluetoothPairing,
                           title: widget.viewModel.copy.bluetoothCellularInfoTitle,
                           subtitle: widget.viewModel.copy.bluetoothCellularInfoSubtitle,
                           ctaText: widget.viewModel.copy.bluetoothCellularInfoCta,
