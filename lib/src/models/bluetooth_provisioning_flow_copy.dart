@@ -53,6 +53,8 @@ class BluetoothProvisioningFlowCopy {
     this.bluetoothCellularInfoSubtitle =
         'If your boat doesn\'t have Internet, you can use Bluetooth to share your phone’s cellular connection with the machine.',
     this.bluetoothCellularInfoCta = 'Continue',
+    // Tethering
+    this.tetheringMachineName = 'machine',
   });
 
   // Intro screen one
@@ -109,4 +111,7 @@ class BluetoothProvisioningFlowCopy {
   final String bluetoothCellularInfoTitle;
   final String bluetoothCellularInfoSubtitle;
   final String bluetoothCellularInfoCta;
+
+  // Tethering
+  final String tetheringMachineName;
 }
