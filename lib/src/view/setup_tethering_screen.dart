@@ -2,8 +2,9 @@ part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class SetupTetheringScreen extends StatelessWidget {
   final VoidCallback onCtaTapped;
+  final String machineName;
 
-  const SetupTetheringScreen({super.key, required this.onCtaTapped});
+  const SetupTetheringScreen({super.key, required this.onCtaTapped, required this.machineName});
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +72,7 @@ class SetupTetheringScreen extends StatelessWidget {
             TextSpan(text: 'Settings', style: textTheme!.copyWith(fontStyle: FontStyle.italic)),
             const TextSpan(text: ' > '),
             TextSpan(text: 'Bluetooth.', style: textTheme.copyWith(fontWeight: FontWeight.bold)),
-            const TextSpan(text: 'You should see your machine.'), // TODO: custom copy
+            TextSpan(text: 'You should see your $machineName.'),
             const TextSpan(text: '\n\nTap to pair, and accept any pairing dialogs that pop up.'),
           ],
         ),
@@ -108,7 +109,7 @@ class SetupTetheringScreen extends StatelessWidget {
             TextSpan(text: 'Settings', style: textTheme!.copyWith(fontStyle: FontStyle.italic)),
             const TextSpan(text: ' > '),
             TextSpan(text: 'Bluetooth.', style: textTheme.copyWith(fontWeight: FontWeight.bold)),
-            const TextSpan(text: 'You should see your machine.'), // TODO: custom copy
+            TextSpan(text: 'You should see your $machineName.'),
             const TextSpan(text: '\n\nTap to pair, and accept any pairing dialogs that pop up.'),
           ],
         ),

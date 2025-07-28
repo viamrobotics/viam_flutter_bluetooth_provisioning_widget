@@ -45,6 +45,9 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
   final PageController _pageController = PageController();
   bool _isLoading = false;
 
+  /// can be flipped on/off by the user depending on how they answer the internet question
+  bool _useInternetFlow = false;
+
   @override
   void dispose() {
     _pageController.dispose();
@@ -87,6 +90,14 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
     }
   }
 
+  void _onInternetYesNo(bool yesInternet) {
+    setState(() {
+      _useInternetFlow = yesInternet;
+    });
+    _onNextPage();
+  }
+
+  // TODO: APP-8807 handle loading isConnected in next screen, with view model in that screen, only call unlock here / in flow vm
   void _onSetupTethering() async {
     debugPrint('onSetupTethering');
     try {
@@ -157,32 +168,35 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                         ),
                       ),
                       InternetYesNoScreen(
-                        handleYesTapped:
-                            _onNextPage, // TODO: go to connected device page, not tethering flow, flip of isTethering prop in flow
-                        handleNoTapped: _onNextPage,
+                        handleYesTapped: () => _onInternetYesNo(true),
+                        handleNoTapped: () => _onInternetYesNo(false),
                       ),
-                      BluetoothCellularInfoScreen(
-                        handleCtaTapped: _onNextPage,
-                        title: widget.viewModel.copy.bluetoothCellularInfoTitle,
-                        subtitle: widget.viewModel.copy.bluetoothCellularInfoSubtitle,
-                        ctaText: widget.viewModel.copy.bluetoothCellularInfoCta,
-                      ),
-                      SetupTetheringScreen(
-                        onCtaTapped: _onSetupTethering,
-                      ),
-                      ConnectedBluetoothDeviceScreen(
-                        viewModel: ConnectedBluetoothDeviceScreenViewModel(
-                          handleWifiCredentials: _onWifiCredentials,
-                          connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
-                          title: widget.viewModel.copy.connectedDeviceTitle,
-                          subtitle: widget.viewModel.copy.connectedDeviceSubtitle,
-                          scanCtaText: widget.viewModel.copy.connectedDeviceScanCtaText,
-                          notSeeingDeviceCtaText: widget.viewModel.copy.connectedDeviceNotSeeingDeviceCtaText,
-                          tipsDialogTitle: widget.viewModel.copy.connectedDeviceTipsDialogTitle,
-                          tipsDialogSubtitle: widget.viewModel.copy.connectedDeviceTipsDialogSubtitle,
-                          tipsDialogCtaText: widget.viewModel.copy.connectedDeviceTipsDialogCtaText,
+                      if (!_useInternetFlow) ...[
+                        BluetoothCellularInfoScreen(
+                          handleCtaTapped: _onNextPage,
+                          title: widget.viewModel.copy.bluetoothCellularInfoTitle,
+                          subtitle: widget.viewModel.copy.bluetoothCellularInfoSubtitle,
+                          ctaText: widget.viewModel.copy.bluetoothCellularInfoCta,
                         ),
-                      ),
+                        SetupTetheringScreen(
+                          onCtaTapped: _onSetupTethering,
+                          machineName: widget.viewModel.copy.tetheringMachineName,
+                        ),
+                      ],
+                      if (_useInternetFlow)
+                        ConnectedBluetoothDeviceScreen(
+                          viewModel: ConnectedBluetoothDeviceScreenViewModel(
+                            handleWifiCredentials: _onWifiCredentials,
+                            connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
+                            title: widget.viewModel.copy.connectedDeviceTitle,
+                            subtitle: widget.viewModel.copy.connectedDeviceSubtitle,
+                            scanCtaText: widget.viewModel.copy.connectedDeviceScanCtaText,
+                            notSeeingDeviceCtaText: widget.viewModel.copy.connectedDeviceNotSeeingDeviceCtaText,
+                            tipsDialogTitle: widget.viewModel.copy.connectedDeviceTipsDialogTitle,
+                            tipsDialogSubtitle: widget.viewModel.copy.connectedDeviceTipsDialogSubtitle,
+                            tipsDialogCtaText: widget.viewModel.copy.connectedDeviceTipsDialogCtaText,
+                          ),
+                        ),
                       if (widget.viewModel.device != null)
                         CheckConnectedDeviceOnlineScreen(
                           viewModel: CheckConnectedDeviceOnlineScreenViewModel(
@@ -192,7 +206,7 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                             successCta: widget.viewModel.copy.checkingOnlineSuccessCta,
                             handleSuccess: widget.viewModel.onSuccess,
                             handleAgentConfigured: widget.viewModel.handleAgentConfigured,
-                            handleError: _onPreviousPage, // back to network selection
+                            handleError: _onPreviousPage,
                             checkingDeviceOnlineRepository: CheckingDeviceOnlineRepository(
                               device: widget.viewModel.device!,
                               viam: widget.viewModel.viam,
