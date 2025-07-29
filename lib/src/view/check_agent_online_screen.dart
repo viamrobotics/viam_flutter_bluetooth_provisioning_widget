@@ -3,7 +3,7 @@ part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 class CheckDeviceAgentOnlineScreen extends StatefulWidget {
   const CheckDeviceAgentOnlineScreen({super.key, required this.viewModel});
 
-  final CheckDeviceAgentOnlineScreenViewModel viewModel;
+  final CheckAgentOnlineScreenViewModel viewModel;
 
   @override
   State<CheckDeviceAgentOnlineScreen> createState() => _CheckDeviceAgentOnlineScreenState();

@@ -182,7 +182,7 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                           machineName: widget.viewModel.copy.tetheringMachineName,
                         ),
                         CheckDeviceAgentOnlineScreen(
-                          viewModel: CheckDeviceAgentOnlineScreenViewModel(
+                          viewModel: CheckAgentOnlineScreenViewModel(
                             handleOnline: () async {
                               await Future.delayed(Duration(seconds: 3)); // delay long enough to see success
                               await _onWifiCredentials(null, null); // shows loading
