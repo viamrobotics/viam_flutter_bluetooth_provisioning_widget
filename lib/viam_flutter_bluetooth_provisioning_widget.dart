@@ -44,7 +44,7 @@ part 'src/view_models/connected_bluetooth_device_screen_view_model.dart';
 part 'src/view_models/bluetooth_provisioning_flow_view_model.dart';
 part 'src/view_models/check_connected_device_online_screen_view_model.dart';
 part 'src/view_models/bluetooth_scanning_screen_view_model.dart';
-part 'src/view_models/check_device_agent_online_screen_view_model.dart';
+part 'src/view_models/check_agent_online_screen_view_model.dart';
 
 // models
 part 'src/models/device_online_state.dart';
