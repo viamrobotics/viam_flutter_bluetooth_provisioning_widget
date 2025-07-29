@@ -32,6 +32,13 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
   final String _psk;
   BluetoothDevice? get device => connectBluetoothDeviceRepository.device;
 
+  bool get isLoading => _isLoading;
+  bool _isLoading = false;
+  set isLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
   final VoidCallback onSuccess;
 
   /// agent has indicated the machine is online and has machine credentials
@@ -62,6 +69,7 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
 
   Future<bool> isDeviceConnectionValid(BuildContext context, BluetoothDevice device) async {
     try {
+      isLoading = true;
       // agent minimum check
       if (await agentVersionBelowMinimum() && context.mounted) {
         // disconnect the device to avoid any `pairing request` dialogs.
@@ -82,6 +90,23 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
     } catch (e) {
       debugPrint('Error reading device status: $e');
       return false; // could be valid, but undetermined without reading status
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  Future<bool> onWifiCredentials(BuildContext context, String ssid, String? password) async {
+    try {
+      isLoading = true;
+      await writeConfig(ssid: ssid, password: password);
+      return true;
+    } catch (e) {
+      if (context.mounted) {
+        _showErrorDialog(context, title: 'Failed to write config', error: e.toString());
+      }
+      return false;
+    } finally {
+      isLoading = false;
     }
   }
 

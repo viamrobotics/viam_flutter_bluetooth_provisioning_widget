@@ -43,7 +43,6 @@ class BluetoothProvisioningFlow extends StatefulWidget {
 
 class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
   final PageController _pageController = PageController();
-  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -69,21 +68,9 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
     }
   }
 
-  void _onWifiCredentials(String ssid, String? psk) async {
-    try {
-      setState(() {
-        _isLoading = true;
-      });
-      await widget.viewModel.writeConfig(ssid: ssid, password: psk);
+  Future<void> _onWifiCredentials(String ssid, String? password) async {
+    if (await widget.viewModel.onWifiCredentials(context, ssid, password)) {
       _onNextPage();
-    } catch (e) {
-      if (mounted) {
-        _showErrorDialog(context, title: 'Failed to write config', error: e.toString());
-      }
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
     }
   }
 
@@ -103,7 +90,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
             child: Stack(
               children: [
                 Opacity(
-                  opacity: _isLoading ? 0.0 : 1.0,
+                  opacity: widget.viewModel.isLoading ? 0.0 : 1.0,
                   child: PageView(
                     controller: _pageController,
                     physics: NeverScrollableScrollPhysics(),
@@ -167,7 +154,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                     ],
                   ),
                 ),
-                if (_isLoading) const Center(child: CircularProgressIndicator()),
+                if (widget.viewModel.isLoading) const Center(child: CircularProgressIndicator()),
               ],
             ),
           ),
