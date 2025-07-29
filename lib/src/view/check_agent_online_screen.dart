@@ -43,24 +43,26 @@ class _CheckDeviceAgentOnlineScreenState extends State<CheckDeviceAgentOnlineScr
   }
 
   Widget _buildOnlineState(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Spacer(),
-          Icon(Icons.check_circle, color: Colors.green, size: 40),
-          SizedBox(height: 24),
-          Text('Success!', style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center),
-          SizedBox(height: 8),
-          Text(
-            'Your machine is connected to the Internet', // TODO: config copy
-            style: Theme.of(context).textTheme.bodyLarge,
-            textAlign: TextAlign.center,
-            maxLines: null,
-          ),
-        ],
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Spacer(),
+            Icon(Icons.check_circle, color: Colors.green, size: 40),
+            SizedBox(height: 24),
+            Text('Success!', style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center),
+            SizedBox(height: 8),
+            Text(
+              'Your machine is connected to the Internet', // TODO: config copy
+              style: Theme.of(context).textTheme.bodyLarge,
+              textAlign: TextAlign.center,
+              maxLines: null,
+            ),
+          ],
+        ),
       ),
     );
   }
