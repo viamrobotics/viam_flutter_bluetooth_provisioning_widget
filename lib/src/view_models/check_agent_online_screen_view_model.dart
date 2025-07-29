@@ -2,6 +2,8 @@ part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class CheckAgentOnlineScreenViewModel extends ChangeNotifier {
   final VoidCallback handleOnline;
+  final String successTitle;
+  final String successSubtitle;
 
   bool get agentOnline => _agentOnline;
   set agentOnline(bool state) {
@@ -17,6 +19,8 @@ class CheckAgentOnlineScreenViewModel extends ChangeNotifier {
 
   CheckAgentOnlineScreenViewModel({
     required this.handleOnline,
+    required this.successTitle,
+    required this.successSubtitle,
     required CheckingAgentOnlineRepository checkingAgentOnlineRepository,
   })  : _checkingAgentOnlineRepository = checkingAgentOnlineRepository,
         _agentOnline = checkingAgentOnlineRepository.agentOnline;

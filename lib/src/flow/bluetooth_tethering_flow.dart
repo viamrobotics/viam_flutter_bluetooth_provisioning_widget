@@ -188,6 +188,8 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                               await _onWifiCredentials(null, null); // shows loading
                             },
                             checkingAgentOnlineRepository: CheckingAgentOnlineRepository(device: widget.viewModel.device!),
+                            successTitle: widget.viewModel.copy.checkAgentOnlineSuccessTitle,
+                            successSubtitle: widget.viewModel.copy.checkAgentOnlineSuccessSubtitle,
                           ),
                         ),
                       ],

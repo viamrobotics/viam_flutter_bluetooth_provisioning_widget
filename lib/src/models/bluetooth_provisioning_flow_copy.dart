@@ -55,6 +55,9 @@ class BluetoothProvisioningFlowCopy {
     this.bluetoothCellularInfoCta = 'Continue',
     // Tethering
     this.tetheringMachineName = 'machine',
+    // Check agent online
+    this.checkAgentOnlineSuccessTitle = 'Success!',
+    this.checkAgentOnlineSuccessSubtitle = 'Your machine is connected to the Internet',
   });
 
   // Intro screen one
@@ -114,4 +117,8 @@ class BluetoothProvisioningFlowCopy {
 
   // Tethering
   final String tetheringMachineName;
+
+  // Check agent online
+  final String checkAgentOnlineSuccessTitle;
+  final String checkAgentOnlineSuccessSubtitle;
 }

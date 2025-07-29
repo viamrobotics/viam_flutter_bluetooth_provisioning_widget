@@ -53,10 +53,10 @@ class _CheckDeviceAgentOnlineScreenState extends State<CheckDeviceAgentOnlineScr
             Spacer(),
             Icon(Icons.check_circle, color: Colors.green, size: 40),
             SizedBox(height: 24),
-            Text('Success!', style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center),
+            Text(widget.viewModel.successTitle, style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center),
             SizedBox(height: 8),
             Text(
-              'Your machine is connected to the Internet', // TODO: config copy
+              widget.viewModel.successSubtitle,
               style: Theme.of(context).textTheme.bodyLarge,
               textAlign: TextAlign.center,
               maxLines: null,
