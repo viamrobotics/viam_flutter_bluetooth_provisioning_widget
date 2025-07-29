@@ -81,7 +81,7 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 16.0),
                             separatorBuilder: (context, index) => const SizedBox(height: 16),
                             itemCount: widget.viewModel.uniqueDevices.length,
-                            itemBuilder: (context, index) {
+                            itemBuilder: (ctx, index) {
                               return Card(
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
@@ -97,7 +97,7 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
                                           ? widget.viewModel.uniqueDevices[index].platformName
                                           : 'untitled',
                                       style: Theme.of(context).textTheme.bodyLarge),
-                                  onTap: () => widget.viewModel.connect(widget.viewModel.uniqueDevices[index]),
+                                  onTap: () => widget.viewModel.connect(context, widget.viewModel.uniqueDevices[index]),
                                 ),
                               );
                             },
