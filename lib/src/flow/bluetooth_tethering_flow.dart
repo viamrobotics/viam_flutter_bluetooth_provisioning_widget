@@ -43,7 +43,6 @@ class BluetoothTetheringFlow extends StatefulWidget {
 
 class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
   final PageController _pageController = PageController();
-  bool _isLoading = false;
 
   /// can be flipped on/off by the user depending on how they answer the internet question
   bool _useInternetFlow = false;
@@ -72,21 +71,9 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
     }
   }
 
-  void _onWifiCredentials(String ssid, String? psk) async {
-    try {
-      setState(() {
-        _isLoading = true;
-      });
-      await widget.viewModel.writeConfig(ssid: ssid, password: psk);
+  Future<void> _onWifiCredentials(String ssid, String? password) async {
+    if (await widget.viewModel.onWifiCredentials(context, ssid, password)) {
       _onNextPage();
-    } catch (e) {
-      if (mounted) {
-        _showErrorDialog(context, title: 'Failed to write config', error: e.toString());
-      }
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
     }
   }
 
@@ -136,7 +123,7 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
             child: Stack(
               children: [
                 Opacity(
-                  opacity: _isLoading ? 0.0 : 1.0,
+                  opacity: widget.viewModel.isLoading ? 0.0 : 1.0,
                   child: PageView(
                     controller: _pageController,
                     physics: NeverScrollableScrollPhysics(),
@@ -217,7 +204,7 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                     ],
                   ),
                 ),
-                if (_isLoading) const Center(child: CircularProgressIndicator()),
+                if (widget.viewModel.isLoading) const Center(child: CircularProgressIndicator()),
               ],
             ),
           ),
