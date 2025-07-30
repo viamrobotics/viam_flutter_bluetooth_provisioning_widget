@@ -51,7 +51,7 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
   /// called when the connected machine's agent version is lower (or we can't read it) compared to the agentMinimumVersion in the view model
   final VoidCallback agentMinimumVersionExit;
 
-  Future<void> writeConfig({required String ssid, required String? password}) async {
+  Future<void> writeConfig({required String? ssid, required String? password}) async {
     await connectBluetoothDeviceRepository.writeConfig(
       viam: viam,
       robot: robot,
@@ -95,7 +95,7 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
     }
   }
 
-  Future<bool> onWifiCredentials(BuildContext context, String ssid, String? password) async {
+  Future<bool> onWifiCredentials(BuildContext context, String? ssid, String? password) async {
     try {
       isLoading = true;
       await writeConfig(ssid: ssid, password: password);
@@ -105,6 +105,20 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
         _showErrorDialog(context, title: 'Failed to write config', error: e.toString());
       }
       return false;
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  Future<void> unlockBluetoothPairing(BuildContext context) async {
+    try {
+      isLoading = true;
+      await device?.unlockPairing();
+      debugPrint('unlocked pairing');
+    } catch (e) {
+      if (context.mounted) {
+        _showErrorDialog(context, title: 'Failed to unlock pairing', error: e.toString());
+      }
     } finally {
       isLoading = false;
     }

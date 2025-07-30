@@ -65,16 +65,20 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
     }
   }
 
-  void _onDeviceConnected(BluetoothDevice device) async {
+  Future<void> _onDeviceConnected(BluetoothDevice device) async {
     if (await widget.viewModel.isDeviceConnectionValid(context, device)) {
       _onNextPage();
     }
   }
 
-  Future<void> _onWifiCredentials(String ssid, String? password) async {
+  Future<void> _onWifiCredentials(String? ssid, String? password) async {
     if (await widget.viewModel.onWifiCredentials(context, ssid, password)) {
       _onNextPage();
     }
+  }
+
+  Future<void> _unlockBluetoothPairing() async {
+    await widget.viewModel.unlockBluetoothPairing(context);
   }
 
   void _onInternetYesNo(bool yesInternet) {
@@ -82,29 +86,6 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
       _useInternetFlow = yesInternet;
     });
     _onNextPage();
-  }
-
-  // TODO: APP-8807 handle loading isConnected in next screen, with view model in that screen, only call unlock here / in flow vm
-  void _onSetupTethering() async {
-    debugPrint('onSetupTethering');
-    try {
-      final status = await widget.viewModel.device!.readStatus();
-      debugPrint('status: $status');
-      await widget.viewModel.device!.unlockPairing();
-      debugPrint('unlocked pairing');
-    } catch (e) {
-      debugPrint('error unlocking pairing: $e');
-    }
-
-    Timer.periodic(Duration(seconds: 5), (timer) async {
-      final status = await widget.viewModel.device!.readStatus();
-      if (status.isConnected) {
-        debugPrint('agent connected ✅');
-        timer.cancel();
-      } else {
-        debugPrint('agent not connected ❌');
-      }
-    });
   }
 
   @override
@@ -158,16 +139,27 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                         handleYesTapped: () => _onInternetYesNo(true),
                         handleNoTapped: () => _onInternetYesNo(false),
                       ),
-                      if (!_useInternetFlow) ...[
+                      if (!_useInternetFlow && widget.viewModel.device != null) ...[
                         BluetoothCellularInfoScreen(
-                          handleCtaTapped: _onNextPage,
+                          handleCtaTapped: _unlockBluetoothPairing,
                           title: widget.viewModel.copy.bluetoothCellularInfoTitle,
                           subtitle: widget.viewModel.copy.bluetoothCellularInfoSubtitle,
                           ctaText: widget.viewModel.copy.bluetoothCellularInfoCta,
                         ),
                         SetupTetheringScreen(
-                          onCtaTapped: _onSetupTethering,
+                          onCtaTapped: _onNextPage,
                           machineName: widget.viewModel.copy.tetheringMachineName,
+                        ),
+                        CheckDeviceAgentOnlineScreen(
+                          viewModel: CheckAgentOnlineScreenViewModel(
+                            handleOnline: () async {
+                              await Future.delayed(Duration(seconds: 3)); // delay long enough to see success
+                              await _onWifiCredentials(null, null); // shows loading
+                            },
+                            checkingAgentOnlineRepository: CheckingAgentOnlineRepository(device: widget.viewModel.device!),
+                            successTitle: widget.viewModel.copy.checkAgentOnlineSuccessTitle,
+                            successSubtitle: widget.viewModel.copy.checkAgentOnlineSuccessSubtitle,
+                          ),
                         ),
                       ],
                       if (_useInternetFlow)

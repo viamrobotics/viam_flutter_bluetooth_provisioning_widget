@@ -35,7 +35,7 @@ class ConnectBluetoothDeviceRepository {
     required Viam viam,
     required Robot robot,
     required RobotPart mainRobotPart,
-    required String ssid,
+    required String? ssid,
     required String? password,
     required String psk,
     required String? fragmentId,
@@ -53,7 +53,9 @@ class ConnectBluetoothDeviceRepository {
         psk: psk,
       );
     }
-    await _device!.writeNetworkConfig(ssid: ssid, pw: password, psk: psk);
+    if (ssid != null) {
+      await _device!.writeNetworkConfig(ssid: ssid, pw: password, psk: psk);
+    }
     final fragmentIdToWrite = fragmentId ?? await _device!.readFragmentId();
     if (fragmentIdToWrite.isNotEmpty) {
       await _fragmentOverride(viam, fragmentIdToWrite, mainRobotPart, robot);
