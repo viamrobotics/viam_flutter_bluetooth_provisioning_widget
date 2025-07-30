@@ -65,38 +65,20 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
     }
   }
 
-  void _onDeviceConnected(BluetoothDevice device) async {
+  Future<void> _onDeviceConnected(BluetoothDevice device) async {
     if (await widget.viewModel.isDeviceConnectionValid(context, device)) {
       _onNextPage();
     }
   }
 
-  Future<void> _onWifiCredentials(String ssid?, String? password) async {
+  Future<void> _onWifiCredentials(String? ssid, String? password) async {
     if (await widget.viewModel.onWifiCredentials(context, ssid, password)) {
       _onNextPage();
     }
   }
 
   Future<void> _unlockBluetoothPairing() async {
-    try {
-      setState(() {
-        _isLoading = true;
-      });
-      if (widget.viewModel.device == null) {
-        throw Exception('Lost connection to device');
-      }
-      await widget.viewModel.device!.unlockPairing();
-      debugPrint('unlocked pairing');
-      _onNextPage();
-    } catch (e) {
-      if (mounted) {
-        _showErrorDialog(context, title: 'Failed to unlock pairing', error: e.toString());
-      }
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+    await widget.viewModel.unlockBluetoothPairing(context);
   }
 
   void _onInternetYesNo(bool yesInternet) {
