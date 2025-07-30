@@ -68,7 +68,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
     }
   }
 
-  Future<void> _onWifiCredentials(String ssid?, String? password) async {
+  Future<void> _onWifiCredentials(String ssid, String? password) async {
     if (await widget.viewModel.onWifiCredentials(context, ssid, password)) {
       _onNextPage();
     }
