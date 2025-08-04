@@ -110,15 +110,17 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> unlockBluetoothPairing(BuildContext context) async {
+  Future<bool> unlockBluetoothPairing(BuildContext context) async {
     try {
       isLoading = true;
-      await device?.unlockPairing();
+      await device?.unlockPairing(psk: _psk);
       debugPrint('unlocked pairing');
+      return true;
     } catch (e) {
       if (context.mounted) {
         _showErrorDialog(context, title: 'Failed to unlock pairing', error: e.toString());
       }
+      return false;
     } finally {
       isLoading = false;
     }

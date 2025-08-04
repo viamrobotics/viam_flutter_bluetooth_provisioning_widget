@@ -78,7 +78,9 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
   }
 
   Future<void> _unlockBluetoothPairing() async {
-    await widget.viewModel.unlockBluetoothPairing(context);
+    if (await widget.viewModel.unlockBluetoothPairing(context)) {
+      _onNextPage();
+    }
   }
 
   void _onInternetYesNo(bool yesInternet) {
