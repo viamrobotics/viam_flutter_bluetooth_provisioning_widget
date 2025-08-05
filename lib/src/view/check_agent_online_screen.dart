@@ -13,7 +13,7 @@ class _CheckDeviceAgentOnlineScreenState extends State<CheckDeviceAgentOnlineScr
   @override
   void initState() {
     super.initState();
-    widget.viewModel.startChecking();
+    widget.viewModel.startListening();
   }
 
   Widget _buildCheckingState(BuildContext context) {

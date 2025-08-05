@@ -14,6 +14,7 @@ class CheckAgentOnlineScreenViewModel extends ChangeNotifier {
   }
 
   final CheckingAgentOnlineRepository _checkingAgentOnlineRepository;
+  final ConnectBluetoothDeviceRepository _connectBluetoothDeviceRepository;
   bool _agentOnline;
   StreamSubscription<bool>? _agentOnlineSubscription;
 
@@ -22,7 +23,9 @@ class CheckAgentOnlineScreenViewModel extends ChangeNotifier {
     required this.successTitle,
     required this.successSubtitle,
     required CheckingAgentOnlineRepository checkingAgentOnlineRepository,
+    required ConnectBluetoothDeviceRepository connectBluetoothDeviceRepository,
   })  : _checkingAgentOnlineRepository = checkingAgentOnlineRepository,
+        _connectBluetoothDeviceRepository = connectBluetoothDeviceRepository,
         _agentOnline = checkingAgentOnlineRepository.agentOnline;
 
   @override
@@ -32,12 +35,23 @@ class CheckAgentOnlineScreenViewModel extends ChangeNotifier {
     super.dispose();
   }
 
-  void startChecking() {
+  void startListening() {
     _checkingAgentOnlineRepository.startChecking();
     _agentOnlineSubscription = _checkingAgentOnlineRepository.agentOnlineStateStream.listen((state) {
       agentOnline = state;
       if (agentOnline) {
         handleOnline();
+      }
+    });
+
+    _connectBluetoothDeviceRepository.bluetoothConnectionStateStream.listen((state) async {
+      if (state == BluetoothConnectionState.disconnected) {
+        debugPrint('attempting to reconnect');
+        try {
+          await _connectBluetoothDeviceRepository.reconnect(); // can expect to happen on iOS, try to reconnect
+        } catch (e) {
+          debugPrint('error reconnecting: $e');
+        }
       }
     });
   }

@@ -31,6 +31,12 @@ class ConnectBluetoothDeviceRepository {
     _successfullyConnected(device);
   }
 
+  Future<void> reconnect() async {
+    if (_device?.isConnected == false) {
+      await _device!.connect();
+    }
+  }
+
   Future<void> writeConfig({
     required Viam viam,
     required Robot robot,
@@ -41,7 +47,7 @@ class ConnectBluetoothDeviceRepository {
     required String? fragmentId,
     required bool fragmentOverride,
   }) async {
-    if (_device == null || _device?.isConnected == false) {
+    if (_device?.isConnected == false) {
       throw Exception('No connected device');
     }
 
@@ -67,7 +73,7 @@ class ConnectBluetoothDeviceRepository {
   }
 
   Future<List<WifiNetwork>> readNetworkList() async {
-    if (_device == null || _device?.isConnected == false) {
+    if (_device?.isConnected == false) {
       throw Exception('No connected device');
     }
 
@@ -77,10 +83,8 @@ class ConnectBluetoothDeviceRepository {
 
   void _successfullyConnected(BluetoothDevice device) {
     _connectionStateSubscription = device.connectionState.listen((state) {
+      debugPrint('device connection state: $state');
       bluetoothConnectionState = state;
-      if (state == BluetoothConnectionState.disconnected) {
-        _device = null;
-      }
     });
     _device = device;
   }
@@ -88,7 +92,7 @@ class ConnectBluetoothDeviceRepository {
   /// Version check to compare against a specified minimum version
   /// If we can't read the version, it's also in a version below what we support
   Future<bool> isAgentVersionBelowMinimum(String minimumVersion) async {
-    if (_device == null || _device?.isConnected == false) {
+    if (_device?.isConnected == false) {
       throw Exception('No connected device');
     }
 

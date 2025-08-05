@@ -158,6 +158,7 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                               await Future.delayed(Duration(seconds: 3)); // delay long enough to see success
                               await _onWifiCredentials(null, null); // shows loading
                             },
+                            connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
                             checkingAgentOnlineRepository: CheckingAgentOnlineRepository(device: widget.viewModel.device!),
                             successTitle: widget.viewModel.copy.checkAgentOnlineSuccessTitle,
                             successSubtitle: widget.viewModel.copy.checkAgentOnlineSuccessSubtitle,
