@@ -116,6 +116,8 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
       isLoading = true;
       await device?.unlockPairing(psk: _psk);
       debugPrint('unlocked pairing');
+      await device?.disconnect();
+      debugPrint('disconnected from device');
       return true;
     } catch (e) {
       if (context.mounted) {
