@@ -60,6 +60,7 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
       mainRobotPart: _mainRobotPart,
       psk: _psk,
       fragmentId: fragmentId,
+      fragmentOverride: isNewMachine,
     );
   }
 

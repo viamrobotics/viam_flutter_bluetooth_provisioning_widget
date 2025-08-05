@@ -39,6 +39,7 @@ class ConnectBluetoothDeviceRepository {
     required String? password,
     required String psk,
     required String? fragmentId,
+    required bool fragmentOverride,
   }) async {
     if (_device == null || _device?.isConnected == false) {
       throw Exception('No connected device');
@@ -56,9 +57,11 @@ class ConnectBluetoothDeviceRepository {
     if (ssid != null) {
       await _device!.writeNetworkConfig(ssid: ssid, pw: password, psk: psk);
     }
-    final fragmentIdToWrite = fragmentId ?? await _device!.readFragmentId();
-    if (fragmentIdToWrite.isNotEmpty) {
-      await _fragmentOverride(viam, fragmentIdToWrite, mainRobotPart, robot);
+    if (fragmentOverride) {
+      final fragmentIdToWrite = fragmentId ?? await _device!.readFragmentId();
+      if (fragmentIdToWrite.isNotEmpty) {
+        await _fragmentOverride(viam, fragmentIdToWrite, mainRobotPart, robot);
+      }
     }
     await _device!.exitProvisioning(psk: psk);
   }
