@@ -35,8 +35,11 @@ class CheckAgentOnlineScreenViewModel extends ChangeNotifier {
     super.dispose();
   }
 
+  void reconnect() {
+    _connectBluetoothDeviceRepository.reconnect();
+  }
+
   void startChecking() {
-    _connectBluetoothDeviceRepository.reconnect(); // mv probably
     _checkingAgentOnlineRepository.startChecking();
     _agentOnlineSubscription = _checkingAgentOnlineRepository.agentOnlineStateStream.listen((state) {
       agentOnline = state;
