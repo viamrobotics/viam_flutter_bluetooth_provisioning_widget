@@ -35,8 +35,8 @@ class CheckAgentOnlineScreenViewModel extends ChangeNotifier {
     super.dispose();
   }
 
-  void reconnect() {
-    _connectBluetoothDeviceRepository.reconnect();
+  Future<void> reconnect() async {
+    await _connectBluetoothDeviceRepository.reconnect();
   }
 
   void startChecking() {
