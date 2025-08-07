@@ -14,6 +14,7 @@ class _CheckDeviceAgentOnlineScreenState extends State<CheckDeviceAgentOnlineScr
   void initState() {
     super.initState();
     widget.viewModel.startChecking();
+    widget.viewModel.reconnect();
   }
 
   Widget _buildCheckingState(BuildContext context) {

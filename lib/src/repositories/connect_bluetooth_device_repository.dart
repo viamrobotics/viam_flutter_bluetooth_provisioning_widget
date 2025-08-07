@@ -31,6 +31,13 @@ class ConnectBluetoothDeviceRepository {
     _successfullyConnected(device);
   }
 
+  Future<void> reconnect() async {
+    if (_device?.isConnected == false && _device != null) {
+      await _device!.connect();
+      debugPrint('reconnected to device');
+    }
+  }
+
   Future<void> writeConfig({
     required Viam viam,
     required Robot robot,
@@ -78,9 +85,6 @@ class ConnectBluetoothDeviceRepository {
   void _successfullyConnected(BluetoothDevice device) {
     _connectionStateSubscription = device.connectionState.listen((state) {
       bluetoothConnectionState = state;
-      if (state == BluetoothConnectionState.disconnected) {
-        _device = null;
-      }
     });
     _device = device;
   }
