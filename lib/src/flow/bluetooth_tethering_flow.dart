@@ -152,18 +152,20 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                           onCtaTapped: _onNextPage,
                           machineName: widget.viewModel.copy.tetheringMachineName,
                         ),
-                        CheckDeviceAgentOnlineScreen(
-                          viewModel: CheckAgentOnlineScreenViewModel(
-                            handleOnline: () async {
-                              await Future.delayed(Duration(seconds: 3)); // delay long enough to see success
-                              await _onWifiCredentials(null, null); // shows loading
-                            },
-                            checkingAgentOnlineRepository: CheckingAgentOnlineRepository(device: widget.viewModel.device!),
-                            connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
-                            successTitle: widget.viewModel.copy.checkAgentOnlineSuccessTitle,
-                            successSubtitle: widget.viewModel.copy.checkAgentOnlineSuccessSubtitle,
+                        // show, else it's a reconnect and we should skip to the final Robot online check
+                        if (!widget.viewModel.isConfigured)
+                          CheckDeviceAgentOnlineScreen(
+                            viewModel: CheckAgentOnlineScreenViewModel(
+                              handleOnline: () async {
+                                await Future.delayed(Duration(seconds: 3)); // delay long enough to see success
+                                await _onWifiCredentials(null, null); // shows loading
+                              },
+                              checkingAgentOnlineRepository: CheckingAgentOnlineRepository(device: widget.viewModel.device!),
+                              connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
+                              successTitle: widget.viewModel.copy.checkAgentOnlineSuccessTitle,
+                              successSubtitle: widget.viewModel.copy.checkAgentOnlineSuccessSubtitle,
+                            ),
                           ),
-                        ),
                       ],
                       if (_useInternetFlow)
                         ConnectedBluetoothDeviceScreen(
