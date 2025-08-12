@@ -14,7 +14,10 @@ dependencies:
   permission_handler: ^12.0.0+1
   viam_sdk: ^0.6.4
   collection: ^1.18.0
-  viam_flutter_provisioning: ^0.0.13
+  viam_flutter_provisioning:
+    git:
+      url: https://github.com/viamrobotics/viam_flutter_provisioning.git
+      ref: kevin/change-discover-services-droid
   flutter_platform_widgets: ^7.0.1
   provider: ^6.1.5
   
