@@ -40,21 +40,15 @@ class CheckingDeviceOnlineRepository {
         return;
       }
       _checkOnline();
-      _checkAgentStatus();
+      _readAgentErrors();
     });
   }
 
-  /// We want to read these sequentially for now, some errors observed trying to read ble characteristics in parallel
-  Future<void> _checkAgentStatus() async {
+  Future<void> _readAgentErrors() async {
     if (!device.isConnected) {
       return;
     }
 
-    await _readAgentErrors();
-    await _readAgentStatus();
-  }
-
-  Future<void> _readAgentErrors() async {
     try {
       if (_startingErrors == null) {
         _startingErrors = await device.readErrors();
@@ -71,17 +65,6 @@ class CheckingDeviceOnlineRepository {
       }
     } catch (e) {
       debugPrint('Error reading agent errors: $e');
-    }
-  }
-
-  Future<void> _readAgentStatus() async {
-    try {
-      final status = await device.readStatus();
-      if (status.isConnected && status.isConfigured && deviceOnlineState != DeviceOnlineState.success) {
-        deviceOnlineState = DeviceOnlineState.agentConnected; // timer still allowed to run for the online check
-      }
-    } on Exception catch (e) {
-      debugPrint('Error reading agent status: $e');
     }
   }
 

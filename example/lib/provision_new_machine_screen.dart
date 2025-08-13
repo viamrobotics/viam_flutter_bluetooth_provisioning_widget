@@ -74,9 +74,6 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
         onSuccess: () {
           Navigator.of(context).pop();
         },
-        handleAgentConfigured: () {
-          Navigator.of(context).pop();
-        },
         existingMachineExit: () {
           Navigator.of(context).pop();
         },
@@ -104,9 +101,6 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
           checkingOnlineSuccessSubtitle: '${robot.name} is connected and ready to use.',
         ),
         onSuccess: () {
-          Navigator.of(context).pop();
-        },
-        handleAgentConfigured: () {
           Navigator.of(context).pop();
         },
         existingMachineExit: () {

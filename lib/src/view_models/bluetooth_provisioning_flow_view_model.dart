@@ -12,7 +12,6 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
     this.agentMinimumVersion = '0.20.0',
     this.copy = const BluetoothProvisioningFlowCopy(),
     required this.onSuccess,
-    required this.handleAgentConfigured,
     required this.existingMachineExit,
     required this.nonexistentMachineExit,
     required this.agentMinimumVersionExit,
@@ -40,10 +39,6 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
   }
 
   final VoidCallback onSuccess;
-
-  /// agent has indicated the machine is online and has machine credentials
-  /// though it may not be online in app.viam.com yet
-  final VoidCallback handleAgentConfigured;
 
   final VoidCallback existingMachineExit;
   final VoidCallback nonexistentMachineExit;
