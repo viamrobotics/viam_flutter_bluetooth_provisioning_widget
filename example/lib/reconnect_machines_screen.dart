@@ -134,6 +134,75 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
     }
   }
 
+  void _goToBluetoothTetheringFlow(BuildContext context, Viam viam, Robot robot) async {
+    final mainPart = (await viam.appClient.listRobotParts(robot.id)).firstWhere((element) => element.mainPart);
+    if (context.mounted) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => BluetoothTetheringFlow(
+          viam: viam,
+          robot: robot,
+          isNewMachine: false,
+          mainRobotPart: mainPart,
+          psk: Consts.psk,
+          fragmentId: null,
+          agentMinimumVersion: '0.20.0',
+          copy: BluetoothProvisioningFlowCopy(
+            checkingOnlineSuccessSubtitle: '${robot.name} is connected and ready to use.',
+          ),
+          onSuccess: () {
+            Navigator.of(context).pop();
+          },
+          handleAgentConfigured: () {
+            Navigator.of(context).pop();
+          },
+          existingMachineExit: () {
+            Navigator.of(context).pop();
+          },
+          nonexistentMachineExit: () {
+            Navigator.of(context).pop();
+          },
+          agentMinimumVersionExit: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ));
+    }
+  }
+
+  void _showActionDialog(BuildContext context, Robot robot) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(robot.name),
+          content: const Text('What would you like to do with this machine?'),
+          actions: [
+            OutlinedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _goToBluetoothTetheringFlow(context, _viam!, robot);
+              },
+              child: const Text('Tether'),
+            ),
+            OutlinedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _goToBluetoothProvisioningFlow(context, _viam!, robot);
+              },
+              child: const Text('Connect'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -149,7 +218,7 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
                 title: Text(_robots[index].robot.name),
                 subtitle: Text('location: ${_robots[index].locationName}'),
                 trailing: _robotStatuses[_robots[index].robot.id]?.statusIcon,
-                onTap: () => _goToBluetoothProvisioningFlow(context, _viam!, _robots[index].robot),
+                onTap: () => _showActionDialog(context, _robots[index].robot),
               ),
             ),
     );
