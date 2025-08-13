@@ -13,6 +13,7 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
   @override
   void initState() {
     super.initState();
+    widget.viewModel.reconnect(); // reconnect to device if it was disconnected
     widget.viewModel.startChecking();
   }
 
