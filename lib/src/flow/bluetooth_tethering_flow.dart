@@ -152,7 +152,9 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                           onCtaTapped: _onNextPage,
                           machineName: widget.viewModel.copy.tetheringMachineName,
                         ),
-                        // show, else it's a reconnect and we should skip to the final Robot online check
+                        // If the machine is configured already (has machine credentials) and gets a connection from tethering,
+                        // we won't be able to check agent online. The agent bluetooth service will be shut down at this point.
+                        // The machine will be online in app.viam.com and we should skip to that check instead.
                         if (!widget.viewModel.isConfigured)
                           CheckDeviceAgentOnlineScreen(
                             viewModel: CheckAgentOnlineScreenViewModel(
