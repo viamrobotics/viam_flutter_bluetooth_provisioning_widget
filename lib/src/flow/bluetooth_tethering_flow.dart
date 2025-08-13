@@ -198,6 +198,7 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                               viam: widget.viewModel.viam,
                               robot: widget.viewModel.robot,
                             ),
+                            connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
                           ),
                         ),
                     ],
