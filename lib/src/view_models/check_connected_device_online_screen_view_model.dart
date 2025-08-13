@@ -18,7 +18,6 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
   }
 
   final CheckingDeviceOnlineRepository _checkingDeviceOnlineRepository;
-  final ConnectBluetoothDeviceRepository _connectBluetoothDeviceRepository;
   DeviceOnlineState _deviceOnlineState;
   StreamSubscription<DeviceOnlineState>? _deviceOnlineSubscription;
 
@@ -30,9 +29,7 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
     required this.successCta,
     required this.robot,
     required CheckingDeviceOnlineRepository checkingDeviceOnlineRepository,
-    required ConnectBluetoothDeviceRepository connectBluetoothDeviceRepository,
   })  : _checkingDeviceOnlineRepository = checkingDeviceOnlineRepository,
-        _connectBluetoothDeviceRepository = connectBluetoothDeviceRepository,
         _deviceOnlineState = checkingDeviceOnlineRepository.deviceOnlineState;
 
   @override
@@ -40,10 +37,6 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
     _deviceOnlineSubscription?.cancel();
     _checkingDeviceOnlineRepository.dispose();
     super.dispose();
-  }
-
-  Future<void> reconnect() async {
-    await _connectBluetoothDeviceRepository.reconnect();
   }
 
   void startChecking() {
