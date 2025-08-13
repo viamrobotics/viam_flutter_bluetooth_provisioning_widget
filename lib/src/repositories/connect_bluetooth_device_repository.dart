@@ -106,8 +106,14 @@ class ConnectBluetoothDeviceRepository {
   }
 
   bool _isVersionLower(String currentVersion, String minimumVersion) {
-    List<int> current = currentVersion.split('.').map(int.parse).toList();
-    List<int> minimum = minimumVersion.split('.').map(int.parse).toList();
+    // Extract version numbers using regex (e.g., "0.20.4-release" -> "0.20.4")
+    final versionRegex = RegExp(r'^(\d+\.\d+\.\d+)');
+
+    String cleanCurrentVersion = versionRegex.firstMatch(currentVersion)?.group(1) ?? currentVersion;
+    String cleanMinimumVersion = versionRegex.firstMatch(minimumVersion)?.group(1) ?? minimumVersion;
+
+    List<int> current = cleanCurrentVersion.split('.').map(int.parse).toList();
+    List<int> minimum = cleanMinimumVersion.split('.').map(int.parse).toList();
 
     for (int i = 0; i < minimum.length; i++) {
       if (current[i] < minimum[i]) {
