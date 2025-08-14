@@ -33,7 +33,7 @@ class ConnectBluetoothDeviceRepository {
 
   Future<void> reconnect() async {
     if (_device?.isConnected == false && _device != null) {
-      await _device!.connect();
+      await connect(_device!);
       debugPrint('reconnected to device');
     }
   }

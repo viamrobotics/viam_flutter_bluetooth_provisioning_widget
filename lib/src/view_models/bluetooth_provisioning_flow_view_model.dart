@@ -17,7 +17,8 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
     required this.nonexistentMachineExit,
     required this.agentMinimumVersionExit,
   })  : _mainRobotPart = mainRobotPart,
-        _psk = psk;
+        _psk = psk,
+        _isConfigured = !isNewMachine;
   final Viam viam;
   final Robot robot;
   final bool isNewMachine;
@@ -27,10 +28,18 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
 
   /// if not specified, the fragmentId read from the connected device will be used instead
   final String? fragmentId;
+  BluetoothDevice? get device => connectBluetoothDeviceRepository.device;
 
   final RobotPart _mainRobotPart;
   final String _psk;
-  BluetoothDevice? get device => connectBluetoothDeviceRepository.device;
+
+  /// based on isNewMachine initially, but can be determined by reading the device status
+  bool get isConfigured => _isConfigured;
+  bool _isConfigured;
+  set isConfigured(bool value) {
+    _isConfigured = value;
+    notifyListeners();
+  }
 
   bool get isLoading => _isLoading;
   bool _isLoading = false;
@@ -80,6 +89,7 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
       }
       // status check
       final status = await device.readStatus();
+      isConfigured = status.isConfigured;
       if (isNewMachine && status.isConfigured && context.mounted) {
         _avoidOverwritingExistingMachineDialog(context);
         return false;

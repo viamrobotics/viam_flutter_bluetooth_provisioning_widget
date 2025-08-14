@@ -149,6 +149,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                               viam: widget.viewModel.viam,
                               robot: widget.viewModel.robot,
                             ),
+                            connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
                           ),
                         ),
                     ],
