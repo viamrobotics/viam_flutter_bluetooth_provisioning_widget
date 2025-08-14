@@ -98,25 +98,36 @@ class ConnectBluetoothDeviceRepository {
 
     try {
       final agentVersion = await _device!.readAgentVersion();
-      return _isVersionLower(agentVersion, minimumVersion);
+      return isVersionLower(currentVersionStr: agentVersion, minimumVersionStr: minimumVersion);
     } catch (e) {
       debugPrint('Error reading agent version: $e');
       return true;
     }
   }
 
-  bool _isVersionLower(String currentVersion, String minimumVersion) {
-    List<int> current = currentVersion.split('.').map(int.parse).toList();
-    List<int> minimum = minimumVersion.split('.').map(int.parse).toList();
+  bool isVersionLower({required String currentVersionStr, required String minimumVersionStr}) {
+    // extract version numbers using regex (e.g., "0.20.4-release" -> "0.20.4")
+    final versionRegex = RegExp(r'^(\d+\.\d+\.\d+)');
+    String cleanCurrentVersion = versionRegex.firstMatch(currentVersionStr)?.group(1) ?? currentVersionStr;
+    String cleanMinimumVersion = versionRegex.firstMatch(minimumVersionStr)?.group(1) ?? minimumVersionStr;
+    List<int> currentIntList = cleanCurrentVersion.split('.').map(int.tryParse).whereType<int>().toList();
+    List<int> minimumIntList = cleanMinimumVersion.split('.').map(int.tryParse).whereType<int>().toList();
 
-    for (int i = 0; i < minimum.length; i++) {
-      if (current[i] < minimum[i]) {
-        return true; // Current version is lower
-      } else if (current[i] > minimum[i]) {
-        return false; // Current version is higher
-      }
+    if (currentIntList.isEmpty) {
+      return false; // no numbers, allow 'custom' pre-release versions to be higher than minimum
     }
-    return false; // Versions are equal
+    // not using the factory constructor because it can't parse 1.20 properly, so we'll convert that to 1.20.0
+    final currentVersion = Version(
+      currentIntList.elementAtOrNull(0) ?? 0,
+      currentIntList.elementAtOrNull(1) ?? 0,
+      currentIntList.elementAtOrNull(2) ?? 0,
+    );
+    final minimumVersion = Version(
+      minimumIntList.elementAtOrNull(0) ?? 0,
+      minimumIntList.elementAtOrNull(1) ?? 0,
+      minimumIntList.elementAtOrNull(2) ?? 0,
+    );
+    return currentVersion < minimumVersion;
   }
 
   Future<void> _fragmentOverride(Viam viam, String fragmentId, RobotPart robotPart, Robot robot) async {

@@ -10,11 +10,13 @@ import 'package:viam_flutter_provisioning/viam_bluetooth_provisioning.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:viam_sdk/viam_sdk.dart' hide Permission;
 import 'package:viam_sdk/protos/app/app.dart';
+import 'package:pub_semver/pub_semver.dart';
 
 // export
 export 'package:viam_flutter_provisioning/viam_bluetooth_provisioning.dart';
 export 'package:viam_sdk/viam_sdk.dart' hide Permission;
 export 'package:viam_sdk/protos/app/app.dart';
+export 'package:pub_semver/pub_semver.dart';
 
 // flows
 part 'src/flow/bluetooth_provisioning_flow.dart';
