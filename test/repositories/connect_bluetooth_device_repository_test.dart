@@ -35,13 +35,12 @@ void main() {
 
       test('should handle pre-release versions correctly', () {
         expect(repository.isVersionLower(currentVersionStr: '0.20.4-release', minimumVersionStr: '0.19.0'), false);
-        expect(
-            repository.isVersionLower(currentVersionStr: '0.20.4-release', minimumVersionStr: '0.20.4'), false); // we're calling it equal
-        expect(repository.isVersionLower(currentVersionStr: 'custom', minimumVersionStr: '0.20.4'), false);
+        expect(repository.isVersionLower(currentVersionStr: 'custom', minimumVersionStr: '0.20.4'), false); // custom beats any version
       });
 
       test('should return false when versions are equal', () {
         expect(repository.isVersionLower(currentVersionStr: '1.2.0', minimumVersionStr: '1.2.0'), false);
+        expect(repository.isVersionLower(currentVersionStr: '0.20.4-release', minimumVersionStr: '0.20.4'), false);
         expect(repository.isVersionLower(currentVersionStr: '0.20.4', minimumVersionStr: '0.20.4'), false);
       });
     });
