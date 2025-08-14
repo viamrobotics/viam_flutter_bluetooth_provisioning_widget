@@ -12,7 +12,6 @@ class BluetoothTetheringFlow extends StatefulWidget {
     required String agentMinimumVersion,
     required BluetoothProvisioningFlowCopy copy,
     required onSuccess,
-    required handleAgentConfigured,
     required existingMachineExit,
     required nonexistentMachineExit,
     required agentMinimumVersionExit,
@@ -28,7 +27,6 @@ class BluetoothTetheringFlow extends StatefulWidget {
       agentMinimumVersion: agentMinimumVersion,
       copy: copy,
       onSuccess: onSuccess,
-      handleAgentConfigured: handleAgentConfigured,
       existingMachineExit: existingMachineExit,
       nonexistentMachineExit: nonexistentMachineExit,
       agentMinimumVersionExit: agentMinimumVersionExit,
@@ -191,7 +189,6 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                             successSubtitle: widget.viewModel.copy.checkingOnlineSuccessSubtitle,
                             successCta: widget.viewModel.copy.checkingOnlineSuccessCta,
                             handleSuccess: widget.viewModel.onSuccess,
-                            handleAgentConfigured: widget.viewModel.handleAgentConfigured,
                             handleError: _onPreviousPage,
                             checkingDeviceOnlineRepository: CheckingDeviceOnlineRepository(
                               device: widget.viewModel.device!,

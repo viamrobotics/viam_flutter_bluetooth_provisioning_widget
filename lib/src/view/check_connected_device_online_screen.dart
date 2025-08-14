@@ -43,35 +43,6 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
     );
   }
 
-  Widget _buildAgentConnectedState(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircularProgressIndicator(),
-          SizedBox(height: 24),
-          Text(
-            'Connected!',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 8),
-          Text(
-            '${widget.viewModel.robot.name} is connected and almost ready to use. You can leave this screen now and it will automatically come online in a few minutes.',
-            style: Theme.of(context).textTheme.bodyLarge,
-            textAlign: TextAlign.center,
-            maxLines: null,
-          ),
-          Spacer(),
-          FilledButton(
-            onPressed: widget.viewModel.handleAgentConfigured,
-            child: Text('Close'),
-          ),
-          SizedBox(height: 16),
-        ],
-      ),
-    );
-  }
-
   Widget _buildSuccessState(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -139,7 +110,6 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: switch (widget.viewModel.deviceOnlineState) {
             DeviceOnlineState.checking => _buildCheckingState(context),
-            DeviceOnlineState.agentConnected => _buildAgentConnectedState(context),
             DeviceOnlineState.success => _buildSuccessState(context),
             DeviceOnlineState.errorConnecting => _buildErrorConnectingState(context),
           },
