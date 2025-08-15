@@ -92,7 +92,7 @@ Navigator.of(context).push(MaterialPageRoute(
     isNewMachine: true,
     mainRobotPart: mainPart,
     psk: 'viamsetup', // defaults to 'viamsetup', but will use your 'hotspot_password' from viam-defaults.json
-    fragmentId: null,
+    fragmentId: null, // when passing null, the fragment will be read from viam-defaults.json
     agentMinimumVersion: '0.20.0',
     copy: BluetoothProvisioningFlowCopy(
       checkingOnlineSuccessSubtitle: '${robot.name} is connected and ready to use.',
