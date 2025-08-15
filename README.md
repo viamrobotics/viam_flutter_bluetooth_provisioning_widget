@@ -12,7 +12,7 @@ This package is built on top of [viam_flutter_provisioning](https://github.com/v
 
 ### Machine Setup
 
-1. **Flash your Device**: See the [Viam Documentation](https://docs.viam.com/installation/prepare/rpi-setup) for an example on flashing a Raspberry Pi.
+1. **Flash your Device**: See the [Viam Documentation](https://docs.viam.com/installation/prepare/rpi-setup) for an example off flashing a Raspberry Pi.
 2. **Configure provisioning defaults**: Create a provisioning configuration file (`viam-defaults.json`) by specifying at least the following info:
 
    ```json
@@ -37,7 +37,7 @@ This package is built on top of [viam_flutter_provisioning](https://github.com/v
 
 - **Physical Device Required**: This widget must be run on a physical device to discover nearby Bluetooth devices running `viam-agent` with Bluetooth provisioning enabled.
 - **Bluetooth Enabled**: Ensure Bluetooth is enabled on both the mobile device and the target machine.
-- **viam-agent Version**: The machine must be running a `0.20.0` and up of `viam-agent` with Bluetooth provisioning support. Tethering requires `0.21.0` of `viam-agent`.
+- **viam-agent Version**: The machine must be running `0.20.0` and up of `viam-agent` with Bluetooth provisioning support. Tethering requires `0.21.0` of `viam-agent`.
 
 ## Platform Requirements
 
@@ -70,11 +70,9 @@ Add the following permissions to your `AndroidManifest.xml` files:
 
 Before starting a provisioning flow, you need to:
 
-1. **Initialize Viam instance**: Create a Viam instance with your API credentials
-2. **Create or get a robot**: Either create a new robot or retrieve an existing one from your Viam organization
-3. **Get the main part**: Retrieve the main robot part that will be provisioned
-
-These steps are required because the widget needs a valid robot and Viam instance to communicate with the Viam cloud and provision the robot.
+1. Create a Viam instance
+2. Either create a new robot or retrieve an existing one
+3. Retrieve the main robot part
 
 ### Basic Example
 
