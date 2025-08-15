@@ -70,7 +70,7 @@ Add the following permissions to your `AndroidManifest.xml` files:
 
 Before starting a provisioning flow, you need to:
 
-1. Create a Viam instance
+1. Create a [Viam](https://flutter.viam.dev/viam_sdk/Viam-class.html) instance
 2. Either create a new robot or retrieve an existing one
 3. Retrieve the main robot part
 
