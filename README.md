@@ -14,7 +14,7 @@ This package also relies on the [viam-flutter-sdk](https://github.com/viamroboti
 
 ### Machine Setup
 
-1. **Flash your Device**: See the [Viam Documentation](https://docs.viam.com/installation/prepare/rpi-setup) for an example off flashing a Raspberry Pi.
+1. **Flash your Device**: See the [Viam Documentation](https://docs.viam.com/installation/prepare/rpi-setup) for an example of flashing a Raspberry Pi.
 2. **Configure provisioning defaults**: Create a provisioning configuration file (`viam-defaults.json`) by specifying at least the following info:
 
    ```json
