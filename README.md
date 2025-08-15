@@ -12,8 +12,7 @@ This package is built on top of [viam_flutter_provisioning](https://github.com/v
 
 ### Machine Setup
 
-1. **Flash your Device**: Use the Viam CLI to flash your device. For more instructions on device setup, see the [Viam Documentation](https://docs.viam.com/installation/prepare/rpi-setup) for an example on flashing a Raspberry Pi.
-
+1. **Flash your Device**: See the [Viam Documentation](https://docs.viam.com/installation/prepare/rpi-setup) for an example on flashing a Raspberry Pi.
 2. **Configure provisioning defaults**: Create a provisioning configuration file (`viam-defaults.json`) by specifying at least the following info:
 
    ```json
@@ -23,7 +22,7 @@ This package is built on top of [viam_flutter_provisioning](https://github.com/v
      }
    }
    ```
-   If you specify `hotspot_password` it will be used as a pre-shared key and should be passed into the provisioning flows so they can successfuly write Bluetooth characteristics.
+   If you specify `hotspot_password` it will be used as a pre-shared key and should be passed into the provisioning flows so they can write successfully.
 
    For more instructions on setting up the config, see the [Viam Documentation](https://docs.viam.com/manage/fleet/provision/setup/#configure-defaults).
 
