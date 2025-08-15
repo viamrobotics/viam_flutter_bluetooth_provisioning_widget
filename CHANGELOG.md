@@ -1,3 +1,4 @@
-## 0.0.1
+## 0.0.19
 
-* TODO: Describe initial release.
+* First release on pub.dev
+* Notes for previous (unpublished) tags available on GitHub
