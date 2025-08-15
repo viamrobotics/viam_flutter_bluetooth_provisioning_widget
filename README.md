@@ -125,10 +125,6 @@ The standard provisioning flow for machines with internet access. Scans for near
 
 The tethering flow for machines that need internet access through the mobile device. Similar to the standard flow but includes options for internet tethering when the machine doesn't have direct network access.
 
-## Example
-
-See the [example app](example/README.md) for a complete working example that demonstrates both the standard provisioning flow and tethering flow for Viam devices.
-
 ## License
 
 See the [LICENSE](LICENSE) file for license rights and limitations.
