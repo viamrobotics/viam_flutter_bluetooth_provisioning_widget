@@ -91,7 +91,7 @@ Navigator.of(context).push(MaterialPageRoute(
     robot: robot,
     isNewMachine: true,
     mainRobotPart: mainPart,
-    psk: Consts.psk, // defaults to 'viamsetup', but will use your 'hotspot_password' from viam-defaults.json
+    psk: 'viamsetup', // defaults to 'viamsetup', but will use your 'hotspot_password' from viam-defaults.json
     fragmentId: null,
     agentMinimumVersion: '0.20.0',
     copy: BluetoothProvisioningFlowCopy(
