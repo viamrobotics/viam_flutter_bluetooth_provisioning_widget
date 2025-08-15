@@ -2,7 +2,7 @@
 
 A Flutter package for provisioning Viam machines using Bluetooth connections. This widget provides two complete flows for connecting to machines via Bluetooth: a standard provisioning flow for machines with internet access, and a tethering flow for machines that need to share the mobile device's internet connection.
 
-This package is built on top of [viam_flutter_provisioning](https://github.com/viamrobotics/viam-flutter-provisioning) which uses [flutter_blue_plus](https://github.com/chipweinberger/flutter_blue_plus) for Bluetooth communication with [viam-agent](https://github.com/viamrobotics/agent).
+This package is built on top of [viam_flutter_provisioning](https://github.com/viamrobotics/viam_flutter_provisioning) which uses [flutter_blue_plus](https://github.com/chipweinberger/flutter_blue_plus) for Bluetooth communication with [viam-agent](https://github.com/viamrobotics/agent).
 
 ## Installation
 
