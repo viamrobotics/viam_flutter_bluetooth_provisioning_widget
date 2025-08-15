@@ -24,7 +24,7 @@ This package also relies on the [viam-flutter-sdk](https://github.com/viamroboti
      }
    }
    ```
-   If you specify `hotspot_password` it will be used as a pre-shared key and should be passed into the provisioning flows so they can write successfully.
+   If you specify `hotspot_password` it will be used as a pre-shared key and should be passed into the provisioning flows so they can write Bluetooth characteristics successfully.
 
    For more instructions on setting up the config, see the [Viam Documentation](https://docs.viam.com/manage/fleet/provision/setup/#configure-defaults).
 
@@ -37,9 +37,9 @@ This package also relies on the [viam-flutter-sdk](https://github.com/viamroboti
 
 ### Device Requirements
 
-- **Physical Device Required**: App's relying on this widget must be run on a physical device to discover nearby Bluetooth devices running `viam-agent` with Bluetooth provisioning enabled.
+- **Physical Device Required**: Apps relying on this widget must be run on a physical device to discover nearby Bluetooth devices running `viam-agent` with Bluetooth provisioning enabled.
 - **Bluetooth Enabled**: Ensure Bluetooth is enabled on both the mobile device and the target machine.
-- **viam-agent Version**: The machine must be running `0.20.0` and up of `viam-agent`. Tethering requires `0.21.0` of `viam-agent`.
+- **viam-agent Version**: The machine must be running `0.20.0`+ of `viam-agent`. Tethering requires `0.21.0`+ of `viam-agent`.
 
 ## Platform Requirements
 
@@ -115,7 +115,7 @@ Navigator.of(context).push(MaterialPageRoute(
 ));
 ```
 
-For a complete working example with both standard and tethering flows, see the [example app](example/README.md).
+For a complete working example with either standard or tethering flows, see the [example app](example/README.md).
 
 ## Flow Types
 
