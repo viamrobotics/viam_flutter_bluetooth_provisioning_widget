@@ -37,9 +37,9 @@ This package also relies on the [viam-flutter-sdk](https://github.com/viamroboti
 
 ### Device Requirements
 
-- **Physical Device Required**: This widget must be run on a physical device to discover nearby Bluetooth devices running `viam-agent` with Bluetooth provisioning enabled.
+- **Physical Device Required**: App's relying on this widget must be run on a physical device to discover nearby Bluetooth devices running `viam-agent` with Bluetooth provisioning enabled.
 - **Bluetooth Enabled**: Ensure Bluetooth is enabled on both the mobile device and the target machine.
-- **viam-agent Version**: The machine must be running `0.20.0` and up of `viam-agent` with Bluetooth provisioning support. Tethering requires `0.21.0` of `viam-agent`.
+- **viam-agent Version**: The machine must be running `0.20.0` and up of `viam-agent`. Tethering requires `0.21.0` of `viam-agent`.
 
 ## Platform Requirements
 
