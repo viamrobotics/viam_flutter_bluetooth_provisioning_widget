@@ -36,7 +36,15 @@ class CheckingAgentOnlineRepository {
   }
 
   Future<void> _readAgentStatus() async {
+    debugPrint("clearing gatt cache");
     try {
+      await device.clearGattCache();
+    } on Exception catch (e) {
+      debugPrint("error clearing gatt cache $e");
+    }
+    debugPrint("device ${device.toString()} ${device.advName} ${device.bondState} ${device.connectionState}, ${device.platformName}");
+    try {
+      debugPrint("device ${device.toString()} ${device.advName} ${device.bondState} ${device.connectionState}, ${device.platformName}");
       final status = await device.readStatus();
       debugPrint('status isConnected: ${status.isConnected}');
       agentOnline = status.isConnected;
