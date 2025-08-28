@@ -16,7 +16,9 @@ dependencies:
   viam_sdk: ^0.6.4
   collection: ^1.18.0
   viam_flutter_provisioning:
-    path: ../viam_flutter_provisioning
+    git:
+      url: https://github.com/viamrobotics/viam_flutter_provisioning.git
+      ref: aw-gatt-cache
   flutter_platform_widgets: ^7.0.1
   provider: ^6.1.5
   pub_semver: ^2.2.0
