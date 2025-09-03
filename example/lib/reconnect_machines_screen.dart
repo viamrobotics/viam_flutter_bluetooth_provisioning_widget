@@ -132,35 +132,34 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
   }
 
   void _goToBluetoothTetheringFlow(BuildContext context, Viam viam, Robot robot) async {
+    final nav = Navigator.of(context);
     final mainPart = (await viam.appClient.listRobotParts(robot.id)).firstWhere((element) => element.mainPart);
-    if (context.mounted) {
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => BluetoothTetheringFlow(
-          viam: viam,
-          robot: robot,
-          isNewMachine: false,
-          mainRobotPart: mainPart,
-          psk: Consts.psk,
-          fragmentId: null,
-          agentMinimumVersion: '0.20.0',
-          copy: BluetoothProvisioningFlowCopy(
-            checkingOnlineSuccessSubtitle: '${robot.name} is connected and ready to use.',
-          ),
-          onSuccess: () {
-            Navigator.of(context).pop();
-          },
-          existingMachineExit: () {
-            Navigator.of(context).pop();
-          },
-          nonexistentMachineExit: () {
-            Navigator.of(context).pop();
-          },
-          agentMinimumVersionExit: () {
-            Navigator.of(context).pop();
-          },
+    nav.push(MaterialPageRoute(
+      builder: (context) => BluetoothTetheringFlow(
+        viam: viam,
+        robot: robot,
+        isNewMachine: false,
+        mainRobotPart: mainPart,
+        psk: Consts.psk,
+        fragmentId: null,
+        agentMinimumVersion: '0.20.0',
+        copy: BluetoothProvisioningFlowCopy(
+          checkingOnlineSuccessSubtitle: '${robot.name} is connected and ready to use.',
         ),
-      ));
-    }
+        onSuccess: () {
+          Navigator.of(context).pop();
+        },
+        existingMachineExit: () {
+          Navigator.of(context).pop();
+        },
+        nonexistentMachineExit: () {
+          Navigator.of(context).pop();
+        },
+        agentMinimumVersionExit: () {
+          Navigator.of(context).pop();
+        },
+      ),
+    ));
   }
 
   void _showActionDialog(BuildContext context, Robot robot) {
