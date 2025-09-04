@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'consts.dart';
 import 'start_screen.dart';
 
-void main() {
+Future main() async {
+  await dotenv.load(fileName: 'secrets.env');
+  Consts.reload();
   runApp(const MyApp());
 }
 

@@ -13,6 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   provider: ^6.1.5
+  flutter_dotenv: ^6.0.0
   viam_flutter_bluetooth_provisioning_widget:
     path: ../
 
@@ -32,3 +33,5 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+  - secrets.env
