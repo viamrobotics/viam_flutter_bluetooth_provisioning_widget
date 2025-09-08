@@ -143,7 +143,12 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                           onCtaTapped: _unlockBluetoothPairing,
                           machineName: widget.viewModel.copy.tetheringMachineName,
                         ),
-                        PairingInstructionsScreen(onCtaTapped: _onNextPage),
+                        PairingInstructionsScreen(
+                          onCtaTapped: _onNextPage,
+                          title: widget.viewModel.copy.pairingInstructionsTitle,
+                          iOSSubtitle: widget.viewModel.copy.pairingInstructionsIOSSubtitle,
+                          androidSubtitle: widget.viewModel.copy.pairingInstructionsAndroidSubtitle,
+                        ),
                         // If the machine is configured already (has machine credentials) and gets a connection from tethering,
                         // we won't be able to check agent online. The agent bluetooth service will be shut down at this point.
                         // The machine will be online in app.viam.com and we should skip to that check instead.

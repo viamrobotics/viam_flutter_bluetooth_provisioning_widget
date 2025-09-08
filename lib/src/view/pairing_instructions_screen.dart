@@ -2,9 +2,13 @@ part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class PairingInstructionsScreen extends StatelessWidget {
   final VoidCallback onCtaTapped;
-  // TODO: title, subtitle
 
-  const PairingInstructionsScreen({super.key, required this.onCtaTapped});
+  final String title;
+  final String iOSSubtitle;
+  final String androidSubtitle;
+
+  const PairingInstructionsScreen(
+      {super.key, required this.onCtaTapped, required this.title, required this.iOSSubtitle, required this.androidSubtitle});
 
   @override
   Widget build(BuildContext context) {
@@ -15,18 +19,20 @@ class PairingInstructionsScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Spacer(),
             Text(
-              'Pair with your machine.',
+              title,
               textAlign: TextAlign.start,
               style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
             ),
             Text(
-              "TODO: LONG TEXT, iOS AND ANDROID SPECIFIC",
+              Platform.isIOS ? iOSSubtitle : androidSubtitle,
               textAlign: TextAlign.start,
               style: Theme.of(context).textTheme.bodyLarge,
               overflow: TextOverflow.visible,
             ),
-            Spacer(),
+            const Spacer(),
+            const Spacer(),
             FilledButton(
               onPressed: onCtaTapped,
               child: Text(

@@ -56,6 +56,12 @@ class BluetoothProvisioningFlowCopy {
     // Check agent online
     this.checkAgentOnlineSuccessTitle = 'Success!',
     this.checkAgentOnlineSuccessSubtitle = 'Your machine is connected to the Internet',
+    // Pairing instructions
+    this.pairingInstructionsTitle = 'Pair with your machine',
+    this.pairingInstructionsAndroidSubtitle =
+        'Next, pair your phone to your machine just like you’d pair with any other Bluetooth device, and come back to this page.\n\nYou may need to tap “Pair new device” before you can see the machine.\n\nAccept any pairing dialogs that pop up.',
+    this.pairingInstructionsIOSSubtitle =
+        'Next, pair your phone to your machine just like you’d pair with any other Bluetooth device, and come back to this page.',
   });
 
   // Intro screen one
@@ -113,6 +119,11 @@ class BluetoothProvisioningFlowCopy {
 
   // Tethering
   final String tetheringMachineName;
+
+  // Pairing instructions
+  final String pairingInstructionsTitle;
+  final String pairingInstructionsIOSSubtitle;
+  final String pairingInstructionsAndroidSubtitle;
 
   // Check agent online
   final String checkAgentOnlineSuccessTitle;
