@@ -95,6 +95,7 @@ class _ChooseConnectionMethodScreenState extends State<ChooseConnectionMethodScr
             ],
           ),
           const Spacer(),
+          const Spacer(),
           FilledButton(
             onPressed: selectedOption != null ? _handleNextPressed : null,
             child: const Text('Next'),
