@@ -5,7 +5,7 @@ import 'consts.dart';
 import 'start_screen.dart';
 
 Future main() async {
-  await dotenv.load(fileName: 'secrets.env');
+  await dotenv.load(fileName: 'secrets.env', isOptional: true);
   Consts.reload();
   runApp(const MyApp());
 }

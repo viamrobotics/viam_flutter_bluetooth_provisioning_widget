@@ -16,6 +16,19 @@ class Consts {
 }
 ```
 
+You can alternatively use a secrets.env file like:
+
+```sh
+VIAM_API_KEY_ID=uuid
+VIAM_API_KEY=secret
+VIAM_ORG_ID=uuid
+# VIAM_PSK=xxx # optional
+```
+
+If you don't use secrets.env, you'll still need to `touch secrets.env` once, or your builds will fail with:
+
+> No file or variants found for asset: secrets.env.
+
 2. **Run the app** on a physical device:
 
 ```bash
