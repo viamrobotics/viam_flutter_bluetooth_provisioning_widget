@@ -42,8 +42,7 @@ class BluetoothTetheringFlow extends StatefulWidget {
 class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
   final PageController _pageController = PageController();
 
-  /// can be flipped on/off by the user depending on how they answer the internet question
-  bool _useInternetFlow = false;
+  InternetConnectionOption? _connectionOption;
 
   @override
   void dispose() {
@@ -81,9 +80,9 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
     }
   }
 
-  void _onInternetYesNo(bool yesInternet) {
+  void _onConnectionOptionSelected(InternetConnectionOption connectionOption) {
     setState(() {
-      _useInternetFlow = yesInternet;
+      _connectionOption = connectionOption;
     });
     _onNextPage();
   }
@@ -135,11 +134,11 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                           tipsDialogCtaText: widget.viewModel.copy.bluetoothScanningTipsDialogCtaText,
                         ),
                       ),
-                      InternetYesNoScreen(
-                        handleYesTapped: () => _onInternetYesNo(true),
-                        handleNoTapped: () => _onInternetYesNo(false),
+                      ChooseConnectionMethodScreen(
+                        onConnectionOptionSelected: _onConnectionOptionSelected,
+                        cellularSubtitle: widget.viewModel.copy.connectionMethodCellularSubtitle,
                       ),
-                      if (!_useInternetFlow && widget.viewModel.device != null) ...[
+                      if (_connectionOption == InternetConnectionOption.cellular && widget.viewModel.device != null) ...[
                         BluetoothCellularInfoScreen(
                           handleCtaTapped: _unlockBluetoothPairing,
                           title: widget.viewModel.copy.bluetoothCellularInfoTitle,
@@ -167,7 +166,7 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                             ),
                           ),
                       ],
-                      if (_useInternetFlow)
+                      if (_connectionOption == InternetConnectionOption.wifi)
                         ConnectedBluetoothDeviceScreen(
                           viewModel: ConnectedBluetoothDeviceScreenViewModel(
                             handleWifiCredentials: _onWifiCredentials,
