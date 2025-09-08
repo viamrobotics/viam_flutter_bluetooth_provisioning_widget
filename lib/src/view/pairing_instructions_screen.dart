@@ -25,6 +25,7 @@ class PairingInstructionsScreen extends StatelessWidget {
               textAlign: TextAlign.start,
               style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
             ),
+            const SizedBox(height: 40),
             Text(
               Platform.isIOS ? iOSSubtitle : androidSubtitle,
               textAlign: TextAlign.start,
