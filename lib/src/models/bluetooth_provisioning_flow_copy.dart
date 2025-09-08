@@ -51,11 +51,6 @@ class BluetoothProvisioningFlowCopy {
     // Connection method
     this.connectionMethodCellularSubtitle =
         'If your machine doesn\'t have Internet, you can use Bluetooth to share your phone\'s cellular connection with the machine.',
-    // Bluetooth cellular info
-    this.bluetoothCellularInfoTitle = 'No Wi-Fi? Use Bluetooth instead',
-    this.bluetoothCellularInfoSubtitle =
-        'If your machine doesn\'t have Internet, you can use Bluetooth to share your phone’s cellular connection with the machine.',
-    this.bluetoothCellularInfoCta = 'Continue',
     // Tethering
     this.tetheringMachineName = 'machine',
     // Check agent online
@@ -115,11 +110,6 @@ class BluetoothProvisioningFlowCopy {
 
   // Connection method
   final String connectionMethodCellularSubtitle;
-
-  // Bluetooth cellular info
-  final String bluetoothCellularInfoTitle;
-  final String bluetoothCellularInfoSubtitle;
-  final String bluetoothCellularInfoCta;
 
   // Tethering
   final String tetheringMachineName;

@@ -15,25 +15,27 @@ class SetupTetheringScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            const Spacer(),
             Text(
-              'Set up personal hotspot',
+              'Set up Bluetooth Connection',
               textAlign: TextAlign.start,
               style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
             ),
-            Spacer(),
+            const SizedBox(height: 40),
             Platform.isIOS ? _buildIOSHotspotSteps(context) : _buildAndroidHotspotSteps(context),
-            Spacer(),
+            const SizedBox(height: 24),
             Text(
-              "Once you've completed these steps, come back to this screen and tap \"Continue\".",
+              "Come back to this page when you’re done.",
               textAlign: TextAlign.start,
               style: Theme.of(context).textTheme.bodyLarge,
               overflow: TextOverflow.visible,
             ),
-            Spacer(),
+            const Spacer(),
+            const Spacer(),
             FilledButton(
               onPressed: onCtaTapped,
               child: Text(
-                'Continue',
+                'Next',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
@@ -49,33 +51,24 @@ class SetupTetheringScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        StepTile(
-          stepNumber: '1',
-          onTap: null,
-          children: [
-            const TextSpan(text: 'In your phone\'s settings, go to '),
-            TextSpan(text: 'Settings', style: textTheme!.copyWith(fontStyle: FontStyle.italic)),
-            const TextSpan(text: ' > '),
-            TextSpan(text: 'Personal Hotspot', style: textTheme.copyWith(fontWeight: FontWeight.bold)),
-            const TextSpan(text: '\n\nMake sure "'),
-            TextSpan(text: 'Allow Others to Join', style: textTheme.copyWith(fontWeight: FontWeight.bold)),
-            const TextSpan(text: "\" is enabled"),
-          ],
+        RichText(
+          text: TextSpan(
+            style: textTheme,
+            children: [
+              const TextSpan(text: 'In your phone\'s settings, go to '),
+              TextSpan(text: 'Settings', style: textTheme!.copyWith(fontStyle: FontStyle.italic)),
+              const TextSpan(text: ' > '),
+              TextSpan(text: 'Personal Hotspot.', style: textTheme.copyWith(fontWeight: FontWeight.bold)),
+              const TextSpan(text: '\n\nMake sure "'),
+              TextSpan(text: 'Allow Others to Join', style: textTheme.copyWith(fontWeight: FontWeight.bold)),
+              const TextSpan(text: "\" is enabled:"),
+            ],
+          ),
         ),
-        Image.asset('packages/viam_flutter_bluetooth_provisioning_widget/lib/src/assets/ios_wifi_hotspot.png'),
+        const SizedBox(height: 24),
+        Text("The toggle should look like this:", style: Theme.of(context).textTheme.bodySmall),
         const SizedBox(height: 8),
-        StepTile(
-          stepNumber: '2',
-          onTap: null,
-          children: [
-            const TextSpan(text: 'Go to '),
-            TextSpan(text: 'Settings', style: textTheme.copyWith(fontStyle: FontStyle.italic)),
-            const TextSpan(text: ' > '),
-            TextSpan(text: 'Bluetooth.', style: textTheme.copyWith(fontWeight: FontWeight.bold)),
-            TextSpan(text: 'You should see your $machineName.'),
-            const TextSpan(text: '\n\nTap to pair, and accept any pairing dialogs that pop up.'),
-          ],
-        ),
+        Image.asset('packages/viam_flutter_bluetooth_provisioning_widget/lib/src/assets/ios_wifi_hotspot.png'),
       ],
     );
   }
@@ -86,33 +79,22 @@ class SetupTetheringScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        StepTile(
-          stepNumber: '1',
-          onTap: null,
-          children: [
-            const TextSpan(text: "In your phone's settings, go to "),
-            TextSpan(text: "Network & internet", style: textTheme!.copyWith(fontWeight: FontWeight.bold)),
-            const TextSpan(text: ", then "),
-            TextSpan(text: "Hotspot & tethering", style: textTheme.copyWith(fontWeight: FontWeight.bold)),
-            const TextSpan(text: '\n\nMake sure '),
-            TextSpan(text: 'Bluetooth tethering', style: textTheme.copyWith(fontWeight: FontWeight.bold)),
-            const TextSpan(text: " is enabled"),
-          ],
+        RichText(
+          text: TextSpan(
+            style: textTheme,
+            children: [
+              TextSpan(text: '1. ', style: textTheme!.copyWith(fontWeight: FontWeight.bold)),
+              const TextSpan(text: "In your phone's settings, go to "),
+              TextSpan(text: "Network & internet", style: textTheme.copyWith(fontWeight: FontWeight.bold)),
+              const TextSpan(text: ", then "),
+              TextSpan(text: "Hotspot & tethering", style: textTheme.copyWith(fontWeight: FontWeight.bold)),
+              const TextSpan(text: '\n\nMake sure '),
+              TextSpan(text: 'Bluetooth tethering', style: textTheme.copyWith(fontWeight: FontWeight.bold)),
+              const TextSpan(text: " is enabled"),
+            ],
+          ),
         ),
         Image.asset('packages/viam_flutter_bluetooth_provisioning_widget/lib/src/assets/android_wifi_hotspot.png'),
-        const SizedBox(height: 8),
-        StepTile(
-          stepNumber: '2',
-          onTap: null,
-          children: [
-            const TextSpan(text: 'Go to '),
-            TextSpan(text: 'Settings', style: textTheme.copyWith(fontStyle: FontStyle.italic)),
-            const TextSpan(text: ' > '),
-            TextSpan(text: 'Bluetooth.', style: textTheme.copyWith(fontWeight: FontWeight.bold)),
-            TextSpan(text: 'You should see your $machineName.'),
-            const TextSpan(text: '\n\nTap to pair, and accept any pairing dialogs that pop up.'),
-          ],
-        ),
       ],
     );
   }
