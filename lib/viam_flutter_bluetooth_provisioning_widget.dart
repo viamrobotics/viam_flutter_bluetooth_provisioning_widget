@@ -29,7 +29,7 @@ part 'src/view/connected_bluetooth_device_screen.dart';
 part 'src/view/intro_screen_one.dart';
 part 'src/view/intro_screen_two.dart';
 part 'src/view/name_connected_device_screen.dart';
-part 'src/view/internet_yes_no_screen.dart';
+part 'src/view/choose_connection_method_screen.dart';
 part 'src/view/bluetooth_cellular_info_screen.dart';
 part 'src/view/setup_tethering_screen.dart';
 part 'src/view/check_agent_online_screen.dart';

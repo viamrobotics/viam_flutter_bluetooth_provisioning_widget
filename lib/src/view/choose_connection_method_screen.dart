@@ -2,21 +2,19 @@ part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 enum InternetConnectionOption { wifi, cellular }
 
-class InternetYesNoScreen extends StatefulWidget {
-  final VoidCallback handleYesTapped;
-  final VoidCallback handleNoTapped;
+class ChooseConnectionMethodScreen extends StatefulWidget {
+  final void Function(InternetConnectionOption) onConnectionOptionSelected;
 
-  const InternetYesNoScreen({
+  const ChooseConnectionMethodScreen({
     super.key,
-    required this.handleYesTapped,
-    required this.handleNoTapped,
+    required this.onConnectionOptionSelected,
   });
 
   @override
-  State<InternetYesNoScreen> createState() => _InternetYesNoScreenState();
+  State<ChooseConnectionMethodScreen> createState() => _ChooseConnectionMethodScreenState();
 }
 
-class _InternetYesNoScreenState extends State<InternetYesNoScreen> {
+class _ChooseConnectionMethodScreenState extends State<ChooseConnectionMethodScreen> {
   InternetConnectionOption? selectedOption;
 
   void _handleOptionSelected(InternetConnectionOption option) {
@@ -26,11 +24,8 @@ class _InternetYesNoScreenState extends State<InternetYesNoScreen> {
   }
 
   void _handleNextPressed() {
-    if (selectedOption == InternetConnectionOption.wifi) {
-      widget.handleYesTapped();
-    } else if (selectedOption == InternetConnectionOption.cellular) {
-      widget.handleNoTapped();
-    }
+    assert(selectedOption != null);
+    widget.onConnectionOptionSelected(selectedOption!);
   }
 
   @override
@@ -86,7 +81,7 @@ class _InternetYesNoScreenState extends State<InternetYesNoScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                          'If your boat doesn\'t have Internet, you can use Bluetooth to share your phone\'s cellular connection with the CR Box.'),
+                          'If your boat doesn\'t have Internet, you can use Bluetooth to share your phone\'s cellular connection with the CR Box.'), // TODO: CUSTOM COPY
                       const SizedBox(height: 4),
                       const Text('We recommend using this as backup if other sources of Internet are unavailable.'),
                     ],
@@ -98,7 +93,6 @@ class _InternetYesNoScreenState extends State<InternetYesNoScreen> {
               ),
             ],
           ),
-          const Spacer(),
           const Spacer(),
           FilledButton(
             onPressed: selectedOption != null ? _handleNextPressed : null,
