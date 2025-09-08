@@ -4,10 +4,12 @@ enum InternetConnectionOption { wifi, cellular }
 
 class ChooseConnectionMethodScreen extends StatefulWidget {
   final void Function(InternetConnectionOption) onConnectionOptionSelected;
+  final String cellularSubtitle;
 
   const ChooseConnectionMethodScreen({
     super.key,
     required this.onConnectionOptionSelected,
+    required this.cellularSubtitle,
   });
 
   @override
@@ -80,8 +82,7 @@ class _ChooseConnectionMethodScreenState extends State<ChooseConnectionMethodScr
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                          'If your boat doesn\'t have Internet, you can use Bluetooth to share your phone\'s cellular connection with the CR Box.'), // TODO: CUSTOM COPY
+                      Text(widget.cellularSubtitle),
                       const SizedBox(height: 4),
                       const Text('We recommend using this as backup if other sources of Internet are unavailable.'),
                     ],

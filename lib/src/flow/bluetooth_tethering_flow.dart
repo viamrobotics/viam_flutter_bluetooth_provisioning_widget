@@ -136,6 +136,7 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                       ),
                       ChooseConnectionMethodScreen(
                         onConnectionOptionSelected: _onConnectionOptionSelected,
+                        cellularSubtitle: widget.viewModel.copy.connectionMethodCellularSubtitle,
                       ),
                       if (_connectionOption == InternetConnectionOption.cellular && widget.viewModel.device != null) ...[
                         BluetoothCellularInfoScreen(
