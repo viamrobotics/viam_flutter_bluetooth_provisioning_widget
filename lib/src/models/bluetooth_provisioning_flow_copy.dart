@@ -51,16 +51,17 @@ class BluetoothProvisioningFlowCopy {
     // Connection method
     this.connectionMethodCellularSubtitle =
         'If your machine doesn\'t have Internet, you can use Bluetooth to share your phone\'s cellular connection with the machine.',
-    // Bluetooth cellular info
-    this.bluetoothCellularInfoTitle = 'No Wi-Fi? Use Bluetooth instead',
-    this.bluetoothCellularInfoSubtitle =
-        'If your machine doesn\'t have Internet, you can use Bluetooth to share your phone’s cellular connection with the machine.',
-    this.bluetoothCellularInfoCta = 'Continue',
     // Tethering
     this.tetheringMachineName = 'machine',
     // Check agent online
     this.checkAgentOnlineSuccessTitle = 'Success!',
     this.checkAgentOnlineSuccessSubtitle = 'Your machine is connected to the Internet',
+    // Pairing instructions
+    this.pairingInstructionsTitle = 'Pair with your machine',
+    this.pairingInstructionsAndroidSubtitle =
+        'Next, pair your phone to your machine just like you’d pair with any other Bluetooth device, and come back to this page.\n\nYou may need to tap “Pair new device” before you can see the machine.\n\nAccept any pairing dialogs that pop up.',
+    this.pairingInstructionsIOSSubtitle =
+        'Next, pair your phone to your machine just like you’d pair with any other Bluetooth device, and come back to this page.',
   });
 
   // Intro screen one
@@ -116,13 +117,13 @@ class BluetoothProvisioningFlowCopy {
   // Connection method
   final String connectionMethodCellularSubtitle;
 
-  // Bluetooth cellular info
-  final String bluetoothCellularInfoTitle;
-  final String bluetoothCellularInfoSubtitle;
-  final String bluetoothCellularInfoCta;
-
   // Tethering
   final String tetheringMachineName;
+
+  // Pairing instructions
+  final String pairingInstructionsTitle;
+  final String pairingInstructionsIOSSubtitle;
+  final String pairingInstructionsAndroidSubtitle;
 
   // Check agent online
   final String checkAgentOnlineSuccessTitle;

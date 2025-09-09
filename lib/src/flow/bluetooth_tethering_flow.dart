@@ -139,15 +139,15 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                         cellularSubtitle: widget.viewModel.copy.connectionMethodCellularSubtitle,
                       ),
                       if (_connectionOption == InternetConnectionOption.cellular && widget.viewModel.device != null) ...[
-                        BluetoothCellularInfoScreen(
-                          handleCtaTapped: _unlockBluetoothPairing,
-                          title: widget.viewModel.copy.bluetoothCellularInfoTitle,
-                          subtitle: widget.viewModel.copy.bluetoothCellularInfoSubtitle,
-                          ctaText: widget.viewModel.copy.bluetoothCellularInfoCta,
-                        ),
                         SetupTetheringScreen(
-                          onCtaTapped: _onNextPage,
+                          onCtaTapped: _unlockBluetoothPairing,
                           machineName: widget.viewModel.copy.tetheringMachineName,
+                        ),
+                        PairingInstructionsScreen(
+                          onCtaTapped: _onNextPage,
+                          title: widget.viewModel.copy.pairingInstructionsTitle,
+                          iOSSubtitle: widget.viewModel.copy.pairingInstructionsIOSSubtitle,
+                          androidSubtitle: widget.viewModel.copy.pairingInstructionsAndroidSubtitle,
                         ),
                         // If the machine is configured already (has machine credentials) and gets a connection from tethering,
                         // we won't be able to check agent online. The agent bluetooth service will be shut down at this point.
