@@ -1,19 +1,15 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
-class IntroScreenTwo extends StatelessWidget {
+class PowerDeviceInstructionsScreen extends StatelessWidget {
   final VoidCallback handleNextTapped;
-  final String turnOnTitle;
-  final String turnOnSubtitle;
-  final String bluetoothTitle;
-  final String bluetoothSubtitle;
+  final String title;
+  final String subtitle;
 
-  const IntroScreenTwo({
+  const PowerDeviceInstructionsScreen({
     super.key,
     required this.handleNextTapped,
-    required this.turnOnTitle,
-    required this.turnOnSubtitle,
-    required this.bluetoothTitle,
-    required this.bluetoothSubtitle,
+    required this.title,
+    required this.subtitle,
   });
 
   @override
@@ -27,26 +23,9 @@ class IntroScreenTwo extends StatelessWidget {
           children: [
             const Spacer(),
             Icon(Icons.power_settings_new, size: 40, color: const Color(0xFF9C9CA4)),
-            const SizedBox(height: 24),
-            Text(
-              turnOnTitle,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Text(
-                turnOnSubtitle,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.grey.shade600),
-              ),
-            ),
-            const SizedBox(height: 64),
-            Icon(Icons.bluetooth, size: 40, color: const Color(0xFF9C9CA4)),
             SizedBox(height: 24),
             Text(
-              bluetoothTitle,
+              title,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
@@ -54,12 +33,11 @@ class IntroScreenTwo extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Text(
-                bluetoothSubtitle,
+                subtitle,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.grey.shade600),
               ),
             ),
-            const Spacer(),
             const Spacer(),
             FilledButton(
               onPressed: handleNextTapped,
