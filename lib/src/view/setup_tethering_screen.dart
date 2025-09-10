@@ -33,6 +33,7 @@ class SetupTetheringScreen extends StatelessWidget {
             const Spacer(),
             const Spacer(),
             FilledButton(
+              key: ValueKey('confirm-hotspot'),
               onPressed: onCtaTapped,
               child: Text(
                 'Next',

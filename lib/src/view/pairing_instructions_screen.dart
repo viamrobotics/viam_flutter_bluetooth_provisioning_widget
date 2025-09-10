@@ -35,6 +35,7 @@ class PairingInstructionsScreen extends StatelessWidget {
             const Spacer(),
             const Spacer(),
             FilledButton(
+              key: ValueKey('confirm-paired'),
               onPressed: onCtaTapped,
               child: Text(
                 'Continue',

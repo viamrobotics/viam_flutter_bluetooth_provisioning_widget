@@ -42,13 +42,21 @@ void main() {
             matching: find.byKey(ValueKey('device-tile')),
           )));
 
-      // todo next: 'select your device' page
+      await tester.pumpAndSettle();
+      await tester.tap(await awaitWidget(tester, find.byKey(const ValueKey('tether-method'))));
+      await tester.pumpAndSettle();
+      await tester.tap(await awaitWidget(tester, find.byKey(const ValueKey('next'))));
+      await tester.pumpAndSettle();
+      await tester.tap(await awaitWidget(tester, find.byKey(const ValueKey('confirm-hotspot'))));
 
-      // Trigger a frame.
-      // await tester.pumpAndSettle();
+      debugPrint("TESTER: MANUALLY PAIR NOW");
+      await Future.delayed(Duration(seconds: 10));
+      await tester.tap(await awaitWidget(tester, find.byKey(const ValueKey('confirm-paired'))));
 
-      // Verify the counter increments by 1.
-      // expect(find.text('1'), findsOneWidget);
+      // next two are states not buttons; is there a better way to await them?
+      // todo: shorter waits except for these two and the device-tile
+      await awaitWidget(tester, find.byKey(const ValueKey('online-state')));
+      await awaitWidget(tester, find.byKey(const ValueKey('device-connected-viam')));
     });
   });
 }
