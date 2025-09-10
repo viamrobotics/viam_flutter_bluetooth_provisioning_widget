@@ -62,6 +62,7 @@ class IntroScreenTwo extends StatelessWidget {
             const Spacer(),
             const Spacer(),
             FilledButton(
+              key: ValueKey('screen-2-cta'),
               onPressed: handleNextTapped,
               child: Text('Next'),
             ),

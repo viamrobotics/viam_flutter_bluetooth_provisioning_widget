@@ -29,11 +29,13 @@ class StartScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             FilledButton(
+              key: ValueKey('new-machine-flow'),
               onPressed: () => _goToNewMachineFlow(context),
               child: const Text('New Machine Flow'),
             ),
             const SizedBox(height: 16),
             FilledButton(
+              key: ValueKey('reconnect-flow'),
               onPressed: () => _goToReconnectMachinesFlow(context),
               child: const Text('Reconnect Machines'),
             ),
