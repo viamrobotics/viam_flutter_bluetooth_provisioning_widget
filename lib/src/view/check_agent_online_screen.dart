@@ -48,6 +48,7 @@ class _CheckDeviceAgentOnlineScreenState extends State<CheckDeviceAgentOnlineScr
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
+          key: ValueKey('online-state'),
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.check_circle, color: Colors.green, size: 40),

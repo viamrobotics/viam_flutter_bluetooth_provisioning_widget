@@ -72,6 +72,7 @@ class _ChooseConnectionMethodScreenState extends State<ChooseConnectionMethodScr
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: RadioListTile<InternetConnectionOption>(
+                  key: ValueKey('tether-method'),
                   value: InternetConnectionOption.cellular,
                   groupValue: selectedOption,
                   onChanged: (value) => _handleOptionSelected(value!),
@@ -97,6 +98,7 @@ class _ChooseConnectionMethodScreenState extends State<ChooseConnectionMethodScr
           const Spacer(),
           const Spacer(),
           FilledButton(
+            key: ValueKey('next'),
             onPressed: selectedOption != null ? _handleNextPressed : null,
             child: const Text('Next'),
           ),

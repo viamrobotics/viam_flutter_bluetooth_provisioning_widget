@@ -47,6 +47,7 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
+        key: ValueKey('device-connected-viam'),
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
