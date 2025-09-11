@@ -9,7 +9,7 @@ class BluetoothProvisioningFlowCopy {
     // Intro screen tow
     this.introScreenTwoTurnOnTitle = 'Turn on your machine',
     this.introScreenTwoTurnOnSubtitle = 'Plug in the machine and power it on.',
-    this.introScreenTwoBluetoothTitle = 'Pair via Bluetooth',
+    this.introScreenTwoBluetoothTitle = 'Enable Bluetooth on your phone',
     // TODO: add markdown package so we can have italicized text
     this.introScreenTwoBluetoothSubtitle = 'Open your phone’s settings app and go to Settings > Bluetooth. Make sure it is set to “ON.”',
     // Bluetooth scanning
