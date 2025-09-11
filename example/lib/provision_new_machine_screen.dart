@@ -145,6 +145,7 @@ class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
                   ),
                   const SizedBox(height: 16),
                   FilledButton(
+                    key: ValueKey('start-tethering'),
                     onPressed: () => (!_isLoadingTetheringFlow && !_isLoadingStandardFlow) ? _createRobot(tethering: true) : null,
                     child: _isLoadingTetheringFlow
                         ? const SizedBox(

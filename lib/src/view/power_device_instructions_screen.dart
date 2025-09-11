@@ -40,6 +40,7 @@ class PowerDeviceInstructionsScreen extends StatelessWidget {
             ),
             const Spacer(),
             FilledButton(
+              key: ValueKey('screen-2-cta'),
               onPressed: handleNextTapped,
               child: Text('Next'),
             ),
