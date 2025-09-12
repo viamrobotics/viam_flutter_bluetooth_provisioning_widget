@@ -140,7 +140,7 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                         title: widget.viewModel.copy.internetQuestionTitle,
                         subtitle: widget.viewModel.copy.internetQuestionSubtitle,
                       ),
-                      if (_hasInternetConnection && widget.viewModel.device != null) ...[
+                      if (!_hasInternetConnection && widget.viewModel.device != null) ...[
                         SetupTetheringScreen(
                           onCtaTapped: _unlockBluetoothPairing,
                           machineName: widget.viewModel.copy.tetheringMachineName,
