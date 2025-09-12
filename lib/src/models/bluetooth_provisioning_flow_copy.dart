@@ -6,12 +6,13 @@ class BluetoothProvisioningFlowCopy {
     this.introScreenTitle = 'Connect your device',
     this.introScreenSubtitle = 'We\'ll walk you through a short setup process to get your device up and running.',
     this.introScreenCtaText = 'Get started',
-    // Intro screen tow
-    this.introScreenTwoTurnOnTitle = 'Turn on your machine',
-    this.introScreenTwoTurnOnSubtitle = 'Plug in the machine and power it on.',
-    this.introScreenTwoBluetoothTitle = 'Enable Bluetooth on your phone',
+    // Power on instructions
+    this.powerOnInstructionsTitle = 'Turn on your machine',
+    this.powerOnInstructionsSubtitle = 'Plug in the machine and power it on.',
+    // Bluetooth on instructions
+    this.bluetoothOnInstructionsTitle = 'Enable Bluetooth on your phone',
     // TODO: add markdown package so we can have italicized text
-    this.introScreenTwoBluetoothSubtitle = 'Open your phone’s settings app and go to Settings > Bluetooth. Make sure it is set to “ON.”',
+    this.bluetoothOnInstructionsSubtitle = 'Open your phone’s settings app and go to Settings > Bluetooth. Make sure it is set to “ON.”',
     // Bluetooth scanning
     this.bluetoothScanningTitle = 'Select your Device',
     this.bluetoothScanningScanCtaText = 'Scan network again',
@@ -69,11 +70,13 @@ class BluetoothProvisioningFlowCopy {
   final String introScreenSubtitle;
   final String introScreenCtaText;
 
-  // Intro screen two
-  final String introScreenTwoTurnOnTitle;
-  final String introScreenTwoTurnOnSubtitle;
-  final String introScreenTwoBluetoothTitle;
-  final String introScreenTwoBluetoothSubtitle;
+  // Power on instructions
+  final String powerOnInstructionsTitle;
+  final String powerOnInstructionsSubtitle;
+
+  // Bluetooth on instructions
+  final String bluetoothOnInstructionsTitle;
+  final String bluetoothOnInstructionsSubtitle;
 
   // Bluetooth scanning screen
   final String bluetoothScanningTitle;

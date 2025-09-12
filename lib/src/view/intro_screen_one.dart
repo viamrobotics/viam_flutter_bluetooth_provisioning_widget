@@ -40,7 +40,6 @@ class IntroScreenOne extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          const Spacer(),
           FilledButton(
             key: ValueKey('screen-1-cta'),
             onPressed: handleCtaTapped,
