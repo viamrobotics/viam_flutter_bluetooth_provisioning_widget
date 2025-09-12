@@ -99,12 +99,15 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                         subtitle: widget.viewModel.copy.introScreenSubtitle,
                         ctaText: widget.viewModel.copy.introScreenCtaText,
                       ),
-                      IntroScreenTwo(
+                      PowerDeviceInstructionsScreen(
                         handleNextTapped: _onNextPage,
-                        turnOnTitle: widget.viewModel.copy.introScreenTwoTurnOnTitle,
-                        turnOnSubtitle: widget.viewModel.copy.introScreenTwoTurnOnSubtitle,
-                        bluetoothTitle: widget.viewModel.copy.introScreenTwoBluetoothTitle,
-                        bluetoothSubtitle: widget.viewModel.copy.introScreenTwoBluetoothSubtitle,
+                        title: widget.viewModel.copy.powerOnInstructionsTitle,
+                        subtitle: widget.viewModel.copy.powerOnInstructionsSubtitle,
+                      ),
+                      BluetoothOnInstructionsScreen(
+                        handleNextTapped: _onNextPage,
+                        title: widget.viewModel.copy.bluetoothOnInstructionsTitle,
+                        subtitle: widget.viewModel.copy.bluetoothOnInstructionsSubtitle,
                       ),
                       BluetoothScanningScreen(
                         viewModel: BluetoothScanningScreenViewModel(
