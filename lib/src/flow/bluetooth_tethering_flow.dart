@@ -42,7 +42,7 @@ class BluetoothTetheringFlow extends StatefulWidget {
 class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
   final PageController _pageController = PageController();
 
-  InternetConnectionOption? _connectionOption;
+  bool _hasInternetConnection = false;
 
   @override
   void dispose() {
@@ -80,9 +80,9 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
     }
   }
 
-  void _onConnectionOptionSelected(InternetConnectionOption connectionOption) {
+  void _onInternetQuestionAnswered(bool yesInternet) {
     setState(() {
-      _connectionOption = connectionOption;
+      _hasInternetConnection = yesInternet;
     });
     _onNextPage();
   }
@@ -137,11 +137,13 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                           tipsDialogCtaText: widget.viewModel.copy.bluetoothScanningTipsDialogCtaText,
                         ),
                       ),
-                      ChooseConnectionMethodScreen(
-                        onConnectionOptionSelected: _onConnectionOptionSelected,
-                        cellularSubtitle: widget.viewModel.copy.connectionMethodCellularSubtitle,
+                      InternetQuestionScreen(
+                        handleYesTapped: () => _onInternetQuestionAnswered(true),
+                        handleNoTapped: () => _onInternetQuestionAnswered(false),
+                        title: widget.viewModel.copy.internetQuestionTitle,
+                        subtitle: widget.viewModel.copy.internetQuestionSubtitle,
                       ),
-                      if (_connectionOption == InternetConnectionOption.cellular && widget.viewModel.device != null) ...[
+                      if (!_hasInternetConnection && widget.viewModel.device != null) ...[
                         SetupTetheringScreen(
                           onCtaTapped: _unlockBluetoothPairing,
                           machineName: widget.viewModel.copy.tetheringMachineName,
@@ -169,7 +171,7 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                             ),
                           ),
                       ],
-                      if (_connectionOption == InternetConnectionOption.wifi)
+                      if (_hasInternetConnection && widget.viewModel.device != null)
                         ConnectedBluetoothDeviceScreen(
                           viewModel: ConnectedBluetoothDeviceScreenViewModel(
                             handleWifiCredentials: _onWifiCredentials,

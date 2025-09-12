@@ -31,6 +31,7 @@ part 'src/view/power_device_instructions_screen.dart';
 part 'src/view/bluetooth_on_instructions_screen.dart';
 part 'src/view/name_connected_device_screen.dart';
 part 'src/view/choose_connection_method_screen.dart';
+part 'src/view/internet_question_screen.dart';
 part 'src/view/setup_tethering_screen.dart';
 part 'src/view/pairing_instructions_screen.dart';
 part 'src/view/check_agent_online_screen.dart';
