@@ -51,6 +51,9 @@ class BluetoothProvisioningFlowCopy {
     // Connection method
     this.connectionMethodCellularSubtitle =
         'If your machine doesn\'t have Internet, you can use Bluetooth to share your phone\'s cellular connection with the machine.',
+    // Internet question
+    this.internetQuestionTitle = 'Does your boat have an Internet connection?',
+    this.internetQuestionSubtitle = 'Wi-Fi, Ethernet, or Starlink',
     // Tethering
     this.tetheringMachineName = 'machine',
     // Check agent online
@@ -116,6 +119,10 @@ class BluetoothProvisioningFlowCopy {
 
   // Connection method
   final String connectionMethodCellularSubtitle;
+
+  // Internet question
+  final String internetQuestionTitle;
+  final String? internetQuestionSubtitle;
 
   // Tethering
   final String tetheringMachineName;
