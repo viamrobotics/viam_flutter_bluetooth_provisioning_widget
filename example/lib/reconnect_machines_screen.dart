@@ -117,6 +117,9 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
           onSuccess: () {
             Navigator.of(context).pop();
           },
+          checkingOnlineExit: () {
+            Navigator.of(context).pop();
+          },
           existingMachineExit: () {
             Navigator.of(context).pop();
           },
@@ -147,6 +150,9 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
           checkingOnlineSuccessSubtitle: '${robot.name} is connected and ready to use.',
         ),
         onSuccess: () {
+          Navigator.of(context).pop();
+        },
+        checkingOnlineExit: () {
           Navigator.of(context).pop();
         },
         existingMachineExit: () {

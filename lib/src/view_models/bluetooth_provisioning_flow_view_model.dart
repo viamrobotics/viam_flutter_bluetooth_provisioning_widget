@@ -12,6 +12,7 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
     this.agentMinimumVersion = '0.20.0',
     this.copy = const BluetoothProvisioningFlowCopy(),
     required this.onSuccess,
+    required this.checkingOnlineExit,
     required this.existingMachineExit,
     required this.nonexistentMachineExit,
     required this.agentMinimumVersionExit,
@@ -48,6 +49,7 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
   }
 
   final VoidCallback onSuccess;
+  final VoidCallback checkingOnlineExit;
 
   final VoidCallback existingMachineExit;
   final VoidCallback nonexistentMachineExit;

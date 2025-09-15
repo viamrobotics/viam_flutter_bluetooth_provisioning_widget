@@ -1,5 +1,6 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
+// TODO: finish duping here
 class BluetoothTetheringFlow extends StatefulWidget {
   BluetoothTetheringFlow({
     super.key,
@@ -12,6 +13,7 @@ class BluetoothTetheringFlow extends StatefulWidget {
     required String agentMinimumVersion,
     required BluetoothProvisioningFlowCopy copy,
     required onSuccess,
+    required checkingOnlineExit,
     required existingMachineExit,
     required nonexistentMachineExit,
     required agentMinimumVersionExit,
@@ -27,6 +29,7 @@ class BluetoothTetheringFlow extends StatefulWidget {
       agentMinimumVersion: agentMinimumVersion,
       copy: copy,
       onSuccess: onSuccess,
+      checkingOnlineExit: checkingOnlineExit,
       existingMachineExit: existingMachineExit,
       nonexistentMachineExit: nonexistentMachineExit,
       agentMinimumVersionExit: agentMinimumVersionExit,

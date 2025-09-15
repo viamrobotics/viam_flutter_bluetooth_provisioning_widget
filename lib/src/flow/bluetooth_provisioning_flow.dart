@@ -12,6 +12,7 @@ class BluetoothProvisioningFlow extends StatefulWidget {
     required String agentMinimumVersion,
     required BluetoothProvisioningFlowCopy copy,
     required onSuccess,
+    required checkingOnlineExit,
     required existingMachineExit,
     required nonexistentMachineExit,
     required agentMinimumVersionExit,
@@ -27,6 +28,7 @@ class BluetoothProvisioningFlow extends StatefulWidget {
       agentMinimumVersion: agentMinimumVersion,
       copy: copy,
       onSuccess: onSuccess,
+      checkingOnlineExit: checkingOnlineExit,
       existingMachineExit: existingMachineExit,
       nonexistentMachineExit: nonexistentMachineExit,
       agentMinimumVersionExit: agentMinimumVersionExit,
@@ -41,6 +43,7 @@ class BluetoothProvisioningFlow extends StatefulWidget {
 
 class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
   final PageController _pageController = PageController();
+  bool _performingFinalOnlineCheck = false;
 
   @override
   void dispose() {
@@ -68,6 +71,9 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
 
   Future<void> _onWifiCredentials(String ssid, String? password) async {
     if (await widget.viewModel.onWifiCredentials(context, ssid, password)) {
+      setState(() {
+        _performingFinalOnlineCheck = true;
+      });
       _onNextPage();
     }
   }
@@ -80,8 +86,8 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
         return Scaffold(
           appBar: AppBar(
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back, size: 24),
-              onPressed: _onPreviousPage,
+              icon: _performingFinalOnlineCheck ? const Icon(Icons.close, size: 24) : const Icon(Icons.arrow_back, size: 24),
+              onPressed: _performingFinalOnlineCheck ? widget.viewModel.checkingOnlineExit : _onPreviousPage,
             ),
           ),
           body: SafeArea(
