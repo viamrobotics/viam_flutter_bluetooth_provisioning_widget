@@ -99,6 +99,7 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
       builder: (context, child) {
         return Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false, // can't be true if we want to hide the built-in back button
             leading: widget.viewModel.deviceOnlineState == DeviceOnlineState.checking
                 ? null
                 : IconButton(
