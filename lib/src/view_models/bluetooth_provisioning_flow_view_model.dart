@@ -21,7 +21,6 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
         _isConfigured = !isNewMachine,
         _deviceOnlineState = checkingDeviceOnlineRepository.deviceOnlineState {
     _deviceOnlineSubscription = checkingDeviceOnlineRepository.deviceOnlineStateStream.listen((state) {
-      print('NEW deviceOnlineState in VM: $state ✅');
       deviceOnlineState = state;
     });
   }
@@ -61,7 +60,6 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
   StreamSubscription<DeviceOnlineState>? _deviceOnlineSubscription; // ignore: unused_field
   set deviceOnlineState(DeviceOnlineState state) {
     if (_deviceOnlineState != state) {
-      print('NEW deviceOnlineState: $state 🚀');
       _deviceOnlineState = state;
       notifyListeners();
     }
