@@ -3,7 +3,7 @@ part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 class CheckingDeviceOnlineRepository {
   final Viam viam;
   final Robot robot;
-  final BluetoothDevice device;
+  BluetoothDevice? device;
 
   CheckingDeviceOnlineRepository({
     required this.viam,
@@ -16,7 +16,7 @@ class CheckingDeviceOnlineRepository {
   String? get errorMessage => _errorMessage;
 
   final StreamController<DeviceOnlineState> _stateController = StreamController<DeviceOnlineState>.broadcast();
-  DeviceOnlineState _deviceOnlineState = DeviceOnlineState.checking;
+  DeviceOnlineState _deviceOnlineState = DeviceOnlineState.idle;
   Timer? _onlineTimer;
   List<String>? _startingErrors;
   String? _errorMessage;
@@ -34,6 +34,7 @@ class CheckingDeviceOnlineRepository {
   }
 
   void startChecking() {
+    deviceOnlineState = DeviceOnlineState.checking;
     _onlineTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
       if (_deviceOnlineState == DeviceOnlineState.success) {
         timer.cancel();
@@ -45,17 +46,17 @@ class CheckingDeviceOnlineRepository {
   }
 
   Future<void> _readAgentErrors() async {
-    if (!device.isConnected) {
+    if (device?.isConnected == false) {
       return;
     }
 
     try {
       if (_startingErrors == null) {
-        _startingErrors = await device.readErrors();
+        _startingErrors = await device?.readErrors();
         return; // nothing to compare, return
       }
 
-      final newErrors = await device.readErrors();
+      final newErrors = await device?.readErrors() ?? [];
       if (newErrors.length > _startingErrors!.length) {
         // a new error was appended to the error list
         _onlineTimer?.cancel();
@@ -76,8 +77,8 @@ class CheckingDeviceOnlineRepository {
       _onlineTimer?.cancel();
       deviceOnlineState = DeviceOnlineState.success;
       // fire and forget disconnect device
-      if (device.isConnected) {
-        device.disconnect();
+      if (device?.isConnected == true) {
+        device?.disconnect();
       }
     }
   }
