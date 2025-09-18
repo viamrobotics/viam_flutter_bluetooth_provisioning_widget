@@ -110,7 +110,7 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: switch (widget.viewModel.deviceOnlineState) {
-            DeviceOnlineState.idle => _buildCheckingState(context), // could happen right before checking
+            DeviceOnlineState.idle => _buildCheckingState(context), // could be in this state right before starting to check, but not long
             DeviceOnlineState.checking => _buildCheckingState(context),
             DeviceOnlineState.success => _buildSuccessState(context),
             DeviceOnlineState.errorConnecting => _buildErrorConnectingState(context),
