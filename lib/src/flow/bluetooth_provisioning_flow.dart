@@ -85,15 +85,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
         return Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false, // can't be true if we want to hide the built-in back button
-            leading: widget.viewModel.deviceOnlineState == DeviceOnlineState.checking || widget.viewModel.isLoading
-                ? null
-                : IconButton(
-                    icon: widget.viewModel.deviceOnlineState == DeviceOnlineState.success
-                        ? Icon(Icons.close, size: 24)
-                        : Icon(Icons.arrow_back, size: 24),
-                    onPressed:
-                        widget.viewModel.deviceOnlineState == DeviceOnlineState.success ? widget.viewModel.onSuccess : _onPreviousPage,
-                  ),
+            leading: widget.viewModel.leadingIconButton(_onPreviousPage),
           ),
           body: SafeArea(
             child: Stack(

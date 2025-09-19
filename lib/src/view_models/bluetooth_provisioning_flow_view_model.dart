@@ -153,6 +153,24 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
     }
   }
 
+  IconButton? leadingIconButton(VoidCallback onBack) {
+    if (isLoading) {
+      return null;
+    }
+
+    switch (deviceOnlineState) {
+      case DeviceOnlineState.checking:
+        return null;
+      case DeviceOnlineState.success:
+        return IconButton(icon: Icon(Icons.close, size: 24), onPressed: onSuccess);
+      case DeviceOnlineState.idle:
+      case DeviceOnlineState.errorConnecting:
+        return IconButton(icon: Icon(Icons.arrow_back, size: 24), onPressed: onBack);
+    }
+  }
+
+  // Private methods
+
   Future<void> _avoidOverwritingExistingMachineDialog(BuildContext context) async {
     await showDialog(
       context: context,
