@@ -21,6 +21,11 @@ class BluetoothProvisioningFlow extends StatefulWidget {
       robot: robot,
       isNewMachine: isNewMachine,
       connectBluetoothDeviceRepository: ConnectBluetoothDeviceRepository(),
+      checkingDeviceOnlineRepository: CheckingDeviceOnlineRepository(
+        device: null,
+        viam: viam,
+        robot: robot,
+      ),
       mainRobotPart: mainRobotPart,
       psk: psk,
       fragmentId: fragmentId,
@@ -79,10 +84,8 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
       builder: (context, child) {
         return Scaffold(
           appBar: AppBar(
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back, size: 24),
-              onPressed: _onPreviousPage,
-            ),
+            automaticallyImplyLeading: false, // can't be true if we want to hide the built-in back button
+            leading: widget.viewModel.leadingIconButton(_onPreviousPage),
           ),
           body: SafeArea(
             child: Stack(
@@ -144,11 +147,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                             successCta: widget.viewModel.copy.checkingOnlineSuccessCta,
                             handleSuccess: widget.viewModel.onSuccess,
                             handleError: _onPreviousPage, // back to network selection
-                            checkingDeviceOnlineRepository: CheckingDeviceOnlineRepository(
-                              device: widget.viewModel.device!,
-                              viam: widget.viewModel.viam,
-                              robot: widget.viewModel.robot,
-                            ),
+                            checkingDeviceOnlineRepository: widget.viewModel.checkingDeviceOnlineRepository,
                             connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
                           ),
                         ),

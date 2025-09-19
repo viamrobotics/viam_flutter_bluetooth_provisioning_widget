@@ -6,6 +6,7 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
     required this.robot,
     required this.isNewMachine,
     required this.connectBluetoothDeviceRepository,
+    required this.checkingDeviceOnlineRepository,
     required mainRobotPart,
     required String psk,
     required this.fragmentId,
@@ -17,11 +18,18 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
     required this.agentMinimumVersionExit,
   })  : _mainRobotPart = mainRobotPart,
         _psk = psk,
-        _isConfigured = !isNewMachine;
+        _isConfigured = !isNewMachine,
+        _deviceOnlineState = checkingDeviceOnlineRepository.deviceOnlineState {
+    _deviceOnlineSubscription = checkingDeviceOnlineRepository.deviceOnlineStateStream.listen((state) {
+      deviceOnlineState = state;
+    });
+  }
+
   final Viam viam;
   final Robot robot;
   final bool isNewMachine;
   final ConnectBluetoothDeviceRepository connectBluetoothDeviceRepository;
+  final CheckingDeviceOnlineRepository checkingDeviceOnlineRepository;
   final String agentMinimumVersion;
   final BluetoothProvisioningFlowCopy copy;
 
@@ -45,6 +53,16 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
   set isLoading(bool value) {
     _isLoading = value;
     notifyListeners();
+  }
+
+  DeviceOnlineState get deviceOnlineState => _deviceOnlineState;
+  DeviceOnlineState _deviceOnlineState;
+  StreamSubscription<DeviceOnlineState>? _deviceOnlineSubscription; // ignore: unused_field
+  set deviceOnlineState(DeviceOnlineState state) {
+    if (_deviceOnlineState != state) {
+      _deviceOnlineState = state;
+      notifyListeners();
+    }
   }
 
   final VoidCallback onSuccess;
@@ -92,6 +110,7 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
         _reconnectingNonexistingMachineDialog(context);
         return false;
       }
+      checkingDeviceOnlineRepository.device = device;
       return true;
     } catch (e) {
       debugPrint('Error reading device status: $e');
@@ -133,6 +152,24 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
       isLoading = false;
     }
   }
+
+  IconButton? leadingIconButton(VoidCallback onBack) {
+    if (isLoading) {
+      return null;
+    }
+
+    switch (deviceOnlineState) {
+      case DeviceOnlineState.checking:
+        return null;
+      case DeviceOnlineState.success:
+        return IconButton(icon: Icon(Icons.close, size: 24), onPressed: onSuccess);
+      case DeviceOnlineState.idle:
+      case DeviceOnlineState.errorConnecting:
+        return IconButton(icon: Icon(Icons.arrow_back, size: 24), onPressed: onBack);
+    }
+  }
+
+  // Private methods
 
   Future<void> _avoidOverwritingExistingMachineDialog(BuildContext context) async {
     await showDialog(

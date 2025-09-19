@@ -3,7 +3,7 @@ part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 class CheckingDeviceOnlineRepository {
   final Viam viam;
   final Robot robot;
-  final BluetoothDevice device;
+  BluetoothDevice? device;
 
   CheckingDeviceOnlineRepository({
     required this.viam,
@@ -16,7 +16,7 @@ class CheckingDeviceOnlineRepository {
   String? get errorMessage => _errorMessage;
 
   final StreamController<DeviceOnlineState> _stateController = StreamController<DeviceOnlineState>.broadcast();
-  DeviceOnlineState _deviceOnlineState = DeviceOnlineState.checking;
+  DeviceOnlineState _deviceOnlineState = DeviceOnlineState.idle;
   Timer? _onlineTimer;
   List<String>? _startingErrors;
   String? _errorMessage;
@@ -34,24 +34,28 @@ class CheckingDeviceOnlineRepository {
   }
 
   void startChecking() {
+    deviceOnlineState = DeviceOnlineState.checking;
     _onlineTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
       if (_deviceOnlineState == DeviceOnlineState.success) {
         timer.cancel();
         return;
       }
       _checkOnline();
-      _readAgentErrors();
+      if (device != null && device?.isConnected == true) {
+        _readAgentErrors(device!);
+      }
     });
   }
 
-  Future<void> _readAgentErrors() async {
-    if (!device.isConnected) {
-      return;
-    }
-
+  Future<void> _readAgentErrors(BluetoothDevice device) async {
     try {
       if (_startingErrors == null) {
-        _startingErrors = await device.readErrors();
+        try {
+          _startingErrors = await device.readErrors();
+        } catch (e) {
+          debugPrint('Error reading starting agent errors: $e');
+          _startingErrors = []; // fallback to empty list, so we have something to compare when the service re-appears
+        }
         return; // nothing to compare, return
       }
 
@@ -76,8 +80,8 @@ class CheckingDeviceOnlineRepository {
       _onlineTimer?.cancel();
       deviceOnlineState = DeviceOnlineState.success;
       // fire and forget disconnect device
-      if (device.isConnected) {
-        device.disconnect();
+      if (device?.isConnected == true) {
+        device?.disconnect();
       }
     }
   }
