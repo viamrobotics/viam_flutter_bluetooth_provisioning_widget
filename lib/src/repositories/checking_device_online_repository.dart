@@ -41,22 +41,25 @@ class CheckingDeviceOnlineRepository {
         return;
       }
       _checkOnline();
-      _readAgentErrors();
+      if (device != null && device?.isConnected == true) {
+        _readAgentErrors(device!);
+      }
     });
   }
 
-  Future<void> _readAgentErrors() async {
-    if (device?.isConnected == false) {
-      return;
-    }
-
+  Future<void> _readAgentErrors(BluetoothDevice device) async {
     try {
       if (_startingErrors == null) {
-        _startingErrors = await device?.readErrors();
+        try {
+          _startingErrors = await device.readErrors();
+        } catch (e) {
+          debugPrint('Error reading starting agent errors: $e');
+          _startingErrors = []; // fallback to empty list, so we have something to compare when the service re-appears
+        }
         return; // nothing to compare, return
       }
 
-      final newErrors = await device?.readErrors() ?? [];
+      final newErrors = await device.readErrors();
       if (newErrors.length > _startingErrors!.length) {
         // a new error was appended to the error list
         _onlineTimer?.cancel();
