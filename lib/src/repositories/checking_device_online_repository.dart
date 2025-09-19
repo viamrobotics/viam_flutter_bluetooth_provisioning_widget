@@ -18,7 +18,6 @@ class CheckingDeviceOnlineRepository {
   final StreamController<DeviceOnlineState> _stateController = StreamController<DeviceOnlineState>.broadcast();
   DeviceOnlineState _deviceOnlineState = DeviceOnlineState.idle;
   Timer? _onlineTimer;
-  List<String>? _startingErrors;
   String? _errorMessage;
 
   set deviceOnlineState(DeviceOnlineState state) {
@@ -49,22 +48,13 @@ class CheckingDeviceOnlineRepository {
 
   Future<void> _readAgentErrors(BluetoothDevice device) async {
     try {
-      if (_startingErrors == null) {
-        try {
-          _startingErrors = await device.readErrors();
-        } catch (e) {
-          debugPrint('Error reading starting agent errors: $e');
-          _startingErrors = []; // fallback to empty list, so we have something to compare when the service re-appears
-        }
-        return; // nothing to compare, return
-      }
-
-      final newErrors = await device.readErrors();
-      if (newErrors.length > _startingErrors!.length) {
-        // a new error was appended to the error list
+      // when bleService comes back online, if these errors comes back as not empty we have an error to handle
+      // this should return an array with 1 value once it's readable (bleService comes back online)
+      final errors = await device.readErrors();
+      if (errors.isNotEmpty) {
         _onlineTimer?.cancel();
         deviceOnlineState = DeviceOnlineState.errorConnecting;
-        _errorMessage = newErrors.last;
+        _errorMessage = errors.last;
         debugPrint('Error connecting machine: $_errorMessage');
       }
     } catch (e) {
