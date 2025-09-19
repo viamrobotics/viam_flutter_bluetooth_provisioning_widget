@@ -132,7 +132,11 @@ class ConnectBluetoothDeviceRepository {
 
   Future<void> _fragmentOverride(Viam viam, String fragmentId, RobotPart robotPart, Robot robot) async {
     Map<String, dynamic> config = {
-      "fragments": [fragmentId]
+      "fragments": [
+        {
+          "id": fragmentId,
+        }
+      ]
     };
     await viam.appClient.updateRobotPart(robotPart.id, robot.name, config);
   }
