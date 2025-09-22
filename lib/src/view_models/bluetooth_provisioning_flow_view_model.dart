@@ -137,10 +137,17 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
 
   Future<bool> unlockBluetoothPairing(BuildContext context) async {
     try {
+      if (device == null) {
+        throw Exception('Device is not connected');
+      }
+
       isLoading = true;
-      await device?.unlockPairing(psk: _psk);
+      if (!device!.isConnected) {
+        await device!.connect();
+      }
+      await device!.unlockPairing(psk: _psk);
       debugPrint('unlocked pairing');
-      await device?.disconnect();
+      await device!.disconnect();
       debugPrint('disconnected from device');
       return true;
     } catch (e) {
