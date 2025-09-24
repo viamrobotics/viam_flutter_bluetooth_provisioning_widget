@@ -1,3 +1,10 @@
+## 0.0.22
+
+* Disable back button on last confirmation screen
+* Set fragmentId as object instead of string
+* Bug fix for error reading from agent
+* Conditional re-connect before unlocking pairing
+
 ## 0.0.21
 
 * Back to using simple internet y/n question for tethering
