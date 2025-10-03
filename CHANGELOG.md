@@ -1,3 +1,7 @@
+## 0.0.23
+
+* Increment Viam SDK minimum in pubspec
+
 ## 0.0.22
 
 * Disable back button on last confirmation screen
