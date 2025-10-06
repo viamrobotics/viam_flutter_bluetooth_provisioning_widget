@@ -1,3 +1,7 @@
+## 0.0.24
+
+* Correctly release previous release
+
 ## 0.0.23
 
 * Increment Viam SDK minimum in pubspec
