@@ -10,7 +10,7 @@ jobs:
   test:
     runs-on: [ubuntu-large]
     container:
-      image: ghcr.io/cirruslabs/flutter:latest
+      image: ghcr.io/cirruslabs/flutter:${{ vars.FLUTTER_VERSION }}
 
     steps:
       - uses: actions/checkout@v4
