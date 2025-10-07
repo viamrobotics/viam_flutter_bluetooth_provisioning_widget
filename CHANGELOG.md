@@ -1,3 +1,7 @@
+## 0.0.25
+
+* Running on Flutter 3.35.5
+
 ## 0.0.24
 
 * Correctly release previous release
