@@ -127,7 +127,8 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
       return true;
     } catch (e) {
       if (context.mounted) {
-        _showErrorDialog(context, title: 'Failed to write config', error: e.toString());
+        debugPrint('Failed to write machine configuration: ${e.toString()}');
+        _showErrorDialog(context, title: 'Error', error: 'Failed to write machine configuration');
       }
       return false;
     } finally {
@@ -152,7 +153,8 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
       return true;
     } catch (e) {
       if (context.mounted) {
-        _showErrorDialog(context, title: 'Failed to unlock pairing', error: e.toString());
+        debugPrint('Failed to unlock pairing: ${e.toString()}');
+        _showErrorDialog(context, title: 'Error', error: 'Failed to unlock pairing');
       }
       return false;
     } finally {

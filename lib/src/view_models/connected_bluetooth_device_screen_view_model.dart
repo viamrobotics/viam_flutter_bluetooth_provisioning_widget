@@ -46,7 +46,8 @@ class ConnectedBluetoothDeviceScreenViewModel extends ChangeNotifier {
       wifiNetworks = await _connectBluetoothDeviceRepository.readNetworkList();
     } catch (e) {
       if (context.mounted) {
-        _showErrorDialog(context, title: 'Error reading network list', error: e.toString());
+        debugPrint('Failed to read network list: ${e.toString()}');
+        _showErrorDialog(context, title: 'Error', error: 'Failed to read network list');
       }
     } finally {
       isLoadingNetworks = false;
