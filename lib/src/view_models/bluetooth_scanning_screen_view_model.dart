@@ -75,7 +75,8 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
     } catch (e) {
       debugPrint('error connecting to device: ${e.toString()}');
       if (context.mounted) {
-        _showErrorDialog(context, title: 'Failed to connect to device', error: e.toString());
+        debugPrint('Failed to connect to device: ${e.toString()}');
+        _showErrorDialog(context, title: 'Error', error: 'Failed to connect to device');
       }
     } finally {
       isConnecting = false;
