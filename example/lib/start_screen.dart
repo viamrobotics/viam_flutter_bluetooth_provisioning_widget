@@ -8,7 +8,7 @@ class StartScreen extends StatelessWidget {
 
   void _goToNewMachineFlow(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => const ProvisionNewRobotScreen(),
+      builder: (context) => const ProvisionNewMachineScreen(),
     ));
   }
 

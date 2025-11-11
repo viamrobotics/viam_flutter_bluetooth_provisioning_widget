@@ -5,14 +5,14 @@ import 'package:viam_flutter_bluetooth_provisioning_widget/viam_flutter_bluetoot
 import 'consts.dart';
 import 'utils.dart';
 
-class ProvisionNewRobotScreen extends StatefulWidget {
-  const ProvisionNewRobotScreen({super.key});
+class ProvisionNewMachineScreen extends StatefulWidget {
+  const ProvisionNewMachineScreen({super.key});
 
   @override
-  State<ProvisionNewRobotScreen> createState() => _ProvisionNewRobotScreenState();
+  State<ProvisionNewMachineScreen> createState() => _ProvisionNewMachineScreenState();
 }
 
-class _ProvisionNewRobotScreenState extends State<ProvisionNewRobotScreen> {
+class _ProvisionNewMachineScreenState extends State<ProvisionNewMachineScreen> {
   String? _robotName;
   bool _isLoadingStandardFlow = false;
   bool _isLoadingTetheringFlow = false;

@@ -7,7 +7,6 @@ import 'consts.dart';
 
 class Utils {
   static Future<(Robot robot, RobotPart mainPart)> createRobot(Viam viam) async {
-    final viam = await Viam.withApiKey(Consts.apiKeyId, Consts.apiKey);
     final location = await viam.appClient.createLocation(Consts.organizationId, 'test-location-${Random().nextInt(1000)}');
     final String robotName = "tester-${Random().nextInt(1000)}";
     final robotId = await viam.appClient.newMachine(robotName, location.id);
