@@ -2,33 +2,15 @@ part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class ConnectBluetoothDeviceRepository {
   BluetoothDevice? get device => _device;
-  Stream<BluetoothConnectionState?> get bluetoothConnectionStateStream => _stateController.stream;
-  BluetoothConnectionState? get bluetoothConnectionState => _bluetoothConnectionState;
-  set bluetoothConnectionState(BluetoothConnectionState? state) {
-    if (_bluetoothConnectionState != state) {
-      _bluetoothConnectionState = state;
-      _stateController.add(state);
-    }
-  }
-
-  final StreamController<BluetoothConnectionState?> _stateController = StreamController<BluetoothConnectionState>.broadcast();
-  BluetoothConnectionState? _bluetoothConnectionState;
-  StreamSubscription<BluetoothConnectionState>? _connectionStateSubscription;
   BluetoothDevice? _device;
-
-  void dispose() {
-    _connectionStateSubscription?.cancel();
-    _connectionStateSubscription = null;
-    _stateController.close();
-  }
 
   Future<void> connect(BluetoothDevice device) async {
     if (device.isConnected) {
-      _successfullyConnected(device);
+      _device = device;
       return;
     }
     await device.connect();
-    _successfullyConnected(device);
+    _device = device;
   }
 
   Future<void> reconnect() async {
@@ -80,13 +62,6 @@ class ConnectBluetoothDeviceRepository {
 
     final wifiNetworks = await _device!.readNetworkList();
     return wifiNetworks.sorted((a, b) => b.signalStrength.compareTo(a.signalStrength));
-  }
-
-  void _successfullyConnected(BluetoothDevice device) {
-    _connectionStateSubscription = device.connectionState.listen((state) {
-      bluetoothConnectionState = state;
-    });
-    _device = device;
   }
 
   /// Version check to compare against a specified minimum version
