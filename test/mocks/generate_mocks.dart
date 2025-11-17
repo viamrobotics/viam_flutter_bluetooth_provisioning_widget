@@ -3,6 +3,8 @@ import 'package:mockito/annotations.dart';
 
 @GenerateMocks([
   BluetoothDevice,
+  BluetoothService,
+  BluetoothCharacteristic,
   Viam,
   Robot,
   RobotPart,
