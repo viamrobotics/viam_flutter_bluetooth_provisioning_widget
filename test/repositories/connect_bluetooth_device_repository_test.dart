@@ -200,12 +200,63 @@ void main() {
       verify(exitProvisioningCharacteristic.write(any)).called(1);
     });
 
-    // TODO: throws when not device not connected
-    // TODO: don't overwrite existing machine
-    // TODO: not writing w/ out ssid?
+    test('don\'t write network credentials with null ssid', () async {
+      final device = MockBluetoothDevice();
+
+      when(device.isConnected).thenReturn(true);
+      when(device.connect()).thenAnswer((_) async => {});
+      await repository.connect(device);
+
+      when(device.discoverServices(
+        subscribeToServicesChanged: true,
+        timeout: 15,
+      )).thenAnswer((_) async => <BluetoothService>[service]);
+
+      when(viamStatusCharacteristic.read()).thenAnswer((_) async => [0]); // not configured, not online
+
+      await repository.writeConfig(
+        viam: MockViam(),
+        robot: MockRobot(),
+        mainRobotPart: mainRobotPart,
+        ssid: null,
+        password: 'password',
+        psk: 'viamsetup',
+        fragmentId: 'fragmentId',
+        fragmentOverride: false,
+      );
+
+      verify(partIdCharacteristic.write(any)).called(1);
+      verify(partSecretCharacteristic.write(any)).called(1);
+      verify(appAddressCharacteristic.write(any)).called(1);
+
+      verifyNever(ssidCharacteristic.write(any));
+      verifyNever(pskCharacteristic.write(any));
+
+      verify(exitProvisioningCharacteristic.write(any)).called(1);
+    });
+
+    test('throws when not no device connected', () async {
+      try {
+        await repository.writeConfig(
+          viam: MockViam(),
+          robot: MockRobot(),
+          mainRobotPart: mainRobotPart,
+          ssid: 'ssid',
+          password: 'password',
+          psk: 'viamsetup',
+          fragmentId: 'fragmentId',
+          fragmentOverride: false,
+        );
+      } catch (e) {
+        expect(e.toString(), equals('Exception: No connected device'));
+      }
+    });
+
     // TODO: fragment override test
 
-    // TODO: readNetworkList
+    group('readNetworkList', () {
+      // TODO: should grab the test bytes
+    });
 
     group('isVersionLower', () {
       test('should return false when current version is higher than minimum', () {
