@@ -176,7 +176,6 @@ void main() {
         subscribeToServicesChanged: true,
         timeout: 15,
       )).thenAnswer((_) async => <BluetoothService>[service]);
-
       when(viamStatusCharacteristic.read()).thenAnswer((_) async => [1]); // configured, not online
 
       await repository.writeConfig(
@@ -211,7 +210,6 @@ void main() {
         subscribeToServicesChanged: true,
         timeout: 15,
       )).thenAnswer((_) async => <BluetoothService>[service]);
-
       when(viamStatusCharacteristic.read()).thenAnswer((_) async => [0]); // not configured, not online
 
       await repository.writeConfig(
@@ -256,6 +254,10 @@ void main() {
 
     group('readNetworkList', () {
       // TODO: should grab the test bytes
+    });
+
+    group('isAgentVersionBelowMinimum', () {
+      // TODO: do
     });
 
     group('isVersionLower', () {
