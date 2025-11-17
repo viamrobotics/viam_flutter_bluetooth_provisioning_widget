@@ -10,6 +10,7 @@ void main() {
     late ConnectBluetoothDeviceRepository repository;
     late MockBluetoothService service;
     late MockRobotPart mainRobotPart;
+    late MockBluetoothCharacteristic viamStatusCharacteristic;
     late MockBluetoothCharacteristic partIdCharacteristic;
     late MockBluetoothCharacteristic partSecretCharacteristic;
     late MockBluetoothCharacteristic appAddressCharacteristic;
@@ -22,9 +23,8 @@ void main() {
       service = MockBluetoothService();
       when(service.uuid).thenReturn(Guid.fromString(ViamBluetoothUUIDs.serviceUUID));
 
-      final viamStatusCharacteristic = MockBluetoothCharacteristic();
+      viamStatusCharacteristic = MockBluetoothCharacteristic();
       when(viamStatusCharacteristic.uuid).thenReturn(Guid.fromString(ViamBluetoothUUIDs.statusUUID));
-      when(viamStatusCharacteristic.read()).thenAnswer((_) async => [0, 0]);
 
       final mockPublicKeyBytes = [
         0x30, 0x82, 0x01, 0x22, // SEQUENCE, 290 bytes
@@ -90,7 +90,7 @@ void main() {
 
       ssidCharacteristic = MockBluetoothCharacteristic();
       when(ssidCharacteristic.uuid).thenReturn(Guid.fromString(ViamBluetoothUUIDs.ssidUUID));
-      when(ssidCharacteristic.read()).thenAnswer((_) async => [0, 0]);
+      when(ssidCharacteristic.read()).thenAnswer((_) async => [0, 0, 0, 0]);
 
       pskCharacteristic = MockBluetoothCharacteristic();
       when(pskCharacteristic.uuid).thenReturn(Guid.fromString(ViamBluetoothUUIDs.pskUUID));
@@ -136,6 +136,7 @@ void main() {
         when(device.isConnected).thenReturn(true);
         when(device.connect()).thenAnswer((_) async => {});
         await repository.connect(device);
+        when(viamStatusCharacteristic.read()).thenAnswer((_) async => [0]); // not configured, not online
 
         when(device.discoverServices(
           subscribeToServicesChanged: true,
@@ -156,10 +157,47 @@ void main() {
         verify(partIdCharacteristic.write(any)).called(1);
         verify(partSecretCharacteristic.write(any)).called(1);
         verify(appAddressCharacteristic.write(any)).called(1);
+
         verify(ssidCharacteristic.write(any)).called(1);
         verify(pskCharacteristic.write(any)).called(1);
+
         verify(exitProvisioningCharacteristic.write(any)).called(1);
       });
+    });
+
+    test('don\'t overwrite existing machine', () async {
+      final device = MockBluetoothDevice();
+
+      when(device.isConnected).thenReturn(true);
+      when(device.connect()).thenAnswer((_) async => {});
+      await repository.connect(device);
+
+      when(device.discoverServices(
+        subscribeToServicesChanged: true,
+        timeout: 15,
+      )).thenAnswer((_) async => <BluetoothService>[service]);
+
+      when(viamStatusCharacteristic.read()).thenAnswer((_) async => [1]); // configured, not online
+
+      await repository.writeConfig(
+        viam: MockViam(),
+        robot: MockRobot(),
+        mainRobotPart: mainRobotPart,
+        ssid: 'ssid',
+        password: 'password',
+        psk: 'viamsetup',
+        fragmentId: 'fragmentId',
+        fragmentOverride: false,
+      );
+
+      verifyNever(partIdCharacteristic.write(any));
+      verifyNever(partSecretCharacteristic.write(any));
+      verifyNever(appAddressCharacteristic.write(any));
+
+      verify(ssidCharacteristic.write(any)).called(1);
+      verify(pskCharacteristic.write(any)).called(1);
+
+      verify(exitProvisioningCharacteristic.write(any)).called(1);
     });
 
     // TODO: throws when not device not connected
