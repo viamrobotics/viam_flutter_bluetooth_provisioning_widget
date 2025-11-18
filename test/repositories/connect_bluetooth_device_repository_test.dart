@@ -12,6 +12,7 @@ void main() {
     late MockRobotPart mainRobotPart;
     late MockRobot robot;
 
+    late MockBluetoothDevice device;
     late MockBluetoothCharacteristic viamStatusCharacteristic;
     late MockBluetoothCharacteristic partIdCharacteristic;
     late MockBluetoothCharacteristic partSecretCharacteristic;
@@ -100,6 +101,13 @@ void main() {
       service = MockBluetoothService();
       when(service.uuid).thenReturn(Guid.fromString(ViamBluetoothUUIDs.serviceUUID));
 
+      device = MockBluetoothDevice();
+      when(device.connect()).thenAnswer((_) async => {});
+      when(device.discoverServices(
+        subscribeToServicesChanged: true,
+        timeout: 15,
+      )).thenAnswer((_) async => <BluetoothService>[service]);
+
       viamStatusCharacteristic = MockBluetoothCharacteristic();
       when(viamStatusCharacteristic.uuid).thenReturn(Guid.fromString(ViamBluetoothUUIDs.statusUUID));
 
@@ -168,9 +176,7 @@ void main() {
 
     group('connect', () {
       test('connects successfully when no device connected', () async {
-        final device = MockBluetoothDevice();
         when(device.isConnected).thenReturn(false);
-        when(device.connect()).thenAnswer((_) async => {});
 
         expect(repository.device, isNull);
         await repository.connect(device);
@@ -180,16 +186,9 @@ void main() {
 
     group('write config', () {
       test('write config to connected device with no fragment override', () async {
-        final device = MockBluetoothDevice();
         when(device.isConnected).thenReturn(true);
-        when(device.connect()).thenAnswer((_) async => {});
         await repository.connect(device);
         when(viamStatusCharacteristic.read()).thenAnswer((_) async => [0]); // not configured, not online
-
-        when(device.discoverServices(
-          subscribeToServicesChanged: true,
-          timeout: 15,
-        )).thenAnswer((_) async => <BluetoothService>[service]);
 
         await repository.writeConfig(
           viam: MockViam(),
@@ -214,15 +213,9 @@ void main() {
     });
 
     test('don\'t overwrite existing machine', () async {
-      final device = MockBluetoothDevice();
       when(device.isConnected).thenReturn(true);
-      when(device.connect()).thenAnswer((_) async => {});
       await repository.connect(device);
 
-      when(device.discoverServices(
-        subscribeToServicesChanged: true,
-        timeout: 15,
-      )).thenAnswer((_) async => <BluetoothService>[service]);
       when(viamStatusCharacteristic.read()).thenAnswer((_) async => [1]); // configured, not online
 
       await repository.writeConfig(
@@ -247,15 +240,9 @@ void main() {
     });
 
     test('don\'t write network credentials with null ssid', () async {
-      final device = MockBluetoothDevice();
       when(device.isConnected).thenReturn(true);
-      when(device.connect()).thenAnswer((_) async => {});
       await repository.connect(device);
 
-      when(device.discoverServices(
-        subscribeToServicesChanged: true,
-        timeout: 15,
-      )).thenAnswer((_) async => <BluetoothService>[service]);
       when(viamStatusCharacteristic.read()).thenAnswer((_) async => [0]); // not configured, not online
 
       await repository.writeConfig(
@@ -297,16 +284,9 @@ void main() {
     });
 
     test('fragment override written', () async {
-      final device = MockBluetoothDevice();
       when(device.isConnected).thenReturn(true);
-      when(device.connect()).thenAnswer((_) async => {});
       await repository.connect(device);
       when(viamStatusCharacteristic.read()).thenAnswer((_) async => [0]); // not configured, not online
-
-      when(device.discoverServices(
-        subscribeToServicesChanged: true,
-        timeout: 15,
-      )).thenAnswer((_) async => <BluetoothService>[service]);
 
       final viam = MockViam();
       final appClient = MockAppClient();
@@ -338,15 +318,8 @@ void main() {
 
     group('readNetworkList', () {
       test('should read network list successfully', () async {
-        final device = MockBluetoothDevice();
         when(device.isConnected).thenReturn(true);
-        when(device.connect()).thenAnswer((_) async => {});
         await repository.connect(device);
-
-        when(device.discoverServices(
-          subscribeToServicesChanged: true,
-          timeout: 15,
-        )).thenAnswer((_) async => <BluetoothService>[service]);
 
         final networList = await repository.readNetworkList();
         expect(networList.length, equals(3));
@@ -364,15 +337,8 @@ void main() {
 
     group('isAgentVersionBelowMinimum', () {
       test('should return true when agent version is lower than minimum', () async {
-        final device = MockBluetoothDevice();
         when(device.isConnected).thenReturn(true);
-        when(device.connect()).thenAnswer((_) async => {});
         await repository.connect(device);
-
-        when(device.discoverServices(
-          subscribeToServicesChanged: true,
-          timeout: 15,
-        )).thenAnswer((_) async => <BluetoothService>[service]);
 
         // 0.19.0
         when(agentVersionCharacteristic.read()).thenAnswer((_) async => [0x30, 0x2E, 0x31, 0x39, 0x2E, 0x30]);
@@ -382,15 +348,8 @@ void main() {
       });
 
       test('should return false when agent version is higher than minimum', () async {
-        final device = MockBluetoothDevice();
         when(device.isConnected).thenReturn(true);
-        when(device.connect()).thenAnswer((_) async => {});
         await repository.connect(device);
-
-        when(device.discoverServices(
-          subscribeToServicesChanged: true,
-          timeout: 15,
-        )).thenAnswer((_) async => <BluetoothService>[service]);
 
         // 0.21.0
         when(agentVersionCharacteristic.read()).thenAnswer((_) async => [0x30, 0x2E, 0x32, 0x31, 0x2E, 0x30]);
