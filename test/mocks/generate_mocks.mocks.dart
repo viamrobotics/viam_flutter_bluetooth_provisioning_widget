@@ -16,9 +16,12 @@ import 'package:protobuf/protobuf.dart' as _i10;
 import 'package:viam_sdk/src/app/app.dart' as _i4;
 import 'package:viam_sdk/src/app/billing.dart' as _i6;
 import 'package:viam_sdk/src/app/data.dart' as _i7;
+import 'package:viam_sdk/src/app/permissions.dart' as _i19;
 import 'package:viam_sdk/src/app/provisioning.dart' as _i8;
 import 'package:viam_sdk/src/app/robot.dart' as _i5;
+import 'package:viam_sdk/src/gen/app/packages/v1/packages.pbenum.dart' as _i21;
 import 'package:viam_sdk/src/gen/app/v1/app.pbgrpc.dart' as _i12;
+import 'package:viam_sdk/src/gen/common/v1/common.pb.dart' as _i20;
 import 'package:viam_sdk/src/gen/google/protobuf/struct.pb.dart' as _i14;
 import 'package:viam_sdk/src/gen/google/protobuf/timestamp.pb.dart' as _i11;
 import 'package:viam_sdk/src/robot/client.dart' as _i9;
@@ -218,6 +221,187 @@ class _FakeStruct_16 extends _i1.SmartFake implements _i14.Struct {
 
 class _FakeRobotPart_17 extends _i1.SmartFake implements _i12.RobotPart {
   _FakeRobotPart_17(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeOrganization_18 extends _i1.SmartFake implements _i12.Organization {
+  _FakeOrganization_18(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeListOrganizationMembersResponse_19 extends _i1.SmartFake
+    implements _i12.ListOrganizationMembersResponse {
+  _FakeListOrganizationMembersResponse_19(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeOrganizationInvite_20 extends _i1.SmartFake
+    implements _i12.OrganizationInvite {
+  _FakeOrganizationInvite_20(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeLocation_21 extends _i1.SmartFake implements _i12.Location {
+  _FakeLocation_21(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeLocationAuth_22 extends _i1.SmartFake implements _i12.LocationAuth {
+  _FakeLocationAuth_22(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeGetRobotPartLogsResponse_23 extends _i1.SmartFake
+    implements _i12.GetRobotPartLogsResponse {
+  _FakeGetRobotPartLogsResponse_23(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeFragment_24 extends _i1.SmartFake implements _i12.Fragment {
+  _FakeFragment_24(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeRegistryItem_25 extends _i1.SmartFake implements _i12.RegistryItem {
+  _FakeRegistryItem_25(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeCreateModuleResponse_26 extends _i1.SmartFake
+    implements _i12.CreateModuleResponse {
+  _FakeCreateModuleResponse_26(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeModule_27 extends _i1.SmartFake implements _i12.Module {
+  _FakeModule_27(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeCreateKeyResponse_28 extends _i1.SmartFake
+    implements _i12.CreateKeyResponse {
+  _FakeCreateKeyResponse_28(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeRotateKeyResponse_29 extends _i1.SmartFake
+    implements _i12.RotateKeyResponse {
+  _FakeRotateKeyResponse_29(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeCreateKeyFromExistingKeyAuthorizationsResponse_30 extends _i1
+    .SmartFake implements _i12.CreateKeyFromExistingKeyAuthorizationsResponse {
+  _FakeCreateKeyFromExistingKeyAuthorizationsResponse_30(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeGetOrganizationMetadataResponse_31 extends _i1.SmartFake
+    implements _i12.GetOrganizationMetadataResponse {
+  _FakeGetOrganizationMetadataResponse_31(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeGetLocationMetadataResponse_32 extends _i1.SmartFake
+    implements _i12.GetLocationMetadataResponse {
+  _FakeGetLocationMetadataResponse_32(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeGetRobotMetadataResponse_33 extends _i1.SmartFake
+    implements _i12.GetRobotMetadataResponse {
+  _FakeGetRobotMetadataResponse_33(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeGetRobotPartMetadataResponse_34 extends _i1.SmartFake
+    implements _i12.GetRobotPartMetadataResponse {
+  _FakeGetRobotPartMetadataResponse_34(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -3248,4 +3432,1418 @@ class MockRobotPart extends _i1.Mock implements _i12.RobotPart {
         ),
         returnValueForMissingStub: null,
       );
+}
+
+/// A class which mocks [AppClient].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAppClient extends _i1.Mock implements _i4.AppClient {
+  MockAppClient() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i16.Future<List<_i12.LocationSummary>> listMachineSummaries(
+          String? organizationId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #listMachineSummaries,
+          [organizationId],
+        ),
+        returnValue: _i16.Future<List<_i12.LocationSummary>>.value(
+            <_i12.LocationSummary>[]),
+      ) as _i16.Future<List<_i12.LocationSummary>>);
+
+  @override
+  _i16.Future<String> getUserIdByEmail(String? email) => (super.noSuchMethod(
+        Invocation.method(
+          #getUserIdByEmail,
+          [email],
+        ),
+        returnValue: _i16.Future<String>.value(_i15.dummyValue<String>(
+          this,
+          Invocation.method(
+            #getUserIdByEmail,
+            [email],
+          ),
+        )),
+      ) as _i16.Future<String>);
+
+  @override
+  _i16.Future<_i12.Organization> createOrganization(String? name) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #createOrganization,
+          [name],
+        ),
+        returnValue: _i16.Future<_i12.Organization>.value(_FakeOrganization_18(
+          this,
+          Invocation.method(
+            #createOrganization,
+            [name],
+          ),
+        )),
+      ) as _i16.Future<_i12.Organization>);
+
+  @override
+  _i16.Future<List<_i12.Organization>> listOrganizations() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #listOrganizations,
+          [],
+        ),
+        returnValue:
+            _i16.Future<List<_i12.Organization>>.value(<_i12.Organization>[]),
+      ) as _i16.Future<List<_i12.Organization>>);
+
+  @override
+  _i16.Future<List<_i12.OrganizationIdentity>>
+      getOrganizationsWithAccessToLocation(String? locationId) =>
+          (super.noSuchMethod(
+            Invocation.method(
+              #getOrganizationsWithAccessToLocation,
+              [locationId],
+            ),
+            returnValue: _i16.Future<List<_i12.OrganizationIdentity>>.value(
+                <_i12.OrganizationIdentity>[]),
+          ) as _i16.Future<List<_i12.OrganizationIdentity>>);
+
+  @override
+  _i16.Future<List<_i12.OrgDetails>> listOrganizationsByUser(String? userId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #listOrganizationsByUser,
+          [userId],
+        ),
+        returnValue:
+            _i16.Future<List<_i12.OrgDetails>>.value(<_i12.OrgDetails>[]),
+      ) as _i16.Future<List<_i12.OrgDetails>>);
+
+  @override
+  _i16.Future<_i12.Organization> getOrganization(String? organizationId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getOrganization,
+          [organizationId],
+        ),
+        returnValue: _i16.Future<_i12.Organization>.value(_FakeOrganization_18(
+          this,
+          Invocation.method(
+            #getOrganization,
+            [organizationId],
+          ),
+        )),
+      ) as _i16.Future<_i12.Organization>);
+
+  @override
+  _i16.Future<bool> getOrganizationNamespaceAvailability(
+          String? publicNamespace) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getOrganizationNamespaceAvailability,
+          [publicNamespace],
+        ),
+        returnValue: _i16.Future<bool>.value(false),
+      ) as _i16.Future<bool>);
+
+  @override
+  _i16.Future<_i12.Organization> updateOrganization(
+    String? organizationId, {
+    String? name,
+    String? publicNamespace,
+    String? region,
+    String? cid,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateOrganization,
+          [organizationId],
+          {
+            #name: name,
+            #publicNamespace: publicNamespace,
+            #region: region,
+            #cid: cid,
+          },
+        ),
+        returnValue: _i16.Future<_i12.Organization>.value(_FakeOrganization_18(
+          this,
+          Invocation.method(
+            #updateOrganization,
+            [organizationId],
+            {
+              #name: name,
+              #publicNamespace: publicNamespace,
+              #region: region,
+              #cid: cid,
+            },
+          ),
+        )),
+      ) as _i16.Future<_i12.Organization>);
+
+  @override
+  _i16.Future<void> deleteOrganization(String? organizationId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #deleteOrganization,
+          [organizationId],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<_i12.ListOrganizationMembersResponse> listOrganizationMembers(
+          String? organizationId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #listOrganizationMembers,
+          [organizationId],
+        ),
+        returnValue: _i16.Future<_i12.ListOrganizationMembersResponse>.value(
+            _FakeListOrganizationMembersResponse_19(
+          this,
+          Invocation.method(
+            #listOrganizationMembers,
+            [organizationId],
+          ),
+        )),
+      ) as _i16.Future<_i12.ListOrganizationMembersResponse>);
+
+  @override
+  _i16.Future<_i12.OrganizationInvite> createOrganizationInvite(
+    String? organizationId,
+    String? email,
+    List<_i19.ViamAuthorization>? authorizations, {
+    bool? sendEmailInvite = true,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #createOrganizationInvite,
+          [
+            organizationId,
+            email,
+            authorizations,
+          ],
+          {#sendEmailInvite: sendEmailInvite},
+        ),
+        returnValue: _i16.Future<_i12.OrganizationInvite>.value(
+            _FakeOrganizationInvite_20(
+          this,
+          Invocation.method(
+            #createOrganizationInvite,
+            [
+              organizationId,
+              email,
+              authorizations,
+            ],
+            {#sendEmailInvite: sendEmailInvite},
+          ),
+        )),
+      ) as _i16.Future<_i12.OrganizationInvite>);
+
+  @override
+  _i16.Future<_i12.OrganizationInvite> updateOrganizationInviteAuthorizations(
+    String? organizationId,
+    String? email,
+    List<_i19.ViamAuthorization>? addAuthorizations,
+    List<_i19.ViamAuthorization>? removeAuthorizations,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateOrganizationInviteAuthorizations,
+          [
+            organizationId,
+            email,
+            addAuthorizations,
+            removeAuthorizations,
+          ],
+        ),
+        returnValue: _i16.Future<_i12.OrganizationInvite>.value(
+            _FakeOrganizationInvite_20(
+          this,
+          Invocation.method(
+            #updateOrganizationInviteAuthorizations,
+            [
+              organizationId,
+              email,
+              addAuthorizations,
+              removeAuthorizations,
+            ],
+          ),
+        )),
+      ) as _i16.Future<_i12.OrganizationInvite>);
+
+  @override
+  _i16.Future<void> deleteOrganizationMember(
+    String? organizationId,
+    String? userId,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #deleteOrganizationMember,
+          [
+            organizationId,
+            userId,
+          ],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<void> deleteOrganizationInvite(
+    String? organizationId,
+    String? email,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #deleteOrganizationInvite,
+          [
+            organizationId,
+            email,
+          ],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<_i12.OrganizationInvite> resendOrganizationInvite(
+    String? organizationId,
+    String? email, {
+    bool? sendEmailInvite = true,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #resendOrganizationInvite,
+          [
+            organizationId,
+            email,
+          ],
+          {#sendEmailInvite: sendEmailInvite},
+        ),
+        returnValue: _i16.Future<_i12.OrganizationInvite>.value(
+            _FakeOrganizationInvite_20(
+          this,
+          Invocation.method(
+            #resendOrganizationInvite,
+            [
+              organizationId,
+              email,
+            ],
+            {#sendEmailInvite: sendEmailInvite},
+          ),
+        )),
+      ) as _i16.Future<_i12.OrganizationInvite>);
+
+  @override
+  _i16.Future<_i12.Location> createLocation(
+    String? organizationId,
+    String? name, {
+    String? parentLocationId,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #createLocation,
+          [
+            organizationId,
+            name,
+          ],
+          {#parentLocationId: parentLocationId},
+        ),
+        returnValue: _i16.Future<_i12.Location>.value(_FakeLocation_21(
+          this,
+          Invocation.method(
+            #createLocation,
+            [
+              organizationId,
+              name,
+            ],
+            {#parentLocationId: parentLocationId},
+          ),
+        )),
+      ) as _i16.Future<_i12.Location>);
+
+  @override
+  _i16.Future<_i12.Location> getLocation(String? locationId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getLocation,
+          [locationId],
+        ),
+        returnValue: _i16.Future<_i12.Location>.value(_FakeLocation_21(
+          this,
+          Invocation.method(
+            #getLocation,
+            [locationId],
+          ),
+        )),
+      ) as _i16.Future<_i12.Location>);
+
+  @override
+  _i16.Future<_i12.Location> updateLocation(
+    String? locationId, {
+    String? name,
+    String? parentLocationId,
+    String? region,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateLocation,
+          [locationId],
+          {
+            #name: name,
+            #parentLocationId: parentLocationId,
+            #region: region,
+          },
+        ),
+        returnValue: _i16.Future<_i12.Location>.value(_FakeLocation_21(
+          this,
+          Invocation.method(
+            #updateLocation,
+            [locationId],
+            {
+              #name: name,
+              #parentLocationId: parentLocationId,
+              #region: region,
+            },
+          ),
+        )),
+      ) as _i16.Future<_i12.Location>);
+
+  @override
+  _i16.Future<void> deleteLocation(String? locationId) => (super.noSuchMethod(
+        Invocation.method(
+          #deleteLocation,
+          [locationId],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<List<_i12.Location>> listLocations(String? organizationId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #listLocations,
+          [organizationId],
+        ),
+        returnValue: _i16.Future<List<_i12.Location>>.value(<_i12.Location>[]),
+      ) as _i16.Future<List<_i12.Location>>);
+
+  @override
+  _i16.Future<void> shareLocation(
+    String? locationId,
+    String? organizationId,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #shareLocation,
+          [
+            locationId,
+            organizationId,
+          ],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<void> unshareLocation(
+    String? locationId,
+    String? organizationId,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #unshareLocation,
+          [
+            locationId,
+            organizationId,
+          ],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<_i12.LocationAuth> locationAuth(String? locationId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #locationAuth,
+          [locationId],
+        ),
+        returnValue: _i16.Future<_i12.LocationAuth>.value(_FakeLocationAuth_22(
+          this,
+          Invocation.method(
+            #locationAuth,
+            [locationId],
+          ),
+        )),
+      ) as _i16.Future<_i12.LocationAuth>);
+
+  @override
+  _i16.Future<_i12.LocationAuth> createLocationSecret(String? locationId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #createLocationSecret,
+          [locationId],
+        ),
+        returnValue: _i16.Future<_i12.LocationAuth>.value(_FakeLocationAuth_22(
+          this,
+          Invocation.method(
+            #createLocationSecret,
+            [locationId],
+          ),
+        )),
+      ) as _i16.Future<_i12.LocationAuth>);
+
+  @override
+  _i16.Future<void> deleteLocationSecret(
+    String? locationId,
+    String? secretId,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #deleteLocationSecret,
+          [
+            locationId,
+            secretId,
+          ],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<_i12.Robot> getRobot(String? robotId) => (super.noSuchMethod(
+        Invocation.method(
+          #getRobot,
+          [robotId],
+        ),
+        returnValue: _i16.Future<_i12.Robot>.value(_FakeRobot_13(
+          this,
+          Invocation.method(
+            #getRobot,
+            [robotId],
+          ),
+        )),
+      ) as _i16.Future<_i12.Robot>);
+
+  @override
+  _i16.Future<List<_i12.RoverRentalRobot>> getRoverRentalRobots(
+          String? orgId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getRoverRentalRobots,
+          [orgId],
+        ),
+        returnValue: _i16.Future<List<_i12.RoverRentalRobot>>.value(
+            <_i12.RoverRentalRobot>[]),
+      ) as _i16.Future<List<_i12.RoverRentalRobot>>);
+
+  @override
+  _i16.Future<List<_i12.RobotPart>> listRobotParts(String? robotId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #listRobotParts,
+          [robotId],
+        ),
+        returnValue:
+            _i16.Future<List<_i12.RobotPart>>.value(<_i12.RobotPart>[]),
+      ) as _i16.Future<List<_i12.RobotPart>>);
+
+  @override
+  _i16.Future<_i12.RobotPart> getRobotPart(String? partId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getRobotPart,
+          [partId],
+        ),
+        returnValue: _i16.Future<_i12.RobotPart>.value(_FakeRobotPart_17(
+          this,
+          Invocation.method(
+            #getRobotPart,
+            [partId],
+          ),
+        )),
+      ) as _i16.Future<_i12.RobotPart>);
+
+  @override
+  _i16.Future<_i12.GetRobotPartLogsResponse> getLogs(
+    String? partId, {
+    String? filter,
+    String? pageToken,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getLogs,
+          [partId],
+          {
+            #filter: filter,
+            #pageToken: pageToken,
+          },
+        ),
+        returnValue: _i16.Future<_i12.GetRobotPartLogsResponse>.value(
+            _FakeGetRobotPartLogsResponse_23(
+          this,
+          Invocation.method(
+            #getLogs,
+            [partId],
+            {
+              #filter: filter,
+              #pageToken: pageToken,
+            },
+          ),
+        )),
+      ) as _i16.Future<_i12.GetRobotPartLogsResponse>);
+
+  @override
+  _i16.Stream<List<_i20.LogEntry>> tailLogs(
+    String? partId, {
+    bool? errorsOnly = false,
+    String? filter,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #tailLogs,
+          [partId],
+          {
+            #errorsOnly: errorsOnly,
+            #filter: filter,
+          },
+        ),
+        returnValue: _i16.Stream<List<_i20.LogEntry>>.empty(),
+      ) as _i16.Stream<List<_i20.LogEntry>>);
+
+  @override
+  _i16.Future<List<_i12.RobotPartHistoryEntry>> getRobotPartHistory(
+          String? id) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getRobotPartHistory,
+          [id],
+        ),
+        returnValue: _i16.Future<List<_i12.RobotPartHistoryEntry>>.value(
+            <_i12.RobotPartHistoryEntry>[]),
+      ) as _i16.Future<List<_i12.RobotPartHistoryEntry>>);
+
+  @override
+  _i16.Future<_i12.RobotPart> updateRobotPart(
+    String? partId,
+    String? name,
+    Map<String, dynamic>? robotConfig, {
+    DateTime? lastKnownUpdate,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateRobotPart,
+          [
+            partId,
+            name,
+            robotConfig,
+          ],
+          {#lastKnownUpdate: lastKnownUpdate},
+        ),
+        returnValue: _i16.Future<_i12.RobotPart>.value(_FakeRobotPart_17(
+          this,
+          Invocation.method(
+            #updateRobotPart,
+            [
+              partId,
+              name,
+              robotConfig,
+            ],
+            {#lastKnownUpdate: lastKnownUpdate},
+          ),
+        )),
+      ) as _i16.Future<_i12.RobotPart>);
+
+  @override
+  _i16.Future<String> newRobotPart(
+    String? robotId,
+    String? partName,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #newRobotPart,
+          [
+            robotId,
+            partName,
+          ],
+        ),
+        returnValue: _i16.Future<String>.value(_i15.dummyValue<String>(
+          this,
+          Invocation.method(
+            #newRobotPart,
+            [
+              robotId,
+              partName,
+            ],
+          ),
+        )),
+      ) as _i16.Future<String>);
+
+  @override
+  _i16.Future<void> deleteRobotPart(String? partId) => (super.noSuchMethod(
+        Invocation.method(
+          #deleteRobotPart,
+          [partId],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<List<_i12.APIKeyWithAuthorizations>> getRobotApiKeys(
+          String? robotId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getRobotApiKeys,
+          [robotId],
+        ),
+        returnValue: _i16.Future<List<_i12.APIKeyWithAuthorizations>>.value(
+            <_i12.APIKeyWithAuthorizations>[]),
+      ) as _i16.Future<List<_i12.APIKeyWithAuthorizations>>);
+
+  @override
+  _i16.Future<void> markPartAsMain(String? partId) => (super.noSuchMethod(
+        Invocation.method(
+          #markPartAsMain,
+          [partId],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<void> markPartForRestart(String? partId) => (super.noSuchMethod(
+        Invocation.method(
+          #markPartForRestart,
+          [partId],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<_i12.RobotPart> createRobotPartSecret(String? partId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #createRobotPartSecret,
+          [partId],
+        ),
+        returnValue: _i16.Future<_i12.RobotPart>.value(_FakeRobotPart_17(
+          this,
+          Invocation.method(
+            #createRobotPartSecret,
+            [partId],
+          ),
+        )),
+      ) as _i16.Future<_i12.RobotPart>);
+
+  @override
+  _i16.Future<void> deleteRobotPartSecret(
+    String? partId,
+    String? secretId,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #deleteRobotPartSecret,
+          [
+            partId,
+            secretId,
+          ],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<List<_i12.Robot>> listRobots(String? locationId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #listRobots,
+          [locationId],
+        ),
+        returnValue: _i16.Future<List<_i12.Robot>>.value(<_i12.Robot>[]),
+      ) as _i16.Future<List<_i12.Robot>>);
+
+  @override
+  _i16.Future<String> newMachine(
+    String? name,
+    String? locationId,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #newMachine,
+          [
+            name,
+            locationId,
+          ],
+        ),
+        returnValue: _i16.Future<String>.value(_i15.dummyValue<String>(
+          this,
+          Invocation.method(
+            #newMachine,
+            [
+              name,
+              locationId,
+            ],
+          ),
+        )),
+      ) as _i16.Future<String>);
+
+  @override
+  _i16.Future<_i12.Robot> updateRobot(
+    String? id,
+    String? name,
+    String? location,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateRobot,
+          [
+            id,
+            name,
+            location,
+          ],
+        ),
+        returnValue: _i16.Future<_i12.Robot>.value(_FakeRobot_13(
+          this,
+          Invocation.method(
+            #updateRobot,
+            [
+              id,
+              name,
+              location,
+            ],
+          ),
+        )),
+      ) as _i16.Future<_i12.Robot>);
+
+  @override
+  _i16.Future<void> deleteRobot(String? id) => (super.noSuchMethod(
+        Invocation.method(
+          #deleteRobot,
+          [id],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<List<_i12.Fragment>> listFragments(
+    String? organizationId,
+    bool? showPublic, {
+    List<_i12.FragmentVisibility>? fragmentVisibility,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #listFragments,
+          [
+            organizationId,
+            showPublic,
+          ],
+          {#fragmentVisibility: fragmentVisibility},
+        ),
+        returnValue: _i16.Future<List<_i12.Fragment>>.value(<_i12.Fragment>[]),
+      ) as _i16.Future<List<_i12.Fragment>>);
+
+  @override
+  _i16.Future<_i12.Fragment> getFragment(String? id) => (super.noSuchMethod(
+        Invocation.method(
+          #getFragment,
+          [id],
+        ),
+        returnValue: _i16.Future<_i12.Fragment>.value(_FakeFragment_24(
+          this,
+          Invocation.method(
+            #getFragment,
+            [id],
+          ),
+        )),
+      ) as _i16.Future<_i12.Fragment>);
+
+  @override
+  _i16.Future<_i12.Fragment> createFragment(
+    String? name,
+    Map<String, dynamic>? config,
+    String? organizationId,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #createFragment,
+          [
+            name,
+            config,
+            organizationId,
+          ],
+        ),
+        returnValue: _i16.Future<_i12.Fragment>.value(_FakeFragment_24(
+          this,
+          Invocation.method(
+            #createFragment,
+            [
+              name,
+              config,
+              organizationId,
+            ],
+          ),
+        )),
+      ) as _i16.Future<_i12.Fragment>);
+
+  @override
+  _i16.Future<_i12.Fragment> updateFragment(
+    String? id,
+    String? name,
+    Map<String, dynamic>? config, {
+    bool? public,
+    _i12.FragmentVisibility? visibility,
+    DateTime? lastKnownUpdate,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateFragment,
+          [
+            id,
+            name,
+            config,
+          ],
+          {
+            #public: public,
+            #visibility: visibility,
+            #lastKnownUpdate: lastKnownUpdate,
+          },
+        ),
+        returnValue: _i16.Future<_i12.Fragment>.value(_FakeFragment_24(
+          this,
+          Invocation.method(
+            #updateFragment,
+            [
+              id,
+              name,
+              config,
+            ],
+            {
+              #public: public,
+              #visibility: visibility,
+              #lastKnownUpdate: lastKnownUpdate,
+            },
+          ),
+        )),
+      ) as _i16.Future<_i12.Fragment>);
+
+  @override
+  _i16.Future<void> deleteFragment(String? id) => (super.noSuchMethod(
+        Invocation.method(
+          #deleteFragment,
+          [id],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<void> addRole(_i19.ViamAuthorization? authorization) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #addRole,
+          [authorization],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<void> removeRole(_i19.ViamAuthorization? authorization) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #removeRole,
+          [authorization],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<void> changeRole(
+    _i19.ViamAuthorization? oldAuthorization,
+    _i19.ViamAuthorization? newAuthorization,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #changeRole,
+          [
+            oldAuthorization,
+            newAuthorization,
+          ],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<List<_i12.Authorization>> listAuthorizations(
+    String? organizationId, {
+    List<String>? resourceIds = const [],
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #listAuthorizations,
+          [organizationId],
+          {#resourceIds: resourceIds},
+        ),
+        returnValue:
+            _i16.Future<List<_i12.Authorization>>.value(<_i12.Authorization>[]),
+      ) as _i16.Future<List<_i12.Authorization>>);
+
+  @override
+  _i16.Future<List<_i19.Permission>> checkPermissions(
+    _i19.ResourceType? resourceType,
+    String? resourceId,
+    List<_i19.Permission>? permissions,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #checkPermissions,
+          [
+            resourceType,
+            resourceId,
+            permissions,
+          ],
+        ),
+        returnValue:
+            _i16.Future<List<_i19.Permission>>.value(<_i19.Permission>[]),
+      ) as _i16.Future<List<_i19.Permission>>);
+
+  @override
+  _i16.Future<_i12.RegistryItem> getRegistryItem(String? itemId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getRegistryItem,
+          [itemId],
+        ),
+        returnValue: _i16.Future<_i12.RegistryItem>.value(_FakeRegistryItem_25(
+          this,
+          Invocation.method(
+            #getRegistryItem,
+            [itemId],
+          ),
+        )),
+      ) as _i16.Future<_i12.RegistryItem>);
+
+  @override
+  _i16.Future<void> createRegistryItem(
+    String? organizationId,
+    String? name,
+    _i21.PackageType? type,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #createRegistryItem,
+          [
+            organizationId,
+            name,
+            type,
+          ],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<void> updateRegistryItem(
+    String? itemId,
+    _i21.PackageType? type,
+    String? description,
+    _i12.Visibility? visibility,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateRegistryItem,
+          [
+            itemId,
+            type,
+            description,
+            visibility,
+          ],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<List<_i12.RegistryItem>> listRegistryItems(
+    List<_i21.PackageType>? types,
+    List<_i12.Visibility>? visibilities,
+    List<String>? platforms,
+    List<_i12.RegistryItemStatus>? statuses, {
+    String? organizationId,
+    String? searchTerm,
+    String? pageToken,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #listRegistryItems,
+          [
+            types,
+            visibilities,
+            platforms,
+            statuses,
+          ],
+          {
+            #organizationId: organizationId,
+            #searchTerm: searchTerm,
+            #pageToken: pageToken,
+          },
+        ),
+        returnValue:
+            _i16.Future<List<_i12.RegistryItem>>.value(<_i12.RegistryItem>[]),
+      ) as _i16.Future<List<_i12.RegistryItem>>);
+
+  @override
+  _i16.Future<void> deleteRegistryItem(String? itemId) => (super.noSuchMethod(
+        Invocation.method(
+          #deleteRegistryItem,
+          [itemId],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<_i12.CreateModuleResponse> createModule(
+    String? organizationId,
+    String? name,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #createModule,
+          [
+            organizationId,
+            name,
+          ],
+        ),
+        returnValue: _i16.Future<_i12.CreateModuleResponse>.value(
+            _FakeCreateModuleResponse_26(
+          this,
+          Invocation.method(
+            #createModule,
+            [
+              organizationId,
+              name,
+            ],
+          ),
+        )),
+      ) as _i16.Future<_i12.CreateModuleResponse>);
+
+  @override
+  _i16.Future<String> updateModule(
+    String? moduleId,
+    _i12.Visibility? visibility,
+    String? url,
+    String? description,
+    List<_i12.Model>? models,
+    String? entrypoint,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateModule,
+          [
+            moduleId,
+            visibility,
+            url,
+            description,
+            models,
+            entrypoint,
+          ],
+        ),
+        returnValue: _i16.Future<String>.value(_i15.dummyValue<String>(
+          this,
+          Invocation.method(
+            #updateModule,
+            [
+              moduleId,
+              visibility,
+              url,
+              description,
+              models,
+              entrypoint,
+            ],
+          ),
+        )),
+      ) as _i16.Future<String>);
+
+  @override
+  _i16.Future<String> uploadModuleFile(
+    _i12.ModuleFileInfo? moduleFileInfo,
+    List<int>? file,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #uploadModuleFile,
+          [
+            moduleFileInfo,
+            file,
+          ],
+        ),
+        returnValue: _i16.Future<String>.value(_i15.dummyValue<String>(
+          this,
+          Invocation.method(
+            #uploadModuleFile,
+            [
+              moduleFileInfo,
+              file,
+            ],
+          ),
+        )),
+      ) as _i16.Future<String>);
+
+  @override
+  _i16.Future<_i12.Module> getModule(String? moduleId) => (super.noSuchMethod(
+        Invocation.method(
+          #getModule,
+          [moduleId],
+        ),
+        returnValue: _i16.Future<_i12.Module>.value(_FakeModule_27(
+          this,
+          Invocation.method(
+            #getModule,
+            [moduleId],
+          ),
+        )),
+      ) as _i16.Future<_i12.Module>);
+
+  @override
+  _i16.Future<List<_i12.Module>> listModules(String? organizationId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #listModules,
+          [organizationId],
+        ),
+        returnValue: _i16.Future<List<_i12.Module>>.value(<_i12.Module>[]),
+      ) as _i16.Future<List<_i12.Module>>);
+
+  @override
+  _i16.Future<_i12.CreateKeyResponse> createKey(
+    List<_i19.ViamAuthorization>? authorizations,
+    String? name,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #createKey,
+          [
+            authorizations,
+            name,
+          ],
+        ),
+        returnValue:
+            _i16.Future<_i12.CreateKeyResponse>.value(_FakeCreateKeyResponse_28(
+          this,
+          Invocation.method(
+            #createKey,
+            [
+              authorizations,
+              name,
+            ],
+          ),
+        )),
+      ) as _i16.Future<_i12.CreateKeyResponse>);
+
+  @override
+  _i16.Future<void> deleteKey(String? id) => (super.noSuchMethod(
+        Invocation.method(
+          #deleteKey,
+          [id],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<List<_i12.APIKeyWithAuthorizations>> listKeys(String? orgId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #listKeys,
+          [orgId],
+        ),
+        returnValue: _i16.Future<List<_i12.APIKeyWithAuthorizations>>.value(
+            <_i12.APIKeyWithAuthorizations>[]),
+      ) as _i16.Future<List<_i12.APIKeyWithAuthorizations>>);
+
+  @override
+  _i16.Future<_i12.RotateKeyResponse> rotateKey(String? id) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #rotateKey,
+          [id],
+        ),
+        returnValue:
+            _i16.Future<_i12.RotateKeyResponse>.value(_FakeRotateKeyResponse_29(
+          this,
+          Invocation.method(
+            #rotateKey,
+            [id],
+          ),
+        )),
+      ) as _i16.Future<_i12.RotateKeyResponse>);
+
+  @override
+  _i16.Future<_i12.CreateKeyFromExistingKeyAuthorizationsResponse>
+      createKeyFromExistingKeyAuthorizations(String? id) => (super.noSuchMethod(
+            Invocation.method(
+              #createKeyFromExistingKeyAuthorizations,
+              [id],
+            ),
+            returnValue: _i16.Future<
+                    _i12.CreateKeyFromExistingKeyAuthorizationsResponse>.value(
+                _FakeCreateKeyFromExistingKeyAuthorizationsResponse_30(
+              this,
+              Invocation.method(
+                #createKeyFromExistingKeyAuthorizations,
+                [id],
+              ),
+            )),
+          ) as _i16
+              .Future<_i12.CreateKeyFromExistingKeyAuthorizationsResponse>);
+
+  @override
+  _i16.Future<_i12.GetOrganizationMetadataResponse> getOrganizationMetadata(
+          String? organizationId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getOrganizationMetadata,
+          [organizationId],
+        ),
+        returnValue: _i16.Future<_i12.GetOrganizationMetadataResponse>.value(
+            _FakeGetOrganizationMetadataResponse_31(
+          this,
+          Invocation.method(
+            #getOrganizationMetadata,
+            [organizationId],
+          ),
+        )),
+      ) as _i16.Future<_i12.GetOrganizationMetadataResponse>);
+
+  @override
+  _i16.Future<void> updateOrganizationMetadata(
+    String? organizationId,
+    Map<String, dynamic>? data,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateOrganizationMetadata,
+          [
+            organizationId,
+            data,
+          ],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<_i12.GetLocationMetadataResponse> getLocationMetadata(
+          String? locationId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getLocationMetadata,
+          [locationId],
+        ),
+        returnValue: _i16.Future<_i12.GetLocationMetadataResponse>.value(
+            _FakeGetLocationMetadataResponse_32(
+          this,
+          Invocation.method(
+            #getLocationMetadata,
+            [locationId],
+          ),
+        )),
+      ) as _i16.Future<_i12.GetLocationMetadataResponse>);
+
+  @override
+  _i16.Future<void> updateLocationMetadata(
+    String? locationId,
+    Map<String, dynamic>? data,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateLocationMetadata,
+          [
+            locationId,
+            data,
+          ],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<_i12.GetRobotMetadataResponse> getRobotMetadata(
+          String? robotId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getRobotMetadata,
+          [robotId],
+        ),
+        returnValue: _i16.Future<_i12.GetRobotMetadataResponse>.value(
+            _FakeGetRobotMetadataResponse_33(
+          this,
+          Invocation.method(
+            #getRobotMetadata,
+            [robotId],
+          ),
+        )),
+      ) as _i16.Future<_i12.GetRobotMetadataResponse>);
+
+  @override
+  _i16.Future<void> updateRobotMetadata(
+    String? robotId,
+    Map<String, dynamic>? data,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateRobotMetadata,
+          [
+            robotId,
+            data,
+          ],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<_i12.GetRobotPartMetadataResponse> getRobotPartMetadata(
+          String? robotPartId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getRobotPartMetadata,
+          [robotPartId],
+        ),
+        returnValue: _i16.Future<_i12.GetRobotPartMetadataResponse>.value(
+            _FakeGetRobotPartMetadataResponse_34(
+          this,
+          Invocation.method(
+            #getRobotPartMetadata,
+            [robotPartId],
+          ),
+        )),
+      ) as _i16.Future<_i12.GetRobotPartMetadataResponse>);
+
+  @override
+  _i16.Future<void> updateRobotPartMetadata(
+    String? robotPartId,
+    Map<String, dynamic>? data,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateRobotPartMetadata,
+          [
+            robotPartId,
+            data,
+          ],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
 }

@@ -10,6 +10,8 @@ void main() {
     late ConnectBluetoothDeviceRepository repository;
     late MockBluetoothService service;
     late MockRobotPart mainRobotPart;
+    late MockRobot robot;
+
     late MockBluetoothCharacteristic viamStatusCharacteristic;
     late MockBluetoothCharacteristic partIdCharacteristic;
     late MockBluetoothCharacteristic partSecretCharacteristic;
@@ -18,6 +20,7 @@ void main() {
     late MockBluetoothCharacteristic pskCharacteristic;
     late MockBluetoothCharacteristic exitProvisioningCharacteristic;
     late MockBluetoothCharacteristic networkListCharacteristic;
+    late MockBluetoothCharacteristic fragmentIdCharacteristic;
 
     final mockPublicKeyBytes = [
       0x30, 0x82, 0x01, 0x22, // SEQUENCE, 290 bytes
@@ -131,6 +134,11 @@ void main() {
       when(networkListCharacteristic.uuid).thenReturn(Guid.fromString(ViamBluetoothUUIDs.availableWiFiNetworksUUID));
       when(networkListCharacteristic.read()).thenAnswer((_) async => exampleNetworkBytes);
 
+      fragmentIdCharacteristic = MockBluetoothCharacteristic();
+      when(fragmentIdCharacteristic.uuid).thenReturn(Guid.fromString(ViamBluetoothUUIDs.fragmentUUID));
+      // abcd123
+      when(fragmentIdCharacteristic.read()).thenAnswer((_) async => [0x61, 0x62, 0x63, 0x64, 0x31, 0x32, 0x33]);
+
       when(service.characteristics).thenReturn(<BluetoothCharacteristic>[
         viamStatusCharacteristic,
         viamCryptoCharacteristic,
@@ -141,11 +149,16 @@ void main() {
         pskCharacteristic,
         exitProvisioningCharacteristic,
         networkListCharacteristic,
+        fragmentIdCharacteristic,
       ]);
 
       mainRobotPart = MockRobotPart();
       when(mainRobotPart.id).thenReturn('partId');
       when(mainRobotPart.secret).thenReturn('secret');
+
+      robot = MockRobot();
+      when(robot.id).thenReturn('robotId');
+      when(robot.name).thenReturn('robotName');
     });
 
     group('connect', () {
@@ -175,12 +188,12 @@ void main() {
 
         await repository.writeConfig(
           viam: MockViam(),
-          robot: MockRobot(),
+          robot: robot,
           mainRobotPart: mainRobotPart,
           ssid: 'ssid',
           password: 'password',
           psk: 'viamsetup',
-          fragmentId: 'fragmentId',
+          fragmentId: null,
           fragmentOverride: false,
         );
 
@@ -209,12 +222,12 @@ void main() {
 
       await repository.writeConfig(
         viam: MockViam(),
-        robot: MockRobot(),
+        robot: robot,
         mainRobotPart: mainRobotPart,
         ssid: 'ssid',
         password: 'password',
         psk: 'viamsetup',
-        fragmentId: 'fragmentId',
+        fragmentId: null,
         fragmentOverride: false,
       );
 
@@ -242,12 +255,12 @@ void main() {
 
       await repository.writeConfig(
         viam: MockViam(),
-        robot: MockRobot(),
+        robot: robot,
         mainRobotPart: mainRobotPart,
         ssid: null,
         password: 'password',
         psk: 'viamsetup',
-        fragmentId: 'fragmentId',
+        fragmentId: null,
         fragmentOverride: false,
       );
 
@@ -265,12 +278,12 @@ void main() {
       try {
         await repository.writeConfig(
           viam: MockViam(),
-          robot: MockRobot(),
+          robot: robot,
           mainRobotPart: mainRobotPart,
           ssid: 'ssid',
           password: 'password',
           psk: 'viamsetup',
-          fragmentId: 'fragmentId',
+          fragmentId: null,
           fragmentOverride: false,
         );
       } catch (e) {
@@ -279,7 +292,43 @@ void main() {
     });
 
     test('fragment override written', () async {
-      // TODO: fragment override test
+      final device = MockBluetoothDevice();
+      when(device.isConnected).thenReturn(true);
+      when(device.connect()).thenAnswer((_) async => {});
+      await repository.connect(device);
+      when(viamStatusCharacteristic.read()).thenAnswer((_) async => [0]); // not configured, not online
+
+      when(device.discoverServices(
+        subscribeToServicesChanged: true,
+        timeout: 15,
+      )).thenAnswer((_) async => <BluetoothService>[service]);
+
+      final viam = MockViam();
+      final appClient = MockAppClient();
+      when(viam.appClient).thenReturn(appClient);
+      when(appClient.updateRobotPart(any, any, any)).thenAnswer((_) async => mainRobotPart);
+
+      await repository.writeConfig(
+        viam: viam,
+        robot: robot,
+        mainRobotPart: mainRobotPart,
+        ssid: 'ssid',
+        password: 'password',
+        psk: 'viamsetup',
+        fragmentId: null,
+        fragmentOverride: true,
+      );
+
+      verify(partIdCharacteristic.write(any)).called(1);
+      verify(partSecretCharacteristic.write(any)).called(1);
+      verify(appAddressCharacteristic.write(any)).called(1);
+
+      verify(ssidCharacteristic.write(any)).called(1);
+      verify(pskCharacteristic.write(any)).called(1);
+
+      verify(exitProvisioningCharacteristic.write(any)).called(1);
+
+      verify(appClient.updateRobotPart(any, any, any)).called(1);
     });
 
     group('readNetworkList', () {
