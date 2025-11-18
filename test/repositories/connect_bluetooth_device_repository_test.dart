@@ -21,6 +21,7 @@ void main() {
     late MockBluetoothCharacteristic exitProvisioningCharacteristic;
     late MockBluetoothCharacteristic networkListCharacteristic;
     late MockBluetoothCharacteristic fragmentIdCharacteristic;
+    late MockBluetoothCharacteristic agentVersionCharacteristic;
 
     final mockPublicKeyBytes = [
       0x30, 0x82, 0x01, 0x22, // SEQUENCE, 290 bytes
@@ -139,6 +140,9 @@ void main() {
       // abcd123
       when(fragmentIdCharacteristic.read()).thenAnswer((_) async => [0x61, 0x62, 0x63, 0x64, 0x31, 0x32, 0x33]);
 
+      agentVersionCharacteristic = MockBluetoothCharacteristic();
+      when(agentVersionCharacteristic.uuid).thenReturn(Guid.fromString(ViamBluetoothUUIDs.agentVersionUUID));
+
       when(service.characteristics).thenReturn(<BluetoothCharacteristic>[
         viamStatusCharacteristic,
         viamCryptoCharacteristic,
@@ -150,6 +154,7 @@ void main() {
         exitProvisioningCharacteristic,
         networkListCharacteristic,
         fragmentIdCharacteristic,
+        agentVersionCharacteristic,
       ]);
 
       mainRobotPart = MockRobotPart();
@@ -358,7 +363,41 @@ void main() {
     });
 
     group('isAgentVersionBelowMinimum', () {
-      // TODO: do, could be in group below
+      test('should return true when agent version is lower than minimum', () async {
+        final device = MockBluetoothDevice();
+        when(device.isConnected).thenReturn(true);
+        when(device.connect()).thenAnswer((_) async => {});
+        await repository.connect(device);
+
+        when(device.discoverServices(
+          subscribeToServicesChanged: true,
+          timeout: 15,
+        )).thenAnswer((_) async => <BluetoothService>[service]);
+
+        // 0.19.0
+        when(agentVersionCharacteristic.read()).thenAnswer((_) async => [0x30, 0x2E, 0x31, 0x39, 0x2E, 0x30]);
+
+        final isBelowMinimum = await repository.isAgentVersionBelowMinimum('0.20.0');
+        expect(isBelowMinimum, equals(true));
+      });
+
+      test('should return false when agent version is higher than minimum', () async {
+        final device = MockBluetoothDevice();
+        when(device.isConnected).thenReturn(true);
+        when(device.connect()).thenAnswer((_) async => {});
+        await repository.connect(device);
+
+        when(device.discoverServices(
+          subscribeToServicesChanged: true,
+          timeout: 15,
+        )).thenAnswer((_) async => <BluetoothService>[service]);
+
+        // 0.21.0
+        when(agentVersionCharacteristic.read()).thenAnswer((_) async => [0x30, 0x2E, 0x32, 0x31, 0x2E, 0x30]);
+
+        final isBelowMinimum = await repository.isAgentVersionBelowMinimum('0.20.0');
+        expect(isBelowMinimum, equals(false));
+      });
     });
 
     group('isVersionLower', () {
