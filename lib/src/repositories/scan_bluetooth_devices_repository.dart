@@ -59,17 +59,18 @@ class ScanBluetoothDevicesRepository {
       for (final result in device) {
         if (!_deviceIds.contains(result.device.remoteId.str)) {
           _deviceIds.add(result.device.remoteId.str);
-          _uniqueDevicesController.add([result.device]);
           _uniqueDevices.add(result.device);
         }
       }
+      _uniqueDevicesController.add(_uniqueDevices);
     });
   }
 
   void scanDevicesAgain() {
     stopScan();
     _deviceIds.clear();
-    _uniqueDevicesController.add([]);
+    _uniqueDevices.clear();
+    _uniqueDevicesController.add(_uniqueDevices);
     startScan();
   }
 
