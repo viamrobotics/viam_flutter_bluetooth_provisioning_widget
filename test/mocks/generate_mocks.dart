@@ -10,5 +10,6 @@ import 'package:viam_sdk/src/app/app.dart';
   Robot,
   RobotPart,
   AppClient,
+  ViamBluetoothProvisioning,
 ])
 void main() {}

@@ -13,11 +13,11 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
     required this.tipsDialogCtaText,
   })  : _scanBluetoothDevicesRepository = scanBluetoothDevicesRepository,
         _connectBluetoothDeviceRepository = connectBluetoothDeviceRepository {
-    _devicesSubscription = _scanBluetoothDevicesRepository.devicesStream.listen((devices) {
-      uniqueDevices = devices;
+    _devicesSubscription = _scanBluetoothDevicesRepository.uniqueDevicesStream.listen((value) {
+      uniqueDevices = value;
     });
-    _scanningSubscription = _scanBluetoothDevicesRepository.scanningStream.listen((scanning) {
-      isScanning = scanning;
+    _scanningSubscription = _scanBluetoothDevicesRepository.scanningStream.listen((value) {
+      isScanning = value;
     });
   }
 

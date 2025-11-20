@@ -13,6 +13,8 @@ import 'package:flutter_blue_plus_platform_interface/flutter_blue_plus_platform_
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i15;
 import 'package:protobuf/protobuf.dart' as _i10;
+import 'package:viam_flutter_provisioning/viam_bluetooth_provisioning.dart'
+    as _i22;
 import 'package:viam_sdk/src/app/app.dart' as _i4;
 import 'package:viam_sdk/src/app/billing.dart' as _i6;
 import 'package:viam_sdk/src/app/data.dart' as _i7;
@@ -4861,4 +4863,14 @@ class MockAppClient extends _i1.Mock implements _i4.AppClient {
         returnValue: _i16.Future<void>.value(),
         returnValueForMissingStub: _i16.Future<void>.value(),
       ) as _i16.Future<void>);
+}
+
+/// A class which mocks [ViamBluetoothProvisioning].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockViamBluetoothProvisioning extends _i1.Mock
+    implements _i22.ViamBluetoothProvisioning {
+  MockViamBluetoothProvisioning() {
+    _i1.throwOnMissingStub(this);
+  }
 }
