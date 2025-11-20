@@ -55,8 +55,8 @@ class ScanBluetoothDevicesRepository {
   Future<void> startScan() async {
     isScanning = true;
     final stream = await viamBluetoothProvisioning.scanForPeripherals();
-    _scanSubscription = stream.listen((device) {
-      for (final result in device) {
+    _scanSubscription = stream.listen((scanResults) {
+      for (final result in scanResults) {
         if (!_deviceIds.contains(result.device.remoteId.str)) {
           _deviceIds.add(result.device.remoteId.str);
           _uniqueDevices.add(result.device);
