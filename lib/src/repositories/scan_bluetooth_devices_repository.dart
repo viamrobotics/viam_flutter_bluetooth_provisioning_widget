@@ -29,6 +29,8 @@ class ScanBluetoothDevicesRepository {
     _uniqueDevicesController.close();
     _scanningController.close();
     _scanSubscription?.cancel();
+    _uniqueDevices.clear();
+    _deviceIds.clear();
     stopScan();
   }
 
