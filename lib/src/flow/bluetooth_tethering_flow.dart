@@ -130,7 +130,9 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                       BluetoothScanningScreen(
                         viewModel: BluetoothScanningScreenViewModel(
                           onDeviceSelected: _onDeviceConnected,
-                          scanBluetoothDevicesRepository: ScanBluetoothDevicesRepository(),
+                          scanBluetoothDevicesRepository: ScanBluetoothDevicesRepository(
+                            viamBluetoothProvisioning: ViamBluetoothProvisioning(),
+                          ),
                           connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
                           title: widget.viewModel.copy.bluetoothScanningTitle,
                           scanCtaText: widget.viewModel.copy.bluetoothScanningScanCtaText,

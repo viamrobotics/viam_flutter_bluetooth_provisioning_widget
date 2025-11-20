@@ -1,15 +1,11 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class ScanBluetoothDevicesRepository {
-  List<BluetoothDevice> _uniqueDevices = [];
-  List<BluetoothDevice> get uniqueDevices => _uniqueDevices;
-  set uniqueDevices(List<BluetoothDevice> devices) {
-    _uniqueDevices = devices;
-    _uniqueDevicesController.add(_uniqueDevices);
-  }
+  final ViamBluetoothProvisioning viamBluetoothProvisioning;
 
   Stream<List<BluetoothDevice>> get uniqueDevicesStream => _uniqueDevicesController.stream;
   final StreamController<List<BluetoothDevice>> _uniqueDevicesController = StreamController<List<BluetoothDevice>>.broadcast();
+  final List<BluetoothDevice> _uniqueDevices = [];
 
   Stream<bool> get scanningStream => _scanningController.stream;
   final StreamController<bool> _scanningController = StreamController<bool>.broadcast();
@@ -25,6 +21,8 @@ class ScanBluetoothDevicesRepository {
 
   bool _isDisposed = false;
   final Set<String> _deviceIds = {};
+
+  ScanBluetoothDevicesRepository({required this.viamBluetoothProvisioning});
 
   void dispose() {
     _isDisposed = true;
@@ -45,7 +43,7 @@ class ScanBluetoothDevicesRepository {
   }
 
   Future<void> initialize() async {
-    await ViamBluetoothProvisioning.initialize(poweredOn: (poweredOn) {
+    viamBluetoothProvisioning.initialize(poweredOn: (poweredOn) {
       if (poweredOn) {
         startScan();
       }
@@ -54,12 +52,13 @@ class ScanBluetoothDevicesRepository {
 
   Future<void> startScan() async {
     isScanning = true;
-    final stream = await ViamBluetoothProvisioning.scanForPeripherals();
+    final stream = await viamBluetoothProvisioning.scanForPeripherals();
     _scanSubscription = stream.listen((device) {
       for (final result in device) {
         if (!_deviceIds.contains(result.device.remoteId.str)) {
           _deviceIds.add(result.device.remoteId.str);
-          uniqueDevices.add(result.device);
+          _uniqueDevicesController.add([result.device]);
+          _uniqueDevices.add(result.device);
         }
       }
     });
@@ -68,7 +67,7 @@ class ScanBluetoothDevicesRepository {
   void scanDevicesAgain() {
     stopScan();
     _deviceIds.clear();
-    uniqueDevices = [];
+    _uniqueDevicesController.add([]);
     startScan();
   }
 

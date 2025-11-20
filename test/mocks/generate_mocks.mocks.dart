@@ -4873,4 +4873,25 @@ class MockViamBluetoothProvisioning extends _i1.Mock
   MockViamBluetoothProvisioning() {
     _i1.throwOnMissingStub(this);
   }
+
+  @override
+  void initialize({dynamic Function(bool)? poweredOn}) => super.noSuchMethod(
+        Invocation.method(
+          #initialize,
+          [],
+          {#poweredOn: poweredOn},
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  _i16.Future<_i16.Stream<List<_i3.ScanResult>>> scanForPeripherals() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #scanForPeripherals,
+          [],
+        ),
+        returnValue: _i16.Future<_i16.Stream<List<_i3.ScanResult>>>.value(
+            _i16.Stream<List<_i3.ScanResult>>.empty()),
+      ) as _i16.Future<_i16.Stream<List<_i3.ScanResult>>>);
 }

@@ -9,6 +9,7 @@ import '../mocks/generate_mocks.mocks.dart';
 void main() {
   group('ScanBluetoothDevicesRepository', () {
     late ScanBluetoothDevicesRepository repository;
+    late MockViamBluetoothProvisioning mockViamBluetoothProvisioning;
     late MockBluetoothService service;
     late MockRobotPart mainRobotPart;
     late MockRobot robot;
@@ -26,7 +27,8 @@ void main() {
     // late MockBluetoothCharacteristic agentVersionCharacteristic;
 
     setUp(() {
-      repository = ScanBluetoothDevicesRepository();
+      mockViamBluetoothProvisioning = MockViamBluetoothProvisioning();
+      repository = ScanBluetoothDevicesRepository(viamBluetoothProvisioning: mockViamBluetoothProvisioning);
       service = MockBluetoothService();
       when(service.uuid).thenReturn(Guid.fromString(ViamBluetoothUUIDs.serviceUUID));
 
@@ -39,16 +41,25 @@ void main() {
       when(robot.name).thenReturn('robotName');
     });
 
+    tearDown(() {
+      repository.dispose();
+    });
+
     group('start scan', () {
-      test('connects successfully when no device connected', () async {
+      test('scan returns', () async {
         final mockScanningStream = StreamController<List<ScanResult>>();
-        final mockViamBluetoothProvisioning = MockViamBluetoothProvisioning();
-        // TODO: need to change this class to have non-static method so can override
-        when(mockViamBluetoothProvisioning.scanForPeripherals()).thenAnswer((_) async => mockScanningStream.stream);
+        when(mockViamBluetoothProvisioning.scanForPeripherals()).thenAnswer((_) => Future.value(mockScanningStream.stream));
         await repository.startScan();
+        expect(repository.isScanning, true);
 
         final mockDevice = MockBluetoothDevice();
         when(mockDevice.remoteId).thenReturn(DeviceIdentifier('test_device'));
+
+        final completer = Completer<void>();
+        repository.uniqueDevicesStream.listen((value) {
+          expect(value, [mockDevice]);
+          completer.complete();
+        });
 
         mockScanningStream.add([
           ScanResult(
@@ -67,18 +78,16 @@ void main() {
           )
         ]);
 
-        repository.uniqueDevicesStream.listen((value) {
-          expect(value, [mockDevice]);
-        });
+        await completer.future;
       });
     });
 
-    group('scan devices again', () {
-      test('connects successfully when no device connected', () async {});
-    });
+    // group('scan devices again', () {
+    //   test('connects successfully when no device connected', () async {});
+    // });
 
-    group('stop scan', () {
-      test('connects successfully when no device connected', () async {});
-    });
+    // group('stop scan', () {
+    //   test('connects successfully when no device connected', () async {});
+    // });
   });
 }
