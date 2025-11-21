@@ -15,8 +15,7 @@ dependencies:
   permission_handler: ^12.0.0+1
   viam_sdk: ^0.10.0
   collection: ^1.18.0
-  viam_flutter_provisioning: ^0.0.15
-
+  viam_flutter_provisioning: ^0.0.16
   flutter_platform_widgets: ^7.0.1
   provider: ^6.1.5
   pub_semver: ^2.2.0
