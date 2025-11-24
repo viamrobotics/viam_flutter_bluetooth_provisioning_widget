@@ -41,7 +41,6 @@ void main() {
       ]);
 
       viam = MockViam();
-
       robot = MockRobot();
       when(robot.id).thenReturn('robotId');
       timestamp = MockTimestamp();
@@ -51,7 +50,12 @@ void main() {
       when(appClient.getRobot('robotId')).thenAnswer((_) async => robot);
       when(viam.appClient).thenReturn(appClient);
 
-      repository = CheckingDeviceOnlineRepository(viam: viam, robot: robot, device: device, interval: const Duration(milliseconds: 5));
+      repository = CheckingDeviceOnlineRepository(
+        viam: viam,
+        robot: robot,
+        device: device,
+        interval: const Duration(milliseconds: 5),
+      );
     });
 
     tearDown(() {
