@@ -59,6 +59,12 @@ void main() {
         expect(online, isTrue);
       });
 
+      test('is robot online: false', () async {
+        when(timestamp.seconds).thenReturn(Int64(1764014950)); // 11/24/25
+        final online = await repository.isRobotOnline();
+        expect(online, isFalse);
+      });
+
       test('read agent errors', () async {});
     });
   });

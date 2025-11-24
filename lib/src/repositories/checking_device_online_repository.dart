@@ -30,11 +30,16 @@ class CheckingDeviceOnlineRepository {
     _onlineTimer = Timer.periodic(const Duration(seconds: 5), (timer) async {
       final online = await isRobotOnline();
       if (online) {
-        _deviceOnlineStateController.add(DeviceOnlineState.success);
         timer.cancel();
+        _deviceOnlineStateController.add(DeviceOnlineState.success);
         if (device?.isConnected == true) device?.disconnect();
       } else if (device != null && device?.isConnected == true) {
-        readAgentErrors(device!);
+        final error = await readAgentError(device!);
+        if (error != null) {
+          timer.cancel();
+          _deviceOnlineStateController.add(DeviceOnlineState.errorConnecting);
+          _errorMessageController.add(error);
+        }
       }
     });
   }
@@ -46,19 +51,18 @@ class CheckingDeviceOnlineRepository {
     return ((actual - seconds) < 10);
   }
 
-  Future<void> readAgentErrors(BluetoothDevice device) async {
+  /// when bleService comes back online, if these errors comes back as not empty we have an error to handle
+  /// this should return an array with 1 value once it's readable (bleService comes back online)
+  Future<String?> readAgentError(BluetoothDevice device) async {
     try {
-      // when bleService comes back online, if these errors comes back as not empty we have an error to handle
-      // this should return an array with 1 value once it's readable (bleService comes back online)
       final errors = await device.readErrors();
       if (errors.isNotEmpty) {
-        _onlineTimer?.cancel();
-        _deviceOnlineStateController.add(DeviceOnlineState.errorConnecting);
-        _errorMessageController.add(errors.last);
-        debugPrint('Error connecting machine: ${errors.last}');
+        return errors.last;
       }
+      return null;
     } catch (e) {
       debugPrint('Error reading agent errors: ${e.toString()}');
+      return null;
     }
   }
 }
