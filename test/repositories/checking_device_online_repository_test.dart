@@ -64,7 +64,7 @@ void main() {
 
     group('checking device online', () {
       test('start checking: comes online', () async {
-        when(errorsCharacteristic.read()).thenAnswer((_) async => []); // no empty errors
+        when(errorsCharacteristic.read()).thenAnswer((_) async => []); // empty errors
         when(timestamp.seconds).thenReturn(Int64(DateTime.now().millisecondsSinceEpoch ~/ 1000)); // now in seconds
         when(device.isConnected).thenReturn(true);
 
