@@ -7,9 +7,18 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
   final String successTitle;
   final String successSubtitle;
   final String successCta;
-  String? get errorMessage => _checkingDeviceOnlineRepository.errorMessage;
+
+  String? get errorMessage => _errorMessage;
+  String? _errorMessage;
+  set errorMessage(String? value) {
+    if (_errorMessage != value) {
+      _errorMessage = value;
+      notifyListeners();
+    }
+  }
 
   DeviceOnlineState get deviceOnlineState => _deviceOnlineState;
+  DeviceOnlineState _deviceOnlineState = DeviceOnlineState.idle;
   set deviceOnlineState(DeviceOnlineState state) {
     if (_deviceOnlineState != state) {
       _deviceOnlineState = state;
@@ -19,8 +28,8 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
 
   final CheckingDeviceOnlineRepository _checkingDeviceOnlineRepository;
   final ConnectBluetoothDeviceRepository _connectBluetoothDeviceRepository;
-  DeviceOnlineState _deviceOnlineState;
   StreamSubscription<DeviceOnlineState>? _deviceOnlineSubscription;
+  StreamSubscription<String>? _errorMessageSubscription;
 
   CheckConnectedDeviceOnlineScreenViewModel({
     required this.handleSuccess,
@@ -32,12 +41,12 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
     required CheckingDeviceOnlineRepository checkingDeviceOnlineRepository,
     required ConnectBluetoothDeviceRepository connectBluetoothDeviceRepository,
   })  : _checkingDeviceOnlineRepository = checkingDeviceOnlineRepository,
-        _connectBluetoothDeviceRepository = connectBluetoothDeviceRepository,
-        _deviceOnlineState = checkingDeviceOnlineRepository.deviceOnlineState;
+        _connectBluetoothDeviceRepository = connectBluetoothDeviceRepository;
 
   @override
   void dispose() {
     _deviceOnlineSubscription?.cancel();
+    _errorMessageSubscription?.cancel();
     _checkingDeviceOnlineRepository.dispose();
     super.dispose();
   }
@@ -50,6 +59,9 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
     _checkingDeviceOnlineRepository.startChecking();
     _deviceOnlineSubscription = _checkingDeviceOnlineRepository.deviceOnlineStateStream.listen((state) {
       deviceOnlineState = state;
+    });
+    _errorMessageSubscription = _checkingDeviceOnlineRepository.errorMessageStream.listen((message) {
+      errorMessage = message;
     });
   }
 }

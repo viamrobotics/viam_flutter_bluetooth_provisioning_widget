@@ -19,7 +19,7 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
   })  : _mainRobotPart = mainRobotPart,
         _psk = psk,
         _isConfigured = !isNewMachine,
-        _deviceOnlineState = checkingDeviceOnlineRepository.deviceOnlineState {
+        _deviceOnlineState = DeviceOnlineState.idle {
     _deviceOnlineSubscription = checkingDeviceOnlineRepository.deviceOnlineStateStream.listen((state) {
       deviceOnlineState = state;
     });
