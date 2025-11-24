@@ -14,6 +14,7 @@ void main() {
 
     late MockBluetoothDevice device;
     late MockBluetoothCharacteristic viamStatusCharacteristic;
+    late MockBluetoothCharacteristic errorsCharacteristic;
     late MockViam viam;
     late MockRobot robot;
     late MockTimestamp timestamp;
@@ -31,7 +32,13 @@ void main() {
       viamStatusCharacteristic = MockBluetoothCharacteristic();
       when(viamStatusCharacteristic.uuid).thenReturn(Guid.fromString(ViamBluetoothUUIDs.statusUUID));
 
-      when(service.characteristics).thenReturn(<BluetoothCharacteristic>[viamStatusCharacteristic]);
+      errorsCharacteristic = MockBluetoothCharacteristic();
+      when(errorsCharacteristic.uuid).thenReturn(Guid.fromString(ViamBluetoothUUIDs.errorsUUID));
+
+      when(service.characteristics).thenReturn(<BluetoothCharacteristic>[
+        viamStatusCharacteristic,
+        errorsCharacteristic,
+      ]);
 
       viam = MockViam();
 
@@ -44,7 +51,7 @@ void main() {
       when(appClient.getRobot('robotId')).thenAnswer((_) async => robot);
       when(viam.appClient).thenReturn(appClient);
 
-      repository = CheckingDeviceOnlineRepository(viam: viam, robot: robot, device: device);
+      repository = CheckingDeviceOnlineRepository(viam: viam, robot: robot, device: device, interval: const Duration(milliseconds: 5));
     });
 
     tearDown(() {
@@ -52,7 +59,42 @@ void main() {
     });
 
     group('checking device online', () {
-      test('start checking', () async {});
+      test('start checking: comes online', () async {
+        when(errorsCharacteristic.read()).thenAnswer((_) async => []); // no empty errors
+        when(timestamp.seconds).thenReturn(Int64(DateTime.now().millisecondsSinceEpoch ~/ 1000)); // now in seconds
+        when(device.isConnected).thenReturn(true);
+
+        repository.startChecking();
+        final completer = Completer<void>();
+        repository.deviceOnlineStateStream.listen((value) {
+          expect(value, DeviceOnlineState.success);
+          completer.complete();
+        });
+
+        await completer.future;
+      });
+
+      test('start checking: error offline', () async {
+        when(errorsCharacteristic.read()).thenAnswer((_) async => [0x41, 0x42, 0x43]); // "ABC"
+        when(timestamp.seconds).thenReturn(Int64(1764014950)); // 11/24/25 ~3pm EST
+        when(device.isConnected).thenReturn(true);
+
+        repository.startChecking();
+        final completer1 = Completer<void>();
+        repository.deviceOnlineStateStream.listen((value) {
+          expect(value, DeviceOnlineState.errorConnecting);
+          completer1.complete();
+        });
+
+        final completer2 = Completer<void>();
+        repository.errorMessageStream.listen((value) {
+          expect(value, equals('ABC'));
+          completer2.complete();
+        });
+
+        await completer1.future;
+        await completer2.future;
+      });
       test('is robot online: true', () async {
         when(timestamp.seconds).thenReturn(Int64(DateTime.now().millisecondsSinceEpoch ~/ 1000)); // now in seconds
         final online = await repository.isRobotOnline();
@@ -60,12 +102,16 @@ void main() {
       });
 
       test('is robot online: false', () async {
-        when(timestamp.seconds).thenReturn(Int64(1764014950)); // 11/24/25
+        when(timestamp.seconds).thenReturn(Int64(1764014950)); // 11/24/25 ~3pm EST
         final online = await repository.isRobotOnline();
         expect(online, isFalse);
       });
 
-      test('read agent errors', () async {});
+      test('read agent errors', () async {
+        when(errorsCharacteristic.read()).thenAnswer((_) async => [0x41, 0x42, 0x43]); // "ABC"
+        final error = await repository.readAgentError(device);
+        expect(error, equals('ABC'));
+      });
     });
   });
 }

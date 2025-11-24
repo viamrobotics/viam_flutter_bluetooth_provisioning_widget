@@ -9,7 +9,8 @@ class CheckingDeviceOnlineRepository {
     required this.viam,
     required this.robot,
     required this.device,
-  });
+    Duration interval = const Duration(seconds: 5),
+  }) : _interval = interval;
 
   Stream<DeviceOnlineState> get deviceOnlineStateStream => _deviceOnlineStateController.stream;
   final StreamController<DeviceOnlineState> _deviceOnlineStateController = StreamController<DeviceOnlineState>.broadcast();
@@ -18,6 +19,7 @@ class CheckingDeviceOnlineRepository {
   final StreamController<String> _errorMessageController = StreamController<String>.broadcast();
 
   Timer? _onlineTimer;
+  final Duration _interval;
 
   void dispose() {
     _onlineTimer?.cancel();
@@ -27,7 +29,7 @@ class CheckingDeviceOnlineRepository {
 
   void startChecking() {
     _deviceOnlineStateController.add(DeviceOnlineState.checking);
-    _onlineTimer = Timer.periodic(const Duration(seconds: 5), (timer) async {
+    _onlineTimer = Timer.periodic(_interval, (timer) async {
       final online = await isRobotOnline();
       if (online) {
         timer.cancel();
