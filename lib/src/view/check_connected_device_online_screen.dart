@@ -17,7 +17,79 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
     widget.viewModel.startChecking();
   }
 
-  Widget _buildCheckingState(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: widget.viewModel,
+      builder: (context, child) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: switch (widget.viewModel.deviceOnlineState) {
+            DeviceOnlineState.idle => _CheckingWidget(), // could be in this state right before starting to check, but not long
+            DeviceOnlineState.checking => _CheckingWidget(),
+            DeviceOnlineState.success => _SuccessWidget(
+                title: widget.viewModel.successTitle,
+                subtitle: widget.viewModel.successSubtitle,
+                handleSuccess: widget.viewModel.handleSuccess,
+                cta: widget.viewModel.successCta,
+              ),
+            DeviceOnlineState.errorConnecting => _ErrorWidget(
+                errorMessage: widget.viewModel.errorMessage,
+                handleError: widget.viewModel.handleError,
+              ),
+          },
+        );
+      },
+    );
+  }
+}
+
+class _SuccessWidget extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final String cta;
+
+  final VoidCallback handleSuccess;
+
+  const _SuccessWidget({required this.title, required this.subtitle, required this.handleSuccess, required this.cta});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Column(
+        key: ValueKey('device-connected-viam'),
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Spacer(),
+          Icon(Icons.check_circle, color: Colors.green, size: 40),
+          SizedBox(height: 24),
+          Text(title, style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center),
+          SizedBox(height: 8),
+          Text(
+            subtitle,
+            style: Theme.of(context).textTheme.bodyLarge,
+            textAlign: TextAlign.center,
+            maxLines: null,
+          ),
+          Spacer(),
+          FilledButton(
+            onPressed: handleSuccess,
+            child: Text(cta),
+          ),
+          SizedBox(height: 16),
+        ],
+      ),
+    );
+  }
+}
+
+class _CheckingWidget extends StatelessWidget {
+  const _CheckingWidget();
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 32.0),
@@ -42,38 +114,16 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
       ),
     );
   }
+}
 
-  Widget _buildSuccessState(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Column(
-        key: ValueKey('device-connected-viam'),
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Spacer(),
-          Icon(Icons.check_circle, color: Colors.green, size: 40),
-          SizedBox(height: 24),
-          Text(widget.viewModel.successTitle, style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center),
-          SizedBox(height: 8),
-          Text(
-            widget.viewModel.successSubtitle,
-            style: Theme.of(context).textTheme.bodyLarge,
-            textAlign: TextAlign.center,
-            maxLines: null,
-          ),
-          Spacer(),
-          FilledButton(
-            onPressed: widget.viewModel.handleSuccess,
-            child: Text(widget.viewModel.successCta),
-          ),
-          SizedBox(height: 16),
-        ],
-      ),
-    );
-  }
+class _ErrorWidget extends StatelessWidget {
+  final String? errorMessage;
+  final VoidCallback handleError;
 
-  Widget _buildErrorConnectingState(BuildContext context) {
+  const _ErrorWidget({required this.errorMessage, required this.handleError});
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
@@ -86,37 +136,19 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
           Text('Error during setup', style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center),
           SizedBox(height: 8),
           Text(
-            widget.viewModel.errorMessage ?? 'There was an error getting your machine online. Please try again.',
+            errorMessage ?? 'There was an error getting your machine online. Please try again.',
             style: Theme.of(context).textTheme.bodyLarge,
             textAlign: TextAlign.center,
             maxLines: 2,
           ),
           Spacer(),
           FilledButton(
-            onPressed: widget.viewModel.handleError,
+            onPressed: handleError,
             child: Text('Try again'),
           ),
           SizedBox(height: 16),
         ],
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: widget.viewModel,
-      builder: (context, child) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: switch (widget.viewModel.deviceOnlineState) {
-            DeviceOnlineState.idle => _buildCheckingState(context), // could be in this state right before starting to check, but not long
-            DeviceOnlineState.checking => _buildCheckingState(context),
-            DeviceOnlineState.success => _buildSuccessState(context),
-            DeviceOnlineState.errorConnecting => _buildErrorConnectingState(context),
-          },
-        );
-      },
     );
   }
 }
