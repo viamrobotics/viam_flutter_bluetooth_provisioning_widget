@@ -20,9 +20,11 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
   DeviceOnlineState get deviceOnlineState => _deviceOnlineState;
   DeviceOnlineState _deviceOnlineState = DeviceOnlineState.idle;
   set deviceOnlineState(DeviceOnlineState state) {
+    print("DEVICEONLINESTATE IN VM: $state");
     if (_deviceOnlineState != state) {
       _deviceOnlineState = state;
       notifyListeners();
+      print("DEVICEONLINESTATE IN VIEW MODEL AFTER NOTIFY: $state");
     }
   }
 
@@ -47,7 +49,7 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
   void dispose() {
     _deviceOnlineSubscription?.cancel();
     _errorMessageSubscription?.cancel();
-    _checkingDeviceOnlineRepository.dispose();
+    // don't dispose the repository - it's shared with the parent view model
     super.dispose();
   }
 
@@ -56,12 +58,12 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
   }
 
   void startChecking() {
-    _checkingDeviceOnlineRepository.startChecking();
     _deviceOnlineSubscription = _checkingDeviceOnlineRepository.deviceOnlineStateStream.listen((state) {
       deviceOnlineState = state;
     });
     _errorMessageSubscription = _checkingDeviceOnlineRepository.errorMessageStream.listen((message) {
       errorMessage = message;
     });
+    _checkingDeviceOnlineRepository.startChecking();
   }
 }
