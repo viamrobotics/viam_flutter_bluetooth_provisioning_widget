@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:viam_flutter_bluetooth_provisioning_widget/viam_flutter_bluetooth_provisioning_widget.dart';
 import 'package:mockito/mockito.dart';
 
+import 'package:fixnum/fixnum.dart';
 import '../mocks/generate_mocks.mocks.dart';
 
 void main() {
@@ -15,6 +16,7 @@ void main() {
     late MockBluetoothCharacteristic viamStatusCharacteristic;
     late MockViam viam;
     late MockRobot robot;
+    late MockTimestamp timestamp;
 
     setUp(() {
       device = MockBluetoothDevice();
@@ -32,7 +34,15 @@ void main() {
       when(service.characteristics).thenReturn(<BluetoothCharacteristic>[viamStatusCharacteristic]);
 
       viam = MockViam();
+
       robot = MockRobot();
+      when(robot.id).thenReturn('robotId');
+      timestamp = MockTimestamp();
+      when(robot.lastAccess).thenReturn(timestamp);
+
+      final appClient = MockAppClient();
+      when(appClient.getRobot('robotId')).thenAnswer((_) async => robot);
+      when(viam.appClient).thenReturn(appClient);
 
       repository = CheckingDeviceOnlineRepository(viam: viam, robot: robot, device: device);
     });
@@ -42,7 +52,14 @@ void main() {
     });
 
     group('checking device online', () {
-      test('first', () async {});
+      test('start checking', () async {});
+      test('is robot online: true', () async {
+        when(timestamp.seconds).thenReturn(Int64(DateTime.now().millisecondsSinceEpoch ~/ 1000)); // now in seconds
+        final online = await repository.isRobotOnline();
+        expect(online, isTrue);
+      });
+
+      test('read agent errors', () async {});
     });
   });
 }
