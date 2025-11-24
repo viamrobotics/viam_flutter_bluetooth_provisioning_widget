@@ -15,7 +15,7 @@ class CheckAgentOnlineScreenViewModel extends ChangeNotifier {
 
   final CheckingAgentOnlineRepository _checkingAgentOnlineRepository;
   final ConnectBluetoothDeviceRepository _connectBluetoothDeviceRepository;
-  bool _agentOnline;
+  bool _agentOnline = false;
   StreamSubscription<bool>? _agentOnlineSubscription;
 
   CheckAgentOnlineScreenViewModel({
@@ -25,8 +25,7 @@ class CheckAgentOnlineScreenViewModel extends ChangeNotifier {
     required CheckingAgentOnlineRepository checkingAgentOnlineRepository,
     required ConnectBluetoothDeviceRepository connectBluetoothDeviceRepository,
   })  : _checkingAgentOnlineRepository = checkingAgentOnlineRepository,
-        _connectBluetoothDeviceRepository = connectBluetoothDeviceRepository,
-        _agentOnline = checkingAgentOnlineRepository.agentOnline;
+        _connectBluetoothDeviceRepository = connectBluetoothDeviceRepository;
 
   @override
   void dispose() {
