@@ -4,6 +4,7 @@ import 'dart:io';
 
 // package imports
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:collection/collection.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:viam_flutter_provisioning/viam_bluetooth_provisioning.dart';

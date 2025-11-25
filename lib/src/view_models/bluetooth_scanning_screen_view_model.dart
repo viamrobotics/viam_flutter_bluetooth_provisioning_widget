@@ -1,26 +1,6 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class BluetoothScanningScreenViewModel extends ChangeNotifier {
-  BluetoothScanningScreenViewModel({
-    required this.onDeviceSelected,
-    required ScanBluetoothDevicesRepository scanBluetoothDevicesRepository,
-    required ConnectBluetoothDeviceRepository connectBluetoothDeviceRepository,
-    required this.title,
-    required this.scanCtaText,
-    required this.notSeeingDeviceCtaText,
-    required this.tipsDialogTitle,
-    required this.tipsDialogSubtitle,
-    required this.tipsDialogCtaText,
-  })  : _scanBluetoothDevicesRepository = scanBluetoothDevicesRepository,
-        _connectBluetoothDeviceRepository = connectBluetoothDeviceRepository {
-    _devicesSubscription = _scanBluetoothDevicesRepository.uniqueDevicesStream.listen((value) {
-      uniqueDevices = value;
-    });
-    _scanningSubscription = _scanBluetoothDevicesRepository.scanningStream.listen((value) {
-      isScanning = value;
-    });
-  }
-
   final Function(BluetoothDevice) onDeviceSelected;
   final String title;
   final String scanCtaText;
@@ -31,10 +11,11 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
 
   final ScanBluetoothDevicesRepository _scanBluetoothDevicesRepository;
   final ConnectBluetoothDeviceRepository _connectBluetoothDeviceRepository;
+
   List<BluetoothDevice> _uniqueDevices = [];
   List<BluetoothDevice> get uniqueDevices => _uniqueDevices;
   set uniqueDevices(List<BluetoothDevice> devices) {
-    // TODO: don't notify if no change
+    if (listEquals(_uniqueDevices, devices)) return;
     _uniqueDevices = devices;
     notifyListeners();
   }
@@ -57,6 +38,26 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
 
   StreamSubscription<List<BluetoothDevice>>? _devicesSubscription;
   StreamSubscription<bool>? _scanningSubscription;
+
+  BluetoothScanningScreenViewModel({
+    required this.onDeviceSelected,
+    required ScanBluetoothDevicesRepository scanBluetoothDevicesRepository,
+    required ConnectBluetoothDeviceRepository connectBluetoothDeviceRepository,
+    required this.title,
+    required this.scanCtaText,
+    required this.notSeeingDeviceCtaText,
+    required this.tipsDialogTitle,
+    required this.tipsDialogSubtitle,
+    required this.tipsDialogCtaText,
+  })  : _scanBluetoothDevicesRepository = scanBluetoothDevicesRepository,
+        _connectBluetoothDeviceRepository = connectBluetoothDeviceRepository {
+    _devicesSubscription = _scanBluetoothDevicesRepository.uniqueDevicesStream.listen((value) {
+      uniqueDevices = value;
+    });
+    _scanningSubscription = _scanBluetoothDevicesRepository.scanningStream.listen((value) {
+      isScanning = value;
+    });
+  }
 
   @override
   void dispose() {
