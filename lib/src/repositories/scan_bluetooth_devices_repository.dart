@@ -32,20 +32,20 @@ class ScanBluetoothDevicesRepository {
     _deviceIds.clear();
   }
 
-  void start() {
+  Future<void> start() async {
     if (Platform.isAndroid) {
       // Need to explicitly request permissions on Android
       // iOS handles this automatically when you initialize bluetoothProvisioning
-      _checkPermissions();
+      await _checkPermissions();
     } else {
-      initialize();
+      await initialize();
     }
   }
 
   Future<void> initialize() async {
-    viamBluetoothProvisioning.initialize(poweredOn: (poweredOn) {
+    viamBluetoothProvisioning.initialize(poweredOn: (poweredOn) async {
       if (poweredOn) {
-        startScan();
+        await startScan();
       }
     });
   }

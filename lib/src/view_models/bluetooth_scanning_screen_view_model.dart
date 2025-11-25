@@ -67,8 +67,8 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
     super.dispose();
   }
 
-  void startScanning() {
-    _scanBluetoothDevicesRepository.start();
+  Future<void> startScanning() async {
+    await _scanBluetoothDevicesRepository.start();
   }
 
   Future<void> connect(BuildContext context, BluetoothDevice device) async {
