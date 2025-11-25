@@ -1,6 +1,7 @@
 import 'package:viam_flutter_bluetooth_provisioning_widget/viam_flutter_bluetooth_provisioning_widget.dart';
 import 'package:mockito/annotations.dart';
 import 'package:viam_sdk/src/app/app.dart';
+import 'package:viam_sdk/src/gen/google/protobuf/timestamp.pb.dart';
 
 @GenerateMocks([
   BluetoothDevice,
@@ -11,5 +12,6 @@ import 'package:viam_sdk/src/app/app.dart';
   RobotPart,
   AppClient,
   ViamBluetoothProvisioning,
+  Timestamp,
 ])
 void main() {}
