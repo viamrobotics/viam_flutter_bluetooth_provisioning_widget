@@ -73,7 +73,6 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
     try {
       isConnecting = true;
       await _connectBluetoothDeviceRepository.connect(device);
-      onDeviceSelected(device);
       return true;
     } catch (e) {
       debugPrint('Failed to connect to device: ${e.toString()}');
