@@ -7,9 +7,18 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
   final String successTitle;
   final String successSubtitle;
   final String successCta;
-  String? get errorMessage => _checkingDeviceOnlineRepository.errorMessage;
+
+  String? get errorMessage => _errorMessage;
+  String? _errorMessage;
+  set errorMessage(String? value) {
+    if (_errorMessage != value) {
+      _errorMessage = value;
+      notifyListeners();
+    }
+  }
 
   DeviceOnlineState get deviceOnlineState => _deviceOnlineState;
+  DeviceOnlineState _deviceOnlineState;
   set deviceOnlineState(DeviceOnlineState state) {
     if (_deviceOnlineState != state) {
       _deviceOnlineState = state;
@@ -19,8 +28,8 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
 
   final CheckingDeviceOnlineRepository _checkingDeviceOnlineRepository;
   final ConnectBluetoothDeviceRepository _connectBluetoothDeviceRepository;
-  DeviceOnlineState _deviceOnlineState;
   StreamSubscription<DeviceOnlineState>? _deviceOnlineSubscription;
+  StreamSubscription<String>? _errorMessageSubscription;
 
   CheckConnectedDeviceOnlineScreenViewModel({
     required this.handleSuccess,
@@ -33,12 +42,20 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
     required ConnectBluetoothDeviceRepository connectBluetoothDeviceRepository,
   })  : _checkingDeviceOnlineRepository = checkingDeviceOnlineRepository,
         _connectBluetoothDeviceRepository = connectBluetoothDeviceRepository,
-        _deviceOnlineState = checkingDeviceOnlineRepository.deviceOnlineState;
+        _deviceOnlineState = checkingDeviceOnlineRepository.deviceOnlineState {
+    _deviceOnlineSubscription = _checkingDeviceOnlineRepository.deviceOnlineStateStream.listen((state) {
+      deviceOnlineState = state;
+    });
+    _errorMessageSubscription = _checkingDeviceOnlineRepository.errorMessageStream.listen((message) {
+      errorMessage = message;
+    });
+  }
 
   @override
   void dispose() {
     _deviceOnlineSubscription?.cancel();
-    _checkingDeviceOnlineRepository.dispose();
+    _errorMessageSubscription?.cancel();
+    // don't dispose the repository - it's shared with the parent view model
     super.dispose();
   }
 
@@ -48,8 +65,5 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
 
   void startChecking() {
     _checkingDeviceOnlineRepository.startChecking();
-    _deviceOnlineSubscription = _checkingDeviceOnlineRepository.deviceOnlineStateStream.listen((state) {
-      deviceOnlineState = state;
-    });
   }
 }

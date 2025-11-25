@@ -412,6 +412,16 @@ class _FakeGetRobotPartMetadataResponse_34 extends _i1.SmartFake
         );
 }
 
+class _FakeDateTime_35 extends _i1.SmartFake implements DateTime {
+  _FakeDateTime_35(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [BluetoothDevice].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -4894,4 +4904,890 @@ class MockViamBluetoothProvisioning extends _i1.Mock
         returnValue: _i16.Future<_i16.Stream<List<_i3.ScanResult>>>.value(
             _i16.Stream<List<_i3.ScanResult>>.empty()),
       ) as _i16.Future<_i16.Stream<List<_i3.ScanResult>>>);
+}
+
+/// A class which mocks [Timestamp].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockTimestamp extends _i1.Mock implements _i11.Timestamp {
+  MockTimestamp() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i10.BuilderInfo get info_ => (super.noSuchMethod(
+        Invocation.getter(#info_),
+        returnValue: _FakeBuilderInfo_10(
+          this,
+          Invocation.getter(#info_),
+        ),
+      ) as _i10.BuilderInfo);
+
+  @override
+  _i13.Int64 get seconds => (super.noSuchMethod(
+        Invocation.getter(#seconds),
+        returnValue: _FakeInt64_15(
+          this,
+          Invocation.getter(#seconds),
+        ),
+      ) as _i13.Int64);
+
+  @override
+  int get nanos => (super.noSuchMethod(
+        Invocation.getter(#nanos),
+        returnValue: 0,
+      ) as int);
+
+  @override
+  set seconds(_i13.Int64? v) => super.noSuchMethod(
+        Invocation.setter(
+          #seconds,
+          v,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set nanos(int? v) => super.noSuchMethod(
+        Invocation.setter(
+          #nanos,
+          v,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  _i10.UnknownFieldSet get unknownFields => (super.noSuchMethod(
+        Invocation.getter(#unknownFields),
+        returnValue: _FakeUnknownFieldSet_12(
+          this,
+          Invocation.getter(#unknownFields),
+        ),
+      ) as _i10.UnknownFieldSet);
+
+  @override
+  bool get isFrozen => (super.noSuchMethod(
+        Invocation.getter(#isFrozen),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  _i11.Timestamp clone() => (super.noSuchMethod(
+        Invocation.method(
+          #clone,
+          [],
+        ),
+        returnValue: _FakeTimestamp_11(
+          this,
+          Invocation.method(
+            #clone,
+            [],
+          ),
+        ),
+      ) as _i11.Timestamp);
+
+  @override
+  _i11.Timestamp copyWith(void Function(_i11.Timestamp)? updates) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #copyWith,
+          [updates],
+        ),
+        returnValue: _FakeTimestamp_11(
+          this,
+          Invocation.method(
+            #copyWith,
+            [updates],
+          ),
+        ),
+      ) as _i11.Timestamp);
+
+  @override
+  _i11.Timestamp createEmptyInstance() => (super.noSuchMethod(
+        Invocation.method(
+          #createEmptyInstance,
+          [],
+        ),
+        returnValue: _FakeTimestamp_11(
+          this,
+          Invocation.method(
+            #createEmptyInstance,
+            [],
+          ),
+        ),
+      ) as _i11.Timestamp);
+
+  @override
+  bool hasSeconds() => (super.noSuchMethod(
+        Invocation.method(
+          #hasSeconds,
+          [],
+        ),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  void clearSeconds() => super.noSuchMethod(
+        Invocation.method(
+          #clearSeconds,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  bool hasNanos() => (super.noSuchMethod(
+        Invocation.method(
+          #hasNanos,
+          [],
+        ),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  void clearNanos() => super.noSuchMethod(
+        Invocation.method(
+          #clearNanos,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  _i10.GeneratedMessage freeze() => (super.noSuchMethod(
+        Invocation.method(
+          #freeze,
+          [],
+        ),
+        returnValue: _FakeGeneratedMessage_14(
+          this,
+          Invocation.method(
+            #freeze,
+            [],
+          ),
+        ),
+      ) as _i10.GeneratedMessage);
+
+  @override
+  _i10.GeneratedMessage toBuilder() => (super.noSuchMethod(
+        Invocation.method(
+          #toBuilder,
+          [],
+        ),
+        returnValue: _FakeGeneratedMessage_14(
+          this,
+          Invocation.method(
+            #toBuilder,
+            [],
+          ),
+        ),
+      ) as _i10.GeneratedMessage);
+
+  @override
+  bool hasRequiredFields() => (super.noSuchMethod(
+        Invocation.method(
+          #hasRequiredFields,
+          [],
+        ),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool isInitialized() => (super.noSuchMethod(
+        Invocation.method(
+          #isInitialized,
+          [],
+        ),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  void clear() => super.noSuchMethod(
+        Invocation.method(
+          #clear,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  int? getTagNumber(String? fieldName) => (super.noSuchMethod(Invocation.method(
+        #getTagNumber,
+        [fieldName],
+      )) as int?);
+
+  @override
+  String toDebugString() => (super.noSuchMethod(
+        Invocation.method(
+          #toDebugString,
+          [],
+        ),
+        returnValue: _i15.dummyValue<String>(
+          this,
+          Invocation.method(
+            #toDebugString,
+            [],
+          ),
+        ),
+      ) as String);
+
+  @override
+  void check() => super.noSuchMethod(
+        Invocation.method(
+          #check,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  _i17.Uint8List writeToBuffer() => (super.noSuchMethod(
+        Invocation.method(
+          #writeToBuffer,
+          [],
+        ),
+        returnValue: _i17.Uint8List(0),
+      ) as _i17.Uint8List);
+
+  @override
+  void writeToCodedBufferWriter(_i10.CodedBufferWriter? output) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #writeToCodedBufferWriter,
+          [output],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void mergeFromCodedBufferReader(
+    _i10.CodedBufferReader? input, [
+    _i10.ExtensionRegistry? extensionRegistry = _i10.ExtensionRegistry.EMPTY,
+  ]) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #mergeFromCodedBufferReader,
+          [
+            input,
+            extensionRegistry,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void mergeFromBuffer(
+    List<int>? input, [
+    _i10.ExtensionRegistry? extensionRegistry = _i10.ExtensionRegistry.EMPTY,
+  ]) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #mergeFromBuffer,
+          [
+            input,
+            extensionRegistry,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  Map<String, dynamic> writeToJsonMap() => (super.noSuchMethod(
+        Invocation.method(
+          #writeToJsonMap,
+          [],
+        ),
+        returnValue: <String, dynamic>{},
+      ) as Map<String, dynamic>);
+
+  @override
+  String writeToJson() => (super.noSuchMethod(
+        Invocation.method(
+          #writeToJson,
+          [],
+        ),
+        returnValue: _i15.dummyValue<String>(
+          this,
+          Invocation.method(
+            #writeToJson,
+            [],
+          ),
+        ),
+      ) as String);
+
+  @override
+  Object? toProto3Json(
+          {_i10.TypeRegistry? typeRegistry =
+              const _i10.TypeRegistry.empty()}) =>
+      (super.noSuchMethod(Invocation.method(
+        #toProto3Json,
+        [],
+        {#typeRegistry: typeRegistry},
+      )) as Object?);
+
+  @override
+  void mergeFromProto3Json(
+    Object? json, {
+    _i10.TypeRegistry? typeRegistry = const _i10.TypeRegistry.empty(),
+    bool? ignoreUnknownFields = false,
+    bool? supportNamesWithUnderscores = true,
+    bool? permissiveEnums = false,
+  }) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #mergeFromProto3Json,
+          [json],
+          {
+            #typeRegistry: typeRegistry,
+            #ignoreUnknownFields: ignoreUnknownFields,
+            #supportNamesWithUnderscores: supportNamesWithUnderscores,
+            #permissiveEnums: permissiveEnums,
+          },
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void mergeFromJson(
+    String? data, [
+    _i10.ExtensionRegistry? extensionRegistry = _i10.ExtensionRegistry.EMPTY,
+  ]) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #mergeFromJson,
+          [
+            data,
+            extensionRegistry,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void mergeFromJsonMap(
+    Map<String, dynamic>? json, [
+    _i10.ExtensionRegistry? extensionRegistry = _i10.ExtensionRegistry.EMPTY,
+  ]) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #mergeFromJsonMap,
+          [
+            json,
+            extensionRegistry,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void addExtension(
+    _i10.Extension<dynamic>? extension,
+    Object? value,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #addExtension,
+          [
+            extension,
+            value,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void clearExtension(_i10.Extension<dynamic>? extension) => super.noSuchMethod(
+        Invocation.method(
+          #clearExtension,
+          [extension],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void clearField(int? tagNumber) => super.noSuchMethod(
+        Invocation.method(
+          #clearField,
+          [tagNumber],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  int $_whichOneof(int? oneofIndex) => (super.noSuchMethod(
+        Invocation.method(
+          #$_whichOneof,
+          [oneofIndex],
+        ),
+        returnValue: 0,
+      ) as int);
+
+  @override
+  bool extensionsAreInitialized() => (super.noSuchMethod(
+        Invocation.method(
+          #extensionsAreInitialized,
+          [],
+        ),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  dynamic getExtension(_i10.Extension<dynamic>? extension) =>
+      super.noSuchMethod(Invocation.method(
+        #getExtension,
+        [extension],
+      ));
+
+  @override
+  dynamic getField(int? tagNumber) => super.noSuchMethod(Invocation.method(
+        #getField,
+        [tagNumber],
+      ));
+
+  @override
+  List<T> createRepeatedField<T>(
+    int? tagNumber,
+    _i10.FieldInfo<T>? fi,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #createRepeatedField,
+          [
+            tagNumber,
+            fi,
+          ],
+        ),
+        returnValue: <T>[],
+      ) as List<T>);
+
+  @override
+  Map<K, V> createMapField<K, V>(
+    int? tagNumber,
+    _i10.MapFieldInfo<K, V>? fi,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #createMapField,
+          [
+            tagNumber,
+            fi,
+          ],
+        ),
+        returnValue: <K, V>{},
+      ) as Map<K, V>);
+
+  @override
+  dynamic getFieldOrNull(int? tagNumber) =>
+      super.noSuchMethod(Invocation.method(
+        #getFieldOrNull,
+        [tagNumber],
+      ));
+
+  @override
+  dynamic getDefaultForField(int? tagNumber) =>
+      super.noSuchMethod(Invocation.method(
+        #getDefaultForField,
+        [tagNumber],
+      ));
+
+  @override
+  bool hasExtension(_i10.Extension<dynamic>? extension) => (super.noSuchMethod(
+        Invocation.method(
+          #hasExtension,
+          [extension],
+        ),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool hasField(int? tagNumber) => (super.noSuchMethod(
+        Invocation.method(
+          #hasField,
+          [tagNumber],
+        ),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  void mergeFromMessage(_i10.GeneratedMessage? other) => super.noSuchMethod(
+        Invocation.method(
+          #mergeFromMessage,
+          [other],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void mergeUnknownFields(_i10.UnknownFieldSet? unknownFieldSet) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #mergeUnknownFields,
+          [unknownFieldSet],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void setExtension(
+    _i10.Extension<dynamic>? extension,
+    Object? value,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #setExtension,
+          [
+            extension,
+            value,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void setField(
+    int? tagNumber,
+    Object? value,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #setField,
+          [
+            tagNumber,
+            value,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  T $_get<T>(
+    int? index,
+    T? defaultValue,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #$_get,
+          [
+            index,
+            defaultValue,
+          ],
+        ),
+        returnValue: _i15.dummyValue<T>(
+          this,
+          Invocation.method(
+            #$_get,
+            [
+              index,
+              defaultValue,
+            ],
+          ),
+        ),
+      ) as T);
+
+  @override
+  T $_getN<T>(int? index) => (super.noSuchMethod(
+        Invocation.method(
+          #$_getN,
+          [index],
+        ),
+        returnValue: _i15.dummyValue<T>(
+          this,
+          Invocation.method(
+            #$_getN,
+            [index],
+          ),
+        ),
+      ) as T);
+
+  @override
+  T $_ensure<T>(int? index) => (super.noSuchMethod(
+        Invocation.method(
+          #$_ensure,
+          [index],
+        ),
+        returnValue: _i15.dummyValue<T>(
+          this,
+          Invocation.method(
+            #$_ensure,
+            [index],
+          ),
+        ),
+      ) as T);
+
+  @override
+  List<T> $_getList<T>(int? index) => (super.noSuchMethod(
+        Invocation.method(
+          #$_getList,
+          [index],
+        ),
+        returnValue: <T>[],
+      ) as List<T>);
+
+  @override
+  Map<K, V> $_getMap<K, V>(int? index) => (super.noSuchMethod(
+        Invocation.method(
+          #$_getMap,
+          [index],
+        ),
+        returnValue: <K, V>{},
+      ) as Map<K, V>);
+
+  @override
+  bool $_getB(
+    int? index,
+    bool? defaultValue,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #$_getB,
+          [
+            index,
+            defaultValue,
+          ],
+        ),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool $_getBF(int? index) => (super.noSuchMethod(
+        Invocation.method(
+          #$_getBF,
+          [index],
+        ),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  int $_getI(
+    int? index,
+    int? defaultValue,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #$_getI,
+          [
+            index,
+            defaultValue,
+          ],
+        ),
+        returnValue: 0,
+      ) as int);
+
+  @override
+  int $_getIZ(int? index) => (super.noSuchMethod(
+        Invocation.method(
+          #$_getIZ,
+          [index],
+        ),
+        returnValue: 0,
+      ) as int);
+
+  @override
+  String $_getS(
+    int? index,
+    String? defaultValue,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #$_getS,
+          [
+            index,
+            defaultValue,
+          ],
+        ),
+        returnValue: _i15.dummyValue<String>(
+          this,
+          Invocation.method(
+            #$_getS,
+            [
+              index,
+              defaultValue,
+            ],
+          ),
+        ),
+      ) as String);
+
+  @override
+  String $_getSZ(int? index) => (super.noSuchMethod(
+        Invocation.method(
+          #$_getSZ,
+          [index],
+        ),
+        returnValue: _i15.dummyValue<String>(
+          this,
+          Invocation.method(
+            #$_getSZ,
+            [index],
+          ),
+        ),
+      ) as String);
+
+  @override
+  _i13.Int64 $_getI64(int? index) => (super.noSuchMethod(
+        Invocation.method(
+          #$_getI64,
+          [index],
+        ),
+        returnValue: _FakeInt64_15(
+          this,
+          Invocation.method(
+            #$_getI64,
+            [index],
+          ),
+        ),
+      ) as _i13.Int64);
+
+  @override
+  bool $_has(int? index) => (super.noSuchMethod(
+        Invocation.method(
+          #$_has,
+          [index],
+        ),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  void $_setBool(
+    int? index,
+    bool? value,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #$_setBool,
+          [
+            index,
+            value,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void $_setBytes(
+    int? index,
+    List<int>? value,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #$_setBytes,
+          [
+            index,
+            value,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void $_setString(
+    int? index,
+    String? value,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #$_setString,
+          [
+            index,
+            value,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void $_setFloat(
+    int? index,
+    double? value,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #$_setFloat,
+          [
+            index,
+            value,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void $_setDouble(
+    int? index,
+    double? value,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #$_setDouble,
+          [
+            index,
+            value,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void $_setSignedInt32(
+    int? index,
+    int? value,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #$_setSignedInt32,
+          [
+            index,
+            value,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void $_setUnsignedInt32(
+    int? index,
+    int? value,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #$_setUnsignedInt32,
+          [
+            index,
+            value,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void $_setInt64(
+    int? index,
+    _i13.Int64? value,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #$_setInt64,
+          [
+            index,
+            value,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  DateTime toDateTime({bool? toLocal = false}) => (super.noSuchMethod(
+        Invocation.method(
+          #toDateTime,
+          [],
+          {#toLocal: toLocal},
+        ),
+        returnValue: _FakeDateTime_35(
+          this,
+          Invocation.method(
+            #toDateTime,
+            [],
+            {#toLocal: toLocal},
+          ),
+        ),
+      ) as DateTime);
 }

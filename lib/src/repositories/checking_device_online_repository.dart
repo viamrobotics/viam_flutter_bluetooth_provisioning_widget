@@ -9,70 +9,69 @@ class CheckingDeviceOnlineRepository {
     required this.viam,
     required this.robot,
     required this.device,
-  });
+    Duration interval = const Duration(seconds: 5),
+  }) : _interval = interval;
 
-  Stream<DeviceOnlineState> get deviceOnlineStateStream => _stateController.stream;
+  Stream<DeviceOnlineState> get deviceOnlineStateStream => _deviceOnlineStateController.stream;
+  final StreamController<DeviceOnlineState> _deviceOnlineStateController = StreamController<DeviceOnlineState>.broadcast();
+
   DeviceOnlineState get deviceOnlineState => _deviceOnlineState;
-  String? get errorMessage => _errorMessage;
-
-  final StreamController<DeviceOnlineState> _stateController = StreamController<DeviceOnlineState>.broadcast();
   DeviceOnlineState _deviceOnlineState = DeviceOnlineState.idle;
-  Timer? _onlineTimer;
-  String? _errorMessage;
-
   set deviceOnlineState(DeviceOnlineState state) {
-    if (_deviceOnlineState != state) {
-      _deviceOnlineState = state;
-      _stateController.add(state);
-    }
+    _deviceOnlineState = state;
+    _deviceOnlineStateController.add(state);
   }
+
+  Stream<String> get errorMessageStream => _errorMessageController.stream;
+  final StreamController<String> _errorMessageController = StreamController<String>.broadcast();
+
+  Timer? _onlineTimer;
+  final Duration _interval;
 
   void dispose() {
     _onlineTimer?.cancel();
-    _stateController.close();
+    _deviceOnlineStateController.close();
+    _errorMessageController.close();
   }
 
   void startChecking() {
     deviceOnlineState = DeviceOnlineState.checking;
-    _onlineTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      if (_deviceOnlineState == DeviceOnlineState.success) {
+    _onlineTimer = Timer.periodic(_interval, (timer) async {
+      final online = await isRobotOnline();
+      if (online) {
         timer.cancel();
-        return;
-      }
-      _checkOnline();
-      if (device != null && device?.isConnected == true) {
-        _readAgentErrors(device!);
+        deviceOnlineState = DeviceOnlineState.success;
+        if (device?.isConnected == true) device?.disconnect();
+      } else if (device != null && device?.isConnected == true) {
+        final error = await readAgentError(device!);
+        if (error != null) {
+          timer.cancel();
+          deviceOnlineState = DeviceOnlineState.errorConnecting;
+          _errorMessageController.add(error);
+        }
       }
     });
   }
 
-  Future<void> _readAgentErrors(BluetoothDevice device) async {
-    try {
-      // when bleService comes back online, if these errors comes back as not empty we have an error to handle
-      // this should return an array with 1 value once it's readable (bleService comes back online)
-      final errors = await device.readErrors();
-      if (errors.isNotEmpty) {
-        _onlineTimer?.cancel();
-        deviceOnlineState = DeviceOnlineState.errorConnecting;
-        _errorMessage = errors.last;
-        debugPrint('Error connecting machine: $_errorMessage');
-      }
-    } catch (e) {
-      debugPrint('Error reading agent errors: $e');
-    }
-  }
-
-  Future<void> _checkOnline() async {
+  Future<bool> isRobotOnline() async {
     final refreshedRobot = await viam.appClient.getRobot(robot.id);
     final seconds = refreshedRobot.lastAccess.seconds.toInt();
     final actual = DateTime.now().microsecondsSinceEpoch / Duration.microsecondsPerSecond;
-    if ((actual - seconds) < 10) {
-      _onlineTimer?.cancel();
-      deviceOnlineState = DeviceOnlineState.success;
-      // fire and forget disconnect device
-      if (device?.isConnected == true) {
-        device?.disconnect();
+    return ((actual - seconds) < 10);
+  }
+
+  /// when bleService comes back online, if these errors comes back as not empty we have an error to handle
+  /// this should return an array with 1 value once it's readable (bleService comes back online)
+  Future<String?> readAgentError(BluetoothDevice device) async {
+    try {
+      final errors = await device.readErrors();
+      if (errors.isNotEmpty) {
+        return errors.last;
       }
+      return null;
+    } catch (e) {
+      debugPrint('Error reading agent errors: ${e.toString()}');
+      return null;
     }
   }
 }
