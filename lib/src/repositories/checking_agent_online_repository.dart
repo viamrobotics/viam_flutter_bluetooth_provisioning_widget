@@ -1,7 +1,7 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class CheckingAgentOnlineRepository {
-  final BluetoothDevice device;
+  BluetoothDevice? device;
   final Duration checkingInterval;
 
   Stream<bool> get agentOnlineStateStream => _agentOnlineController.stream;
@@ -34,7 +34,11 @@ class CheckingAgentOnlineRepository {
   }
 
   Future<void> readAgentStatus() async {
-    final status = await device.readStatus();
+    if (device == null) {
+      throw Exception('Device is not set');
+    }
+
+    final status = await device!.readStatus();
     if (status.isConnected) {
       _onlineTimer?.cancel();
     }

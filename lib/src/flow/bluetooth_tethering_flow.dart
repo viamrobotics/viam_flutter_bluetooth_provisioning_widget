@@ -26,6 +26,7 @@ class BluetoothTetheringFlow extends StatefulWidget {
         viam: viam,
         robot: robot,
       ),
+      checkingAgentOnlineRepository: CheckingAgentOnlineRepository(device: null),
       mainRobotPart: mainRobotPart,
       psk: psk,
       fragmentId: fragmentId,
@@ -109,7 +110,7 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
         await Future.delayed(Duration(seconds: 3)); // delay long enough to see success
         await _onWifiCredentials(null, null); // shows loading
       },
-      checkingAgentOnlineRepository: CheckingAgentOnlineRepository(device: widget.viewModel.device!),
+      checkingAgentOnlineRepository: widget.viewModel.checkingAgentOnlineRepository,
       connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
       successTitle: widget.viewModel.copy.checkAgentOnlineSuccessTitle,
       successSubtitle: widget.viewModel.copy.checkAgentOnlineSuccessSubtitle,

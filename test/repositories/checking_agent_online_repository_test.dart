@@ -72,6 +72,15 @@ void main() {
           expect(e.toString(), 'Exception: Error reading online status');
         }
       });
+
+      test('error reading online status: device not set', () async {
+        repository = CheckingAgentOnlineRepository(device: null);
+        try {
+          await repository.readAgentStatus();
+        } on Exception catch (e) {
+          expect(e.toString(), 'Exception: Device is not set');
+        }
+      });
     });
   });
 }
