@@ -80,6 +80,8 @@ void main() {
       });
       await viewModel.startScanning();
       expect(viewModel.isScanning, true);
+      expect(viewModel.uniqueDevices, []);
+
       mockScanningStream.add([mockScanResult1, mockScanResult2]);
       await Future.delayed(const Duration(seconds: 1)); // TODO: FAKE ASYNC
       expect(viewModel.uniqueDevices, [mockDevice1, mockDevice2]);
