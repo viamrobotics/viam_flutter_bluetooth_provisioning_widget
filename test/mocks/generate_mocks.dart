@@ -1,5 +1,6 @@
 import 'package:viam_flutter_bluetooth_provisioning_widget/viam_flutter_bluetooth_provisioning_widget.dart';
 import 'package:mockito/annotations.dart';
+import 'package:flutter/material.dart';
 import 'package:viam_sdk/src/app/app.dart';
 import 'package:viam_sdk/src/gen/google/protobuf/timestamp.pb.dart';
 
@@ -13,5 +14,6 @@ import 'package:viam_sdk/src/gen/google/protobuf/timestamp.pb.dart';
   AppClient,
   ViamBluetoothProvisioning,
   Timestamp,
+  ConnectBluetoothDeviceRepository,
 ])
 void main() {}

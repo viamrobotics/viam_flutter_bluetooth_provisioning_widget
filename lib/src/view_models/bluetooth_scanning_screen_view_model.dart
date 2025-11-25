@@ -71,16 +71,18 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
     await _scanBluetoothDevicesRepository.start();
   }
 
-  Future<void> connect(BuildContext context, BluetoothDevice device) async {
+  Future<bool> connect(BuildContext? context, BluetoothDevice device) async {
     try {
       isConnecting = true;
       await _connectBluetoothDeviceRepository.connect(device);
       onDeviceSelected(device);
+      return true;
     } catch (e) {
       debugPrint('Failed to connect to device: ${e.toString()}');
-      if (context.mounted) {
-        _showErrorDialog(context, title: 'Error', error: 'Failed to connect to device');
+      if (context != null && context.mounted == true) {
+        await _showErrorDialog(context, title: 'Error', error: 'Failed to connect to device');
       }
+      return false;
     } finally {
       isConnecting = false;
     }

@@ -10,6 +10,7 @@ void main() {
   group('BluetoothScanningScreenViewModel', () {
     late BluetoothScanningScreenViewModel viewModel;
     late MockViamBluetoothProvisioning mockViamBluetoothProvisioning;
+    late MockConnectBluetoothDeviceRepository mockConnectBluetoothDeviceRepository;
     late MockBluetoothDevice mockDevice1;
     late MockBluetoothDevice mockDevice2;
     late ScanResult mockScanResult1;
@@ -17,10 +18,11 @@ void main() {
 
     setUp(() {
       mockViamBluetoothProvisioning = MockViamBluetoothProvisioning();
+      mockConnectBluetoothDeviceRepository = MockConnectBluetoothDeviceRepository();
       viewModel = BluetoothScanningScreenViewModel(
         onDeviceSelected: (device) {},
         scanBluetoothDevicesRepository: ScanBluetoothDevicesRepository(viamBluetoothProvisioning: mockViamBluetoothProvisioning),
-        connectBluetoothDeviceRepository: ConnectBluetoothDeviceRepository(),
+        connectBluetoothDeviceRepository: mockConnectBluetoothDeviceRepository,
         title: 'title',
         scanCtaText: 'scanCtaText',
         notSeeingDeviceCtaText: 'notSeeingDeviceCtaText',
@@ -67,28 +69,62 @@ void main() {
     tearDown(() {
       viewModel.dispose();
     });
+    group('scanning', () {
+      test('start scanning', () async {
+        final mockScanningStream = StreamController<List<ScanResult>>();
+        when(mockViamBluetoothProvisioning.scanForPeripherals()).thenAnswer((_) => Future.value(mockScanningStream.stream));
 
-    test('start scanning', () async {
-      final mockScanningStream = StreamController<List<ScanResult>>();
-      when(mockViamBluetoothProvisioning.scanForPeripherals()).thenAnswer((_) => Future.value(mockScanningStream.stream));
+        when(mockViamBluetoothProvisioning.initialize(poweredOn: anyNamed('poweredOn'))).thenAnswer((invocation) {
+          final poweredOnCallback = invocation.namedArguments[#poweredOn] as dynamic Function(bool)?;
+          if (poweredOnCallback != null) {
+            poweredOnCallback(true);
+          }
+        });
+        await viewModel.startScanning();
+        expect(viewModel.isScanning, true);
+        expect(viewModel.uniqueDevices, []);
 
-      when(mockViamBluetoothProvisioning.initialize(poweredOn: anyNamed('poweredOn'))).thenAnswer((invocation) {
-        final poweredOnCallback = invocation.namedArguments[#poweredOn] as dynamic Function(bool)?;
-        if (poweredOnCallback != null) {
-          poweredOnCallback(true);
-        }
+        mockScanningStream.add([mockScanResult1, mockScanResult2]);
+        await pumpEventQueue();
+        expect(viewModel.uniqueDevices, [mockDevice1, mockDevice2]);
       });
-      await viewModel.startScanning();
-      expect(viewModel.isScanning, true);
-      expect(viewModel.uniqueDevices, []);
 
-      mockScanningStream.add([mockScanResult1, mockScanResult2]);
-      await Future.delayed(const Duration(seconds: 1)); // TODO: FAKE ASYNC
-      expect(viewModel.uniqueDevices, [mockDevice1, mockDevice2]);
+      test('scan devices again', () async {
+        final mockScanningStream = StreamController<List<ScanResult>>();
+        when(mockViamBluetoothProvisioning.scanForPeripherals()).thenAnswer((_) => Future.value(mockScanningStream.stream));
+
+        when(mockViamBluetoothProvisioning.initialize(poweredOn: anyNamed('poweredOn'))).thenAnswer((invocation) {
+          final poweredOnCallback = invocation.namedArguments[#poweredOn] as dynamic Function(bool)?;
+          if (poweredOnCallback != null) {
+            poweredOnCallback(true);
+          }
+        });
+        await viewModel.scanDevicesAgain();
+        expect(viewModel.isScanning, true);
+        expect(viewModel.uniqueDevices, []);
+
+        mockScanningStream.add([mockScanResult1, mockScanResult2]);
+        await pumpEventQueue();
+        expect(viewModel.uniqueDevices, [mockDevice1, mockDevice2]);
+      });
     });
 
-    // connect
+    group('connecting', () {
+      test('success', () async {
+        when(mockConnectBluetoothDeviceRepository.connect(mockDevice1)).thenAnswer((_) => Future.value());
+        final result = await viewModel.connect(null, mockDevice1);
+        expect(result, true);
+        expect(viewModel.isConnecting, false);
+        verify(mockConnectBluetoothDeviceRepository.connect(mockDevice1)).called(1);
+      });
 
-    // scan again
+      test('failure', () async {
+        when(mockConnectBluetoothDeviceRepository.connect(mockDevice1)).thenAnswer((_) => Future.error('error'));
+        final result = await viewModel.connect(null, mockDevice1);
+        expect(result, false);
+        expect(viewModel.isConnecting, false);
+        verify(mockConnectBluetoothDeviceRepository.connect(mockDevice1)).called(1);
+      });
+    });
   });
 }
