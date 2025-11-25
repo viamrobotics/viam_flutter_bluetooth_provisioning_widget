@@ -43,7 +43,7 @@ class ConnectedBluetoothDeviceScreenViewModel extends ChangeNotifier {
   Future<void> readNetworkList(BuildContext? context) async {
     try {
       isLoadingNetworks = true;
-      wifiNetworks.clear();
+      wifiNetworks = [];
       await Future.delayed(const Duration(milliseconds: 500)); // delay to see "scanning" ui
       wifiNetworks = await _connectBluetoothDeviceRepository.readNetworkList();
     } catch (e) {
