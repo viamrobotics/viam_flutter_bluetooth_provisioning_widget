@@ -1,47 +1,48 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class CheckingAgentOnlineRepository {
-  final BluetoothDevice device;
+  BluetoothDevice? device;
+  final Duration checkingInterval;
 
-  CheckingAgentOnlineRepository({required this.device});
+  Stream<bool> get agentOnlineStateStream => _agentOnlineController.stream;
+  final StreamController<bool> _agentOnlineController = StreamController<bool>.broadcast();
 
-  Stream<bool> get agentOnlineStateStream => _stateController.stream;
   bool get agentOnline => _agentOnline;
-
-  final StreamController<bool> _stateController = StreamController<bool>.broadcast();
   bool _agentOnline = false;
+  set agentOnline(bool value) {
+    _agentOnline = value;
+    _agentOnlineController.add(value);
+  }
 
   Timer? _onlineTimer;
 
-  set agentOnline(bool state) {
-    if (_agentOnline != state) {
-      _agentOnline = state;
-      _stateController.add(state);
-    }
-  }
+  CheckingAgentOnlineRepository({required this.device, this.checkingInterval = const Duration(seconds: 5)});
 
   void dispose() {
     _onlineTimer?.cancel();
-    _stateController.close();
+    _agentOnlineController.close();
   }
 
   void startChecking() {
-    _onlineTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      if (_agentOnline) {
-        timer.cancel();
-        return;
+    _onlineTimer = Timer.periodic(checkingInterval, (timer) {
+      try {
+        readAgentStatus();
+      } catch (e) {
+        debugPrint('Error reading agent status: $e');
       }
-      _readAgentStatus();
     });
   }
 
-  Future<void> _readAgentStatus() async {
-    try {
-      final status = await device.readStatus();
-      debugPrint('status isConnected: ${status.isConnected}');
-      agentOnline = status.isConnected;
-    } on Exception catch (e) {
-      debugPrint('Error reading agent status: $e');
+  Future<void> readAgentStatus() async {
+    if (device == null) {
+      throw Exception('Device is not set');
     }
+
+    final status = await device!.readStatus();
+    if (status.isConnected) {
+      _onlineTimer?.cancel();
+    }
+    debugPrint('Agent online status: ${status.isConnected}');
+    agentOnline = status.isConnected;
   }
 }

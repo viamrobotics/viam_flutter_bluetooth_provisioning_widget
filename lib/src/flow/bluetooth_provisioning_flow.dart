@@ -26,6 +26,7 @@ class BluetoothProvisioningFlow extends StatefulWidget {
         viam: viam,
         robot: robot,
       ),
+      checkingAgentOnlineRepository: CheckingAgentOnlineRepository(device: null),
       mainRobotPart: mainRobotPart,
       psk: psk,
       fragmentId: fragmentId,
@@ -79,7 +80,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
 
   @override
   Widget build(BuildContext context) {
-    final checkConnectedVm = CheckConnectedDeviceOnlineScreenViewModel(
+    final checkDeviceOnlineVm = CheckConnectedDeviceOnlineScreenViewModel(
       robot: widget.viewModel.robot,
       successTitle: widget.viewModel.copy.checkingOnlineSuccessTitle,
       successSubtitle: widget.viewModel.copy.checkingOnlineSuccessSubtitle,
@@ -151,7 +152,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                           tipsDialogCtaText: widget.viewModel.copy.connectedDeviceTipsDialogCtaText,
                         ),
                       ),
-                      if (widget.viewModel.device != null) CheckConnectedDeviceOnlineScreen(viewModel: checkConnectedVm),
+                      if (widget.viewModel.device != null) CheckConnectedDeviceOnlineScreen(viewModel: checkDeviceOnlineVm),
                     ],
                   ),
                 ),

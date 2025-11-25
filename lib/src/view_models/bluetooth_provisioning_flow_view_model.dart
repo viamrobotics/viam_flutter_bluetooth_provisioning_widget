@@ -7,6 +7,7 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
     required this.isNewMachine,
     required this.connectBluetoothDeviceRepository,
     required this.checkingDeviceOnlineRepository,
+    required this.checkingAgentOnlineRepository,
     required mainRobotPart,
     required String psk,
     required this.fragmentId,
@@ -30,6 +31,7 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
   final bool isNewMachine;
   final ConnectBluetoothDeviceRepository connectBluetoothDeviceRepository;
   final CheckingDeviceOnlineRepository checkingDeviceOnlineRepository;
+  final CheckingAgentOnlineRepository checkingAgentOnlineRepository;
   final String agentMinimumVersion;
   final BluetoothProvisioningFlowCopy copy;
 
@@ -111,6 +113,7 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
         return false;
       }
       checkingDeviceOnlineRepository.device = device;
+      checkingAgentOnlineRepository.device = device;
       return true;
     } catch (e) {
       debugPrint('Error reading device status: $e');
