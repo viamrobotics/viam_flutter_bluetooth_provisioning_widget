@@ -18,13 +18,11 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
   }
 
   DeviceOnlineState get deviceOnlineState => _deviceOnlineState;
-  DeviceOnlineState _deviceOnlineState = DeviceOnlineState.idle;
+  DeviceOnlineState _deviceOnlineState;
   set deviceOnlineState(DeviceOnlineState state) {
-    print("DEVICEONLINESTATE IN VM: $state");
     if (_deviceOnlineState != state) {
       _deviceOnlineState = state;
       notifyListeners();
-      print("DEVICEONLINESTATE IN VIEW MODEL AFTER NOTIFY: $state");
     }
   }
 
@@ -43,7 +41,15 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
     required CheckingDeviceOnlineRepository checkingDeviceOnlineRepository,
     required ConnectBluetoothDeviceRepository connectBluetoothDeviceRepository,
   })  : _checkingDeviceOnlineRepository = checkingDeviceOnlineRepository,
-        _connectBluetoothDeviceRepository = connectBluetoothDeviceRepository;
+        _connectBluetoothDeviceRepository = connectBluetoothDeviceRepository,
+        _deviceOnlineState = checkingDeviceOnlineRepository.deviceOnlineState {
+    _deviceOnlineSubscription = _checkingDeviceOnlineRepository.deviceOnlineStateStream.listen((state) {
+      deviceOnlineState = state;
+    });
+    _errorMessageSubscription = _checkingDeviceOnlineRepository.errorMessageStream.listen((message) {
+      errorMessage = message;
+    });
+  }
 
   @override
   void dispose() {
@@ -58,12 +64,6 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
   }
 
   void startChecking() {
-    _deviceOnlineSubscription = _checkingDeviceOnlineRepository.deviceOnlineStateStream.listen((state) {
-      deviceOnlineState = state;
-    });
-    _errorMessageSubscription = _checkingDeviceOnlineRepository.errorMessageStream.listen((message) {
-      errorMessage = message;
-    });
     _checkingDeviceOnlineRepository.startChecking();
   }
 }

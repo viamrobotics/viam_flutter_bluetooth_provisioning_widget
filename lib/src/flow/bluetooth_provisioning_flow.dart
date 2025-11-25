@@ -79,6 +79,17 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
 
   @override
   Widget build(BuildContext context) {
+    final checkConnectedVm = CheckConnectedDeviceOnlineScreenViewModel(
+      robot: widget.viewModel.robot,
+      successTitle: widget.viewModel.copy.checkingOnlineSuccessTitle,
+      successSubtitle: widget.viewModel.copy.checkingOnlineSuccessSubtitle,
+      successCta: widget.viewModel.copy.checkingOnlineSuccessCta,
+      handleSuccess: widget.viewModel.onSuccess,
+      handleError: _onPreviousPage, // back to network selection
+      checkingDeviceOnlineRepository: widget.viewModel.checkingDeviceOnlineRepository,
+      connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
+    );
+
     return ListenableBuilder(
       listenable: widget.viewModel,
       builder: (context, child) {
@@ -140,19 +151,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                           tipsDialogCtaText: widget.viewModel.copy.connectedDeviceTipsDialogCtaText,
                         ),
                       ),
-                      if (widget.viewModel.device != null)
-                        CheckConnectedDeviceOnlineScreen(
-                          viewModel: CheckConnectedDeviceOnlineScreenViewModel(
-                            robot: widget.viewModel.robot,
-                            successTitle: widget.viewModel.copy.checkingOnlineSuccessTitle,
-                            successSubtitle: widget.viewModel.copy.checkingOnlineSuccessSubtitle,
-                            successCta: widget.viewModel.copy.checkingOnlineSuccessCta,
-                            handleSuccess: widget.viewModel.onSuccess,
-                            handleError: _onPreviousPage, // back to network selection
-                            checkingDeviceOnlineRepository: widget.viewModel.checkingDeviceOnlineRepository,
-                            connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
-                          ),
-                        ),
+                      if (widget.viewModel.device != null) CheckConnectedDeviceOnlineScreen(viewModel: checkConnectedVm),
                     ],
                   ),
                 ),

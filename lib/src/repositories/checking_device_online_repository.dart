@@ -15,6 +15,13 @@ class CheckingDeviceOnlineRepository {
   Stream<DeviceOnlineState> get deviceOnlineStateStream => _deviceOnlineStateController.stream;
   final StreamController<DeviceOnlineState> _deviceOnlineStateController = StreamController<DeviceOnlineState>.broadcast();
 
+  DeviceOnlineState get deviceOnlineState => _deviceOnlineState;
+  DeviceOnlineState _deviceOnlineState = DeviceOnlineState.idle;
+  set deviceOnlineState(DeviceOnlineState state) {
+    _deviceOnlineState = state;
+    _deviceOnlineStateController.add(state);
+  }
+
   Stream<String> get errorMessageStream => _errorMessageController.stream;
   final StreamController<String> _errorMessageController = StreamController<String>.broadcast();
 
@@ -28,18 +35,18 @@ class CheckingDeviceOnlineRepository {
   }
 
   void startChecking() {
-    _deviceOnlineStateController.add(DeviceOnlineState.checking);
+    deviceOnlineState = DeviceOnlineState.checking;
     _onlineTimer = Timer.periodic(_interval, (timer) async {
       final online = await isRobotOnline();
       if (online) {
         timer.cancel();
-        _deviceOnlineStateController.add(DeviceOnlineState.success);
+        deviceOnlineState = DeviceOnlineState.success;
         if (device?.isConnected == true) device?.disconnect();
       } else if (device != null && device?.isConnected == true) {
         final error = await readAgentError(device!);
         if (error != null) {
           timer.cancel();
-          _deviceOnlineStateController.add(DeviceOnlineState.errorConnecting);
+          deviceOnlineState = DeviceOnlineState.errorConnecting;
           _errorMessageController.add(error);
         }
       }
