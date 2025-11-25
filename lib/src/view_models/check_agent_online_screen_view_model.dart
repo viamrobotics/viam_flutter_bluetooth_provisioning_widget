@@ -26,7 +26,12 @@ class CheckAgentOnlineScreenViewModel extends ChangeNotifier {
     required ConnectBluetoothDeviceRepository connectBluetoothDeviceRepository,
   })  : _checkingAgentOnlineRepository = checkingAgentOnlineRepository,
         _connectBluetoothDeviceRepository = connectBluetoothDeviceRepository,
-        _agentOnline = checkingAgentOnlineRepository.agentOnline;
+        _agentOnline = checkingAgentOnlineRepository.agentOnline {
+    _agentOnlineSubscription = _checkingAgentOnlineRepository.agentOnlineStateStream.listen((state) {
+      agentOnline = state;
+      if (agentOnline) handleOnline();
+    });
+  }
 
   @override
   void dispose() {
@@ -41,11 +46,5 @@ class CheckAgentOnlineScreenViewModel extends ChangeNotifier {
 
   void startChecking() {
     _checkingAgentOnlineRepository.startChecking();
-    _agentOnlineSubscription = _checkingAgentOnlineRepository.agentOnlineStateStream.listen((state) {
-      agentOnline = state;
-      if (agentOnline) {
-        handleOnline();
-      }
-    });
   }
 }
