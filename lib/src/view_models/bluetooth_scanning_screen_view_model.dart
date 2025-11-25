@@ -86,7 +86,9 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
     }
   }
 
-  void scanDevicesAgain() {
-    _scanBluetoothDevicesRepository.scanDevicesAgain();
+  Future<void> scanDevicesAgain() async {
+    uniqueDevices = [];
+    await Future.delayed(const Duration(milliseconds: 250)); // delay to see "scanning" ui
+    _scanBluetoothDevicesRepository.startScan();
   }
 }
