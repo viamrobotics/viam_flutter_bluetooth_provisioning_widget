@@ -20,7 +20,6 @@ void main() {
       mockViamBluetoothProvisioning = MockViamBluetoothProvisioning();
       mockConnectBluetoothDeviceRepository = MockConnectBluetoothDeviceRepository();
       viewModel = BluetoothScanningScreenViewModel(
-        onDeviceSelected: (device) {},
         scanBluetoothDevicesRepository: ScanBluetoothDevicesRepository(viamBluetoothProvisioning: mockViamBluetoothProvisioning),
         connectBluetoothDeviceRepository: mockConnectBluetoothDeviceRepository,
         title: 'title',
