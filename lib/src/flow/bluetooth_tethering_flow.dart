@@ -16,11 +16,12 @@ class BluetoothTetheringFlow extends StatefulWidget {
     required nonexistentMachineExit,
     required agentMinimumVersionExit,
   }) {
+    final connectBluetoothDeviceRepository = ConnectBluetoothDeviceRepository();
     viewModel = BluetoothProvisioningFlowViewModel(
       viam: viam,
       robot: robot,
       isNewMachine: isNewMachine,
-      connectBluetoothDeviceRepository: ConnectBluetoothDeviceRepository(),
+      connectBluetoothDeviceRepository: connectBluetoothDeviceRepository,
       checkingDeviceOnlineRepository: CheckingDeviceOnlineRepository(
         device: null,
         viam: viam,
@@ -37,9 +38,20 @@ class BluetoothTetheringFlow extends StatefulWidget {
       nonexistentMachineExit: nonexistentMachineExit,
       agentMinimumVersionExit: agentMinimumVersionExit,
     );
+    connectedBluetoothDeviceVm = ConnectedBluetoothDeviceScreenViewModel(
+      connectBluetoothDeviceRepository: connectBluetoothDeviceRepository,
+      title: copy.connectedDeviceTitle,
+      subtitle: copy.connectedDeviceSubtitle,
+      scanCtaText: copy.connectedDeviceScanCtaText,
+      notSeeingDeviceCtaText: copy.connectedDeviceNotSeeingDeviceCtaText,
+      tipsDialogTitle: copy.connectedDeviceTipsDialogTitle,
+      tipsDialogSubtitle: copy.connectedDeviceTipsDialogSubtitle,
+      tipsDialogCtaText: copy.connectedDeviceTipsDialogCtaText,
+    );
   }
 
   late final BluetoothProvisioningFlowViewModel viewModel;
+  late final ConnectedBluetoothDeviceScreenViewModel connectedBluetoothDeviceVm;
 
   @override
   State<BluetoothTetheringFlow> createState() => _BluetoothTetheringFlowState();
@@ -128,17 +140,6 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
       tipsDialogSubtitle: widget.viewModel.copy.bluetoothScanningTipsDialogSubtitle,
       tipsDialogCtaText: widget.viewModel.copy.bluetoothScanningTipsDialogCtaText,
     );
-    final connectedBluetoothDeviceVm = ConnectedBluetoothDeviceScreenViewModel(
-      handleWifiCredentials: _onWifiCredentials,
-      connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
-      title: widget.viewModel.copy.connectedDeviceTitle,
-      subtitle: widget.viewModel.copy.connectedDeviceSubtitle,
-      scanCtaText: widget.viewModel.copy.connectedDeviceScanCtaText,
-      notSeeingDeviceCtaText: widget.viewModel.copy.connectedDeviceNotSeeingDeviceCtaText,
-      tipsDialogTitle: widget.viewModel.copy.connectedDeviceTipsDialogTitle,
-      tipsDialogSubtitle: widget.viewModel.copy.connectedDeviceTipsDialogSubtitle,
-      tipsDialogCtaText: widget.viewModel.copy.connectedDeviceTipsDialogCtaText,
-    );
 
     return ListenableBuilder(
       listenable: widget.viewModel,
@@ -197,7 +198,10 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                         if (!widget.viewModel.isConfigured) CheckDeviceAgentOnlineScreen(viewModel: checkAgentOnlineVm),
                       ],
                       if (_hasInternetConnection && widget.viewModel.device != null)
-                        ConnectedBluetoothDeviceScreen(viewModel: connectedBluetoothDeviceVm),
+                        ConnectedBluetoothDeviceScreen(
+                          handleWifiCredentials: _onWifiCredentials,
+                          viewModel: widget.connectedBluetoothDeviceVm,
+                        ),
                       if (widget.viewModel.device != null) CheckConnectedDeviceOnlineScreen(viewModel: checkDeviceOnlineVm),
                     ],
                   ),

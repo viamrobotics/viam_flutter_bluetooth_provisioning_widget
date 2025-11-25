@@ -1,7 +1,6 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class ConnectedBluetoothDeviceScreenViewModel extends ChangeNotifier {
-  final void Function(String ssid, String? psk) handleWifiCredentials;
   final String title;
   final String subtitle;
   final String scanCtaText;
@@ -29,7 +28,6 @@ class ConnectedBluetoothDeviceScreenViewModel extends ChangeNotifier {
   final ConnectBluetoothDeviceRepository _connectBluetoothDeviceRepository;
 
   ConnectedBluetoothDeviceScreenViewModel({
-    required this.handleWifiCredentials,
     required ConnectBluetoothDeviceRepository connectBluetoothDeviceRepository,
     required this.title,
     required this.subtitle,

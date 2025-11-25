@@ -12,7 +12,6 @@ void main() {
     setUp(() {
       mockConnectBluetoothDeviceRepository = MockConnectBluetoothDeviceRepository();
       viewModel = ConnectedBluetoothDeviceScreenViewModel(
-        handleWifiCredentials: (ssid, psk) {},
         connectBluetoothDeviceRepository: mockConnectBluetoothDeviceRepository,
         title: 'title',
         subtitle: 'subtitle',
