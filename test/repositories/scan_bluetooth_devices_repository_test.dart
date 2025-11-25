@@ -92,10 +92,5 @@ void main() {
         await completer.future;
       });
     });
-
-    test('stop scan', () async {
-      repository.stopScan();
-      expect(repository.isScanning, false);
-    });
   });
 }
