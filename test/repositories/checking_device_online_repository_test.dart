@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:viam_flutter_bluetooth_provisioning_widget/viam_flutter_bluetooth_provisioning_widget.dart';
 import 'package:mockito/mockito.dart';
 
-import 'package:fixnum/fixnum.dart';
+import 'package:fixnum/fixnum.dart'; // ignore: depend_on_referenced_packages
 import '../mocks/generate_mocks.mocks.dart';
 
 void main() {
