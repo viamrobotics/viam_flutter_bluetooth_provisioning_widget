@@ -115,6 +115,19 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
       successTitle: widget.viewModel.copy.checkAgentOnlineSuccessTitle,
       successSubtitle: widget.viewModel.copy.checkAgentOnlineSuccessSubtitle,
     );
+    final scanningVm = BluetoothScanningScreenViewModel(
+      onDeviceSelected: _onDeviceConnected,
+      scanBluetoothDevicesRepository: ScanBluetoothDevicesRepository(
+        viamBluetoothProvisioning: ViamBluetoothProvisioning(),
+      ),
+      connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
+      title: widget.viewModel.copy.bluetoothScanningTitle,
+      scanCtaText: widget.viewModel.copy.bluetoothScanningScanCtaText,
+      notSeeingDeviceCtaText: widget.viewModel.copy.bluetoothScanningNotSeeingDeviceCtaText,
+      tipsDialogTitle: widget.viewModel.copy.bluetoothScanningTipsDialogTitle,
+      tipsDialogSubtitle: widget.viewModel.copy.bluetoothScanningTipsDialogSubtitle,
+      tipsDialogCtaText: widget.viewModel.copy.bluetoothScanningTipsDialogCtaText,
+    );
 
     return ListenableBuilder(
       listenable: widget.viewModel,
@@ -149,21 +162,7 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                         title: widget.viewModel.copy.bluetoothOnInstructionsTitle,
                         subtitle: widget.viewModel.copy.bluetoothOnInstructionsSubtitle,
                       ),
-                      BluetoothScanningScreen(
-                        viewModel: BluetoothScanningScreenViewModel(
-                          onDeviceSelected: _onDeviceConnected,
-                          scanBluetoothDevicesRepository: ScanBluetoothDevicesRepository(
-                            viamBluetoothProvisioning: ViamBluetoothProvisioning(),
-                          ),
-                          connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
-                          title: widget.viewModel.copy.bluetoothScanningTitle,
-                          scanCtaText: widget.viewModel.copy.bluetoothScanningScanCtaText,
-                          notSeeingDeviceCtaText: widget.viewModel.copy.bluetoothScanningNotSeeingDeviceCtaText,
-                          tipsDialogTitle: widget.viewModel.copy.bluetoothScanningTipsDialogTitle,
-                          tipsDialogSubtitle: widget.viewModel.copy.bluetoothScanningTipsDialogSubtitle,
-                          tipsDialogCtaText: widget.viewModel.copy.bluetoothScanningTipsDialogCtaText,
-                        ),
-                      ),
+                      BluetoothScanningScreen(viewModel: scanningVm),
                       InternetQuestionScreen(
                         handleYesTapped: () => _onInternetQuestionAnswered(true),
                         handleNoTapped: () => _onInternetQuestionAnswered(false),

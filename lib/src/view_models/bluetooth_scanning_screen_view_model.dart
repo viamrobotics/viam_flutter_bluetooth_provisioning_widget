@@ -34,6 +34,7 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
   List<BluetoothDevice> _uniqueDevices = [];
   List<BluetoothDevice> get uniqueDevices => _uniqueDevices;
   set uniqueDevices(List<BluetoothDevice> devices) {
+    // TODO: don't notify if no change
     _uniqueDevices = devices;
     notifyListeners();
   }
@@ -41,6 +42,7 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
   bool _isConnecting = false;
   bool get isConnecting => _isConnecting;
   set isConnecting(bool value) {
+    if (isConnecting == value) return;
     _isConnecting = value;
     notifyListeners();
   }
@@ -48,6 +50,7 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
   bool _isScanning = false;
   bool get isScanning => _isScanning;
   set isScanning(bool value) {
+    if (isScanning == value) return;
     _isScanning = value;
     notifyListeners();
   }
@@ -73,9 +76,8 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
       await _connectBluetoothDeviceRepository.connect(device);
       onDeviceSelected(device);
     } catch (e) {
-      debugPrint('error connecting to device: ${e.toString()}');
+      debugPrint('Failed to connect to device: ${e.toString()}');
       if (context.mounted) {
-        debugPrint('Failed to connect to device: ${e.toString()}');
         _showErrorDialog(context, title: 'Error', error: 'Failed to connect to device');
       }
     } finally {

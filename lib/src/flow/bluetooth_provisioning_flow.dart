@@ -90,6 +90,19 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
       checkingDeviceOnlineRepository: widget.viewModel.checkingDeviceOnlineRepository,
       connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
     );
+    final scanningVm = BluetoothScanningScreenViewModel(
+      onDeviceSelected: _onDeviceConnected,
+      scanBluetoothDevicesRepository: ScanBluetoothDevicesRepository(
+        viamBluetoothProvisioning: ViamBluetoothProvisioning(),
+      ),
+      connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
+      title: widget.viewModel.copy.bluetoothScanningTitle,
+      scanCtaText: widget.viewModel.copy.bluetoothScanningScanCtaText,
+      notSeeingDeviceCtaText: widget.viewModel.copy.bluetoothScanningNotSeeingDeviceCtaText,
+      tipsDialogTitle: widget.viewModel.copy.bluetoothScanningTipsDialogTitle,
+      tipsDialogSubtitle: widget.viewModel.copy.bluetoothScanningTipsDialogSubtitle,
+      tipsDialogCtaText: widget.viewModel.copy.bluetoothScanningTipsDialogCtaText,
+    );
 
     return ListenableBuilder(
       listenable: widget.viewModel,
@@ -124,21 +137,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                         title: widget.viewModel.copy.bluetoothOnInstructionsTitle,
                         subtitle: widget.viewModel.copy.bluetoothOnInstructionsSubtitle,
                       ),
-                      BluetoothScanningScreen(
-                        viewModel: BluetoothScanningScreenViewModel(
-                          onDeviceSelected: _onDeviceConnected,
-                          scanBluetoothDevicesRepository: ScanBluetoothDevicesRepository(
-                            viamBluetoothProvisioning: ViamBluetoothProvisioning(),
-                          ),
-                          connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
-                          title: widget.viewModel.copy.bluetoothScanningTitle,
-                          scanCtaText: widget.viewModel.copy.bluetoothScanningScanCtaText,
-                          notSeeingDeviceCtaText: widget.viewModel.copy.bluetoothScanningNotSeeingDeviceCtaText,
-                          tipsDialogTitle: widget.viewModel.copy.bluetoothScanningTipsDialogTitle,
-                          tipsDialogSubtitle: widget.viewModel.copy.bluetoothScanningTipsDialogSubtitle,
-                          tipsDialogCtaText: widget.viewModel.copy.bluetoothScanningTipsDialogCtaText,
-                        ),
-                      ),
+                      BluetoothScanningScreen(viewModel: scanningVm),
                       ConnectedBluetoothDeviceScreen(
                         viewModel: ConnectedBluetoothDeviceScreenViewModel(
                           handleWifiCredentials: _onWifiCredentials,
