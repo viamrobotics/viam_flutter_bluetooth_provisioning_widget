@@ -44,7 +44,6 @@ class ConnectedBluetoothDeviceScreenViewModel extends ChangeNotifier {
     try {
       isLoadingNetworks = true;
       wifiNetworks = [];
-      await Future.delayed(const Duration(milliseconds: 500)); // delay to see "scanning" ui
       wifiNetworks = await _connectBluetoothDeviceRepository.readNetworkList();
     } catch (e) {
       debugPrint('Failed to read network list: ${e.toString()}');
