@@ -48,10 +48,23 @@ class BluetoothProvisioningFlow extends StatefulWidget {
       tipsDialogSubtitle: copy.connectedDeviceTipsDialogSubtitle,
       tipsDialogCtaText: copy.connectedDeviceTipsDialogCtaText,
     );
+    scanningVm = BluetoothScanningScreenViewModel(
+      scanBluetoothDevicesRepository: ScanBluetoothDevicesRepository(
+        viamBluetoothProvisioning: ViamBluetoothProvisioning(),
+      ),
+      connectBluetoothDeviceRepository: connectBluetoothDeviceRepository,
+      title: copy.bluetoothScanningTitle,
+      scanCtaText: copy.bluetoothScanningScanCtaText,
+      notSeeingDeviceCtaText: copy.bluetoothScanningNotSeeingDeviceCtaText,
+      tipsDialogTitle: copy.bluetoothScanningTipsDialogTitle,
+      tipsDialogSubtitle: copy.bluetoothScanningTipsDialogSubtitle,
+      tipsDialogCtaText: copy.bluetoothScanningTipsDialogCtaText,
+    );
   }
 
   late final BluetoothProvisioningFlowViewModel viewModel;
   late final ConnectedBluetoothDeviceScreenViewModel connectedBluetoothDeviceVm;
+  late final BluetoothScanningScreenViewModel scanningVm;
 
   @override
   State<BluetoothProvisioningFlow> createState() => _BluetoothProvisioningFlowState();
@@ -102,19 +115,6 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
       checkingDeviceOnlineRepository: widget.viewModel.checkingDeviceOnlineRepository,
       connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
     );
-    final scanningVm = BluetoothScanningScreenViewModel(
-      onDeviceSelected: _onDeviceConnected,
-      scanBluetoothDevicesRepository: ScanBluetoothDevicesRepository(
-        viamBluetoothProvisioning: ViamBluetoothProvisioning(),
-      ),
-      connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
-      title: widget.viewModel.copy.bluetoothScanningTitle,
-      scanCtaText: widget.viewModel.copy.bluetoothScanningScanCtaText,
-      notSeeingDeviceCtaText: widget.viewModel.copy.bluetoothScanningNotSeeingDeviceCtaText,
-      tipsDialogTitle: widget.viewModel.copy.bluetoothScanningTipsDialogTitle,
-      tipsDialogSubtitle: widget.viewModel.copy.bluetoothScanningTipsDialogSubtitle,
-      tipsDialogCtaText: widget.viewModel.copy.bluetoothScanningTipsDialogCtaText,
-    );
 
     return ListenableBuilder(
       listenable: widget.viewModel,
@@ -149,7 +149,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                         title: widget.viewModel.copy.bluetoothOnInstructionsTitle,
                         subtitle: widget.viewModel.copy.bluetoothOnInstructionsSubtitle,
                       ),
-                      BluetoothScanningScreen(viewModel: scanningVm),
+                      BluetoothScanningScreen(viewModel: widget.scanningVm, onDeviceSelected: _onDeviceConnected),
                       ConnectedBluetoothDeviceScreen(
                         handleWifiCredentials: _onWifiCredentials,
                         viewModel: widget.connectedBluetoothDeviceVm,

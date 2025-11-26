@@ -1,7 +1,6 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class BluetoothScanningScreenViewModel extends ChangeNotifier {
-  final Function(BluetoothDevice) onDeviceSelected;
   final String title;
   final String scanCtaText;
   final String notSeeingDeviceCtaText;
@@ -40,7 +39,6 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
   StreamSubscription<bool>? _scanningSubscription;
 
   BluetoothScanningScreenViewModel({
-    required this.onDeviceSelected,
     required ScanBluetoothDevicesRepository scanBluetoothDevicesRepository,
     required ConnectBluetoothDeviceRepository connectBluetoothDeviceRepository,
     required this.title,
@@ -75,7 +73,6 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
     try {
       isConnecting = true;
       await _connectBluetoothDeviceRepository.connect(device);
-      onDeviceSelected(device);
       return true;
     } catch (e) {
       debugPrint('Failed to connect to device: ${e.toString()}');
