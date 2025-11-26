@@ -17,6 +17,11 @@ class BluetoothProvisioningFlow extends StatefulWidget {
     required agentMinimumVersionExit,
   }) {
     final connectBluetoothDeviceRepository = ConnectBluetoothDeviceRepository();
+    final checkingDeviceOnlineRepository = CheckingDeviceOnlineRepository(
+      device: null,
+      viam: viam,
+      robot: robot,
+    );
     viewModel = BluetoothProvisioningFlowViewModel(
       viam: viam,
       robot: robot,
@@ -61,11 +66,11 @@ class BluetoothProvisioningFlow extends StatefulWidget {
       tipsDialogCtaText: copy.bluetoothScanningTipsDialogCtaText,
     );
     checkDeviceOnlineVm = CheckConnectedDeviceOnlineScreenViewModel(
-      successTitle: viewModel.copy.checkingOnlineSuccessTitle,
-      successSubtitle: viewModel.copy.checkingOnlineSuccessSubtitle,
-      successCta: viewModel.copy.checkingOnlineSuccessCta,
-      checkingDeviceOnlineRepository: viewModel.checkingDeviceOnlineRepository,
-      connectBluetoothDeviceRepository: viewModel.connectBluetoothDeviceRepository,
+      successTitle: copy.checkingOnlineSuccessTitle,
+      successSubtitle: copy.checkingOnlineSuccessSubtitle,
+      successCta: copy.checkingOnlineSuccessCta,
+      checkingDeviceOnlineRepository: checkingDeviceOnlineRepository,
+      connectBluetoothDeviceRepository: connectBluetoothDeviceRepository,
     );
   }
 

@@ -5909,6 +5909,18 @@ class MockConnectBluetoothDeviceRepository extends _i1.Mock
         ),
         returnValue: false,
       ) as bool);
+
+  @override
+  _i17.Future<void> unlockPairing({required String? psk}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #unlockPairing,
+          [],
+          {#psk: psk},
+        ),
+        returnValue: _i17.Future<void>.value(),
+        returnValueForMissingStub: _i17.Future<void>.value(),
+      ) as _i17.Future<void>);
 }
 
 /// A class which mocks [CheckingDeviceOnlineRepository].

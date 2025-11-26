@@ -1,31 +1,6 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
-  BluetoothProvisioningFlowViewModel({
-    required this.viam,
-    required this.robot,
-    required this.isNewMachine,
-    required this.connectBluetoothDeviceRepository,
-    required this.checkingDeviceOnlineRepository,
-    required this.checkingAgentOnlineRepository,
-    required mainRobotPart,
-    required String psk,
-    required this.fragmentId,
-    this.agentMinimumVersion = '0.20.0',
-    this.copy = const BluetoothProvisioningFlowCopy(),
-    required this.onSuccess,
-    required this.existingMachineExit,
-    required this.nonexistentMachineExit,
-    required this.agentMinimumVersionExit,
-  })  : _mainRobotPart = mainRobotPart,
-        _psk = psk,
-        _isConfigured = !isNewMachine,
-        _deviceOnlineState = checkingDeviceOnlineRepository.deviceOnlineState {
-    _deviceOnlineSubscription = checkingDeviceOnlineRepository.deviceOnlineStateStream.listen((state) {
-      deviceOnlineState = state;
-    });
-  }
-
   final Viam viam;
   final Robot robot;
   final bool isNewMachine;
@@ -75,6 +50,39 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
   /// called when the connected machine's agent version is lower (or we can't read it) compared to the agentMinimumVersion in the view model
   final VoidCallback agentMinimumVersionExit;
 
+  BluetoothProvisioningFlowViewModel({
+    required this.viam,
+    required this.robot,
+    required this.isNewMachine,
+    required this.connectBluetoothDeviceRepository,
+    required this.checkingDeviceOnlineRepository,
+    required this.checkingAgentOnlineRepository,
+    required mainRobotPart,
+    required String psk,
+    required this.fragmentId,
+    this.agentMinimumVersion = '0.20.0',
+    required this.copy,
+    required this.onSuccess,
+    required this.existingMachineExit,
+    required this.nonexistentMachineExit,
+    required this.agentMinimumVersionExit,
+  })  : _mainRobotPart = mainRobotPart,
+        _psk = psk,
+        _isConfigured = !isNewMachine,
+        _deviceOnlineState = checkingDeviceOnlineRepository.deviceOnlineState {
+    _deviceOnlineSubscription = checkingDeviceOnlineRepository.deviceOnlineStateStream.listen((state) {
+      deviceOnlineState = state;
+    });
+  }
+
+  @override
+  void dispose() {
+    _deviceOnlineSubscription?.cancel();
+    checkingDeviceOnlineRepository.dispose();
+    checkingAgentOnlineRepository.dispose();
+    super.dispose();
+  }
+
   Future<void> writeConfig({required String? ssid, required String? password}) async {
     await connectBluetoothDeviceRepository.writeConfig(
       viam: viam,
@@ -92,24 +100,24 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
     return await connectBluetoothDeviceRepository.isAgentVersionBelowMinimum(agentMinimumVersion);
   }
 
-  Future<bool> isDeviceConnectionValid(BuildContext context, BluetoothDevice device) async {
+  Future<bool> isDeviceConnectionValid(BuildContext? context, BluetoothDevice device) async {
     try {
       isLoading = true;
       // agent minimum check
-      if (await agentVersionBelowMinimum() && context.mounted) {
+      if (await agentVersionBelowMinimum()) {
         // disconnect the device to avoid any `pairing request` dialogs.
         device.disconnect();
-        _agentMinimumVersionDialog(context);
+        if (context != null && context.mounted) _agentMinimumVersionDialog(context);
         return false;
       }
       // status check
       final status = await device.readStatus();
       isConfigured = status.isConfigured;
-      if (isNewMachine && status.isConfigured && context.mounted) {
-        _avoidOverwritingExistingMachineDialog(context);
+      if (isNewMachine && status.isConfigured) {
+        if (context != null && context.mounted) _avoidOverwritingExistingMachineDialog(context);
         return false;
-      } else if (!isNewMachine && !status.isConfigured && context.mounted) {
-        _reconnectingNonexistingMachineDialog(context);
+      } else if (!isNewMachine && !status.isConfigured) {
+        if (context != null && context.mounted) _reconnectingNonexistingMachineDialog(context);
         return false;
       }
       checkingDeviceOnlineRepository.device = device;
@@ -123,14 +131,14 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
     }
   }
 
-  Future<bool> onWifiCredentials(BuildContext context, String? ssid, String? password) async {
+  Future<bool> onWifiCredentials(BuildContext? context, String? ssid, String? password) async {
     try {
       isLoading = true;
       await writeConfig(ssid: ssid, password: password);
       return true;
     } catch (e) {
-      if (context.mounted) {
-        debugPrint('Failed to write machine configuration: ${e.toString()}');
+      debugPrint('Failed to write machine configuration: ${e.toString()}');
+      if (context != null && context.mounted) {
         _showErrorDialog(context, title: 'Error', error: 'Failed to write machine configuration');
       }
       return false;
@@ -139,24 +147,17 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
     }
   }
 
-  Future<bool> unlockBluetoothPairing(BuildContext context) async {
+  Future<bool> unlockBluetoothPairing(BuildContext? context) async {
     try {
-      if (device == null) {
-        throw Exception('Device is not connected');
-      }
-
       isLoading = true;
-      if (!device!.isConnected) {
-        await device!.connect();
-      }
-      await device!.unlockPairing(psk: _psk);
+      await connectBluetoothDeviceRepository.unlockPairing(psk: _psk);
       debugPrint('unlocked pairing');
       await device!.disconnect();
       debugPrint('disconnected from device');
       return true;
     } catch (e) {
-      if (context.mounted) {
-        debugPrint('Failed to unlock pairing: ${e.toString()}');
+      debugPrint('Failed to unlock pairing: ${e.toString()}');
+      if (context != null && context.mounted) {
         _showErrorDialog(context, title: 'Error', error: 'Failed to unlock pairing');
       }
       return false;
@@ -181,7 +182,7 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
     }
   }
 
-  // Private methods
+  // Dialogs
 
   Future<void> _avoidOverwritingExistingMachineDialog(BuildContext context) async {
     await showDialog(
