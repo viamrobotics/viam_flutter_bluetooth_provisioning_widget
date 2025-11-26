@@ -64,7 +64,6 @@ class BluetoothProvisioningFlow extends StatefulWidget {
       successTitle: viewModel.copy.checkingOnlineSuccessTitle,
       successSubtitle: viewModel.copy.checkingOnlineSuccessSubtitle,
       successCta: viewModel.copy.checkingOnlineSuccessCta,
-      handleSuccess: viewModel.onSuccess,
       checkingDeviceOnlineRepository: viewModel.checkingDeviceOnlineRepository,
       connectBluetoothDeviceRepository: viewModel.connectBluetoothDeviceRepository,
     );

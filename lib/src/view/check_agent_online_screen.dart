@@ -2,9 +2,8 @@ part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class CheckAgentOnlineScreen extends StatefulWidget {
   final CheckAgentOnlineScreenViewModel viewModel;
-  final VoidCallback handleOnline;
 
-  const CheckAgentOnlineScreen({super.key, required this.viewModel, required this.handleOnline});
+  const CheckAgentOnlineScreen({super.key, required this.viewModel});
 
   @override
   State<CheckAgentOnlineScreen> createState() => _CheckAgentOnlineScreenState();
@@ -45,7 +44,7 @@ class _CheckAgentOnlineScreenState extends State<CheckAgentOnlineScreen> {
   }
 
   Widget _buildOnlineState(BuildContext context) {
-    widget.handleOnline();
+    print('BUILD ONLINE STATE 📡');
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
