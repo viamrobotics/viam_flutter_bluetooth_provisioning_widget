@@ -1,7 +1,6 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class ConnectedBluetoothDeviceScreenViewModel extends ChangeNotifier {
-  final void Function(String ssid, String? psk) handleWifiCredentials;
   final String title;
   final String subtitle;
   final String scanCtaText;
@@ -13,6 +12,7 @@ class ConnectedBluetoothDeviceScreenViewModel extends ChangeNotifier {
   List<WifiNetwork> _wifiNetworks = [];
   List<WifiNetwork> get wifiNetworks => _wifiNetworks;
   set wifiNetworks(List<WifiNetwork> networks) {
+    if (listEquals(_wifiNetworks, networks)) return;
     _wifiNetworks = networks;
     notifyListeners();
   }
@@ -20,6 +20,7 @@ class ConnectedBluetoothDeviceScreenViewModel extends ChangeNotifier {
   bool _isLoadingNetworks = false;
   bool get isLoadingNetworks => _isLoadingNetworks;
   set isLoadingNetworks(bool value) {
+    if (_isLoadingNetworks == value) return;
     _isLoadingNetworks = value;
     notifyListeners();
   }
@@ -27,7 +28,6 @@ class ConnectedBluetoothDeviceScreenViewModel extends ChangeNotifier {
   final ConnectBluetoothDeviceRepository _connectBluetoothDeviceRepository;
 
   ConnectedBluetoothDeviceScreenViewModel({
-    required this.handleWifiCredentials,
     required ConnectBluetoothDeviceRepository connectBluetoothDeviceRepository,
     required this.title,
     required this.subtitle,
@@ -38,15 +38,14 @@ class ConnectedBluetoothDeviceScreenViewModel extends ChangeNotifier {
     required this.tipsDialogCtaText,
   }) : _connectBluetoothDeviceRepository = connectBluetoothDeviceRepository;
 
-  Future<void> readNetworkList(BuildContext context) async {
+  Future<void> readNetworkList(BuildContext? context) async {
     try {
       isLoadingNetworks = true;
-      wifiNetworks.clear();
-      await Future.delayed(const Duration(milliseconds: 500)); // delay to see "scanning" ui
+      wifiNetworks = [];
       wifiNetworks = await _connectBluetoothDeviceRepository.readNetworkList();
     } catch (e) {
-      if (context.mounted) {
-        debugPrint('Failed to read network list: ${e.toString()}');
+      debugPrint('Failed to read network list: ${e.toString()}');
+      if (context != null && context.mounted == true) {
         _showErrorDialog(context, title: 'Error', error: 'Failed to read network list');
       }
     } finally {

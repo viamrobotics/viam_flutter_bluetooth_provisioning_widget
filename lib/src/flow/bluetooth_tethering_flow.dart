@@ -38,6 +38,16 @@ class BluetoothTetheringFlow extends StatefulWidget {
       nonexistentMachineExit: nonexistentMachineExit,
       agentMinimumVersionExit: agentMinimumVersionExit,
     );
+    connectedBluetoothDeviceVm = ConnectedBluetoothDeviceScreenViewModel(
+      connectBluetoothDeviceRepository: connectBluetoothDeviceRepository,
+      title: copy.connectedDeviceTitle,
+      subtitle: copy.connectedDeviceSubtitle,
+      scanCtaText: copy.connectedDeviceScanCtaText,
+      notSeeingDeviceCtaText: copy.connectedDeviceNotSeeingDeviceCtaText,
+      tipsDialogTitle: copy.connectedDeviceTipsDialogTitle,
+      tipsDialogSubtitle: copy.connectedDeviceTipsDialogSubtitle,
+      tipsDialogCtaText: copy.connectedDeviceTipsDialogCtaText,
+    );
     scanningVm = BluetoothScanningScreenViewModel(
       scanBluetoothDevicesRepository: ScanBluetoothDevicesRepository(
         viamBluetoothProvisioning: ViamBluetoothProvisioning(),
@@ -53,6 +63,7 @@ class BluetoothTetheringFlow extends StatefulWidget {
   }
 
   late final BluetoothProvisioningFlowViewModel viewModel;
+  late final ConnectedBluetoothDeviceScreenViewModel connectedBluetoothDeviceVm;
   late final BluetoothScanningScreenViewModel scanningVm;
 
   @override
@@ -188,17 +199,8 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                       ],
                       if (_hasInternetConnection && widget.viewModel.device != null)
                         ConnectedBluetoothDeviceScreen(
-                          viewModel: ConnectedBluetoothDeviceScreenViewModel(
-                            handleWifiCredentials: _onWifiCredentials,
-                            connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
-                            title: widget.viewModel.copy.connectedDeviceTitle,
-                            subtitle: widget.viewModel.copy.connectedDeviceSubtitle,
-                            scanCtaText: widget.viewModel.copy.connectedDeviceScanCtaText,
-                            notSeeingDeviceCtaText: widget.viewModel.copy.connectedDeviceNotSeeingDeviceCtaText,
-                            tipsDialogTitle: widget.viewModel.copy.connectedDeviceTipsDialogTitle,
-                            tipsDialogSubtitle: widget.viewModel.copy.connectedDeviceTipsDialogSubtitle,
-                            tipsDialogCtaText: widget.viewModel.copy.connectedDeviceTipsDialogCtaText,
-                          ),
+                          handleWifiCredentials: _onWifiCredentials,
+                          viewModel: widget.connectedBluetoothDeviceVm,
                         ),
                       if (widget.viewModel.device != null) CheckConnectedDeviceOnlineScreen(viewModel: checkDeviceOnlineVm),
                     ],

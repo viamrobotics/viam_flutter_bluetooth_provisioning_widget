@@ -1,9 +1,14 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class ConnectedBluetoothDeviceScreen extends StatefulWidget {
-  const ConnectedBluetoothDeviceScreen({super.key, required this.viewModel});
-
+  final void Function(String ssid, String? psk) handleWifiCredentials;
   final ConnectedBluetoothDeviceScreenViewModel viewModel;
+
+  const ConnectedBluetoothDeviceScreen({
+    super.key,
+    required this.handleWifiCredentials,
+    required this.viewModel,
+  });
 
   @override
   State<ConnectedBluetoothDeviceScreen> createState() => _ConnectedBluetoothDeviceScreenState();
@@ -49,7 +54,7 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
               FilledButton(
                 onPressed: passkeyController.text.isNotEmpty
                     ? () {
-                        viewModel.handleWifiCredentials(wifiNetwork.ssid, passkeyController.text);
+                        widget.handleWifiCredentials(wifiNetwork.ssid, passkeyController.text);
                         Navigator.of(dialogContext).pop();
                       }
                     : null,
@@ -162,7 +167,7 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
                               if (widget.viewModel.wifiNetworks[index].isSecure) {
                                 _presentPasskeyDialog(widget.viewModel.wifiNetworks[index], widget.viewModel);
                               } else {
-                                widget.viewModel.handleWifiCredentials(widget.viewModel.wifiNetworks[index].ssid, null);
+                                widget.handleWifiCredentials(widget.viewModel.wifiNetworks[index].ssid, null);
                               }
                             },
                           ),
