@@ -105,6 +105,16 @@ class ConnectBluetoothDeviceRepository {
     return currentVersion < minimumVersion;
   }
 
+  Future<void> unlockPairing({required String psk}) async {
+    if (_device == null) {
+      throw Exception('No connected device');
+    }
+    if (_device!.isConnected) {
+      await _device!.connect();
+    }
+    await _device!.unlockPairing(psk: psk);
+  }
+
   Future<void> _fragmentOverride(Viam viam, String fragmentId, RobotPart robotPart, Robot robot) async {
     Map<String, dynamic> config = {
       "fragments": [
