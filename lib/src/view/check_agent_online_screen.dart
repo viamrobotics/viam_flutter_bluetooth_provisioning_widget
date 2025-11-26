@@ -44,7 +44,6 @@ class _CheckAgentOnlineScreenState extends State<CheckAgentOnlineScreen> {
   }
 
   Widget _buildOnlineState(BuildContext context) {
-    print('BUILD ONLINE STATE 📡');
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
