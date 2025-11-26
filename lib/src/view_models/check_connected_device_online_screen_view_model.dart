@@ -2,7 +2,6 @@ part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
   final VoidCallback handleSuccess;
-  final VoidCallback handleError;
   final Robot robot;
   final String successTitle;
   final String successSubtitle;
@@ -33,7 +32,6 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
 
   CheckConnectedDeviceOnlineScreenViewModel({
     required this.handleSuccess,
-    required this.handleError,
     required this.successTitle,
     required this.successSubtitle,
     required this.successCta,

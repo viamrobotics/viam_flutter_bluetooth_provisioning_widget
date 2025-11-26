@@ -60,11 +60,21 @@ class BluetoothTetheringFlow extends StatefulWidget {
       tipsDialogSubtitle: copy.bluetoothScanningTipsDialogSubtitle,
       tipsDialogCtaText: copy.bluetoothScanningTipsDialogCtaText,
     );
+    checkDeviceOnlineVm = CheckConnectedDeviceOnlineScreenViewModel(
+      robot: viewModel.robot,
+      successTitle: viewModel.copy.checkingOnlineSuccessTitle,
+      successSubtitle: viewModel.copy.checkingOnlineSuccessSubtitle,
+      successCta: viewModel.copy.checkingOnlineSuccessCta,
+      handleSuccess: viewModel.onSuccess,
+      checkingDeviceOnlineRepository: viewModel.checkingDeviceOnlineRepository,
+      connectBluetoothDeviceRepository: viewModel.connectBluetoothDeviceRepository,
+    );
   }
 
   late final BluetoothProvisioningFlowViewModel viewModel;
   late final ConnectedBluetoothDeviceScreenViewModel connectedBluetoothDeviceVm;
   late final BluetoothScanningScreenViewModel scanningVm;
+  late final CheckConnectedDeviceOnlineScreenViewModel checkDeviceOnlineVm;
 
   @override
   State<BluetoothTetheringFlow> createState() => _BluetoothTetheringFlowState();
@@ -120,16 +130,6 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
 
   @override
   Widget build(BuildContext context) {
-    final checkDeviceOnlineVm = CheckConnectedDeviceOnlineScreenViewModel(
-      robot: widget.viewModel.robot,
-      successTitle: widget.viewModel.copy.checkingOnlineSuccessTitle,
-      successSubtitle: widget.viewModel.copy.checkingOnlineSuccessSubtitle,
-      successCta: widget.viewModel.copy.checkingOnlineSuccessCta,
-      handleSuccess: widget.viewModel.onSuccess,
-      handleError: _onPreviousPage, // back to network selection
-      checkingDeviceOnlineRepository: widget.viewModel.checkingDeviceOnlineRepository,
-      connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
-    );
     final checkAgentOnlineVm = CheckAgentOnlineScreenViewModel(
       handleOnline: () async {
         await Future.delayed(Duration(seconds: 3)); // delay long enough to see success
@@ -202,7 +202,11 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                           handleWifiCredentials: _onWifiCredentials,
                           viewModel: widget.connectedBluetoothDeviceVm,
                         ),
-                      if (widget.viewModel.device != null) CheckConnectedDeviceOnlineScreen(viewModel: checkDeviceOnlineVm),
+                      if (widget.viewModel.device != null)
+                        CheckConnectedDeviceOnlineScreen(
+                          viewModel: widget.checkDeviceOnlineVm,
+                          handleError: _onPreviousPage,
+                        ),
                     ],
                   ),
                 ),
