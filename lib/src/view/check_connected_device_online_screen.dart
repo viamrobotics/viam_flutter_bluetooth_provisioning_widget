@@ -1,10 +1,16 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class CheckConnectedDeviceOnlineScreen extends StatefulWidget {
+  final VoidCallback handleSuccess;
   final VoidCallback handleError;
   final CheckConnectedDeviceOnlineScreenViewModel viewModel;
 
-  const CheckConnectedDeviceOnlineScreen({super.key, required this.viewModel, required this.handleError});
+  const CheckConnectedDeviceOnlineScreen({
+    super.key,
+    required this.viewModel,
+    required this.handleSuccess,
+    required this.handleError,
+  });
 
   @override
   State<CheckConnectedDeviceOnlineScreen> createState() => _CheckConnectedDeviceOnlineScreenState();
@@ -31,7 +37,7 @@ class _CheckConnectedDeviceOnlineScreenState extends State<CheckConnectedDeviceO
             DeviceOnlineState.success => _SuccessWidget(
                 title: widget.viewModel.successTitle,
                 subtitle: widget.viewModel.successSubtitle,
-                handleSuccess: widget.viewModel.handleSuccess,
+                handleSuccess: widget.handleSuccess,
                 cta: widget.viewModel.successCta,
               ),
             DeviceOnlineState.errorConnecting => _ErrorWidget(

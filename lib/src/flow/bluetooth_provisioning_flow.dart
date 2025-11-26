@@ -64,7 +64,6 @@ class BluetoothProvisioningFlow extends StatefulWidget {
       successTitle: viewModel.copy.checkingOnlineSuccessTitle,
       successSubtitle: viewModel.copy.checkingOnlineSuccessSubtitle,
       successCta: viewModel.copy.checkingOnlineSuccessCta,
-      handleSuccess: viewModel.onSuccess,
       checkingDeviceOnlineRepository: viewModel.checkingDeviceOnlineRepository,
       connectBluetoothDeviceRepository: viewModel.connectBluetoothDeviceRepository,
     );
@@ -156,6 +155,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                         CheckConnectedDeviceOnlineScreen(
                           viewModel: widget.checkDeviceOnlineVm,
                           handleError: _onPreviousPage,
+                          handleSuccess: widget.viewModel.onSuccess,
                         ),
                     ],
                   ),

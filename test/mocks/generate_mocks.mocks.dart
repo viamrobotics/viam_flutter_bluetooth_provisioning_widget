@@ -434,6 +434,16 @@ class _FakeViam_36 extends _i1.SmartFake implements _i15.Viam {
         );
 }
 
+class _FakeDuration_37 extends _i1.SmartFake implements Duration {
+  _FakeDuration_37(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [BluetoothDevice].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -6001,4 +6011,81 @@ class MockCheckingDeviceOnlineRepository extends _i1.Mock
         ),
         returnValue: _i17.Future<String?>.value(),
       ) as _i17.Future<String?>);
+}
+
+/// A class which mocks [CheckingAgentOnlineRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCheckingAgentOnlineRepository extends _i1.Mock
+    implements _i23.CheckingAgentOnlineRepository {
+  MockCheckingAgentOnlineRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  Duration get checkingInterval => (super.noSuchMethod(
+        Invocation.getter(#checkingInterval),
+        returnValue: _FakeDuration_37(
+          this,
+          Invocation.getter(#checkingInterval),
+        ),
+      ) as Duration);
+
+  @override
+  _i17.Stream<bool> get agentOnlineStateStream => (super.noSuchMethod(
+        Invocation.getter(#agentOnlineStateStream),
+        returnValue: _i17.Stream<bool>.empty(),
+      ) as _i17.Stream<bool>);
+
+  @override
+  bool get agentOnline => (super.noSuchMethod(
+        Invocation.getter(#agentOnline),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  set device(_i3.BluetoothDevice? value) => super.noSuchMethod(
+        Invocation.setter(
+          #device,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set agentOnline(bool? value) => super.noSuchMethod(
+        Invocation.setter(
+          #agentOnline,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void dispose() => super.noSuchMethod(
+        Invocation.method(
+          #dispose,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void startChecking() => super.noSuchMethod(
+        Invocation.method(
+          #startChecking,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  _i17.Future<void> readAgentStatus() => (super.noSuchMethod(
+        Invocation.method(
+          #readAgentStatus,
+          [],
+        ),
+        returnValue: _i17.Future<void>.value(),
+        returnValueForMissingStub: _i17.Future<void>.value(),
+      ) as _i17.Future<void>);
 }

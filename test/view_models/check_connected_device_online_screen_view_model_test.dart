@@ -26,7 +26,6 @@ void main() {
       when(mockCheckingDeviceOnlineRepository.errorMessageStream).thenAnswer((_) => errorMessageStream.stream);
 
       viewModel = CheckConnectedDeviceOnlineScreenViewModel(
-        handleSuccess: () {},
         successTitle: 'successTitle',
         successSubtitle: 'successSubtitle',
         successCta: 'successCta',

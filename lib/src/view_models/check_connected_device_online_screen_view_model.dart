@@ -1,7 +1,6 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
-  final VoidCallback handleSuccess;
   final String successTitle;
   final String successSubtitle;
   final String successCta;
@@ -30,7 +29,6 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
   StreamSubscription<String>? _errorMessageSubscription;
 
   CheckConnectedDeviceOnlineScreenViewModel({
-    required this.handleSuccess,
     required this.successTitle,
     required this.successSubtitle,
     required this.successCta,
@@ -51,7 +49,7 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
   void dispose() {
     _deviceOnlineSubscription?.cancel();
     _errorMessageSubscription?.cancel();
-    // don't dispose the repository - it's shared with the parent view model
+    // don't dispose the connect repository - it's shared with the parent view model
     super.dispose();
   }
 
