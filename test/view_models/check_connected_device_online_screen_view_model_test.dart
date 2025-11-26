@@ -54,13 +54,15 @@ void main() {
       verify(mockCheckingDeviceOnlineRepository.startChecking()).called(1);
     });
 
-    // test('listen to device online state stream', () async {
-    //   deviceOnlineStream.add(DeviceOnlineState.success);
-    //   expect(viewModel.deviceOnlineState, DeviceOnlineState.success);
-    // });
+    test('listen to device online state stream', () async {
+      deviceOnlineStream.add(DeviceOnlineState.success);
+      await pumpEventQueue();
+      expect(viewModel.deviceOnlineState, DeviceOnlineState.success);
+    });
 
     test('listen to error message stream', () async {
       errorMessageStream.add('error message');
+      await pumpEventQueue();
       expect(viewModel.errorMessage, 'error message');
     });
   });
