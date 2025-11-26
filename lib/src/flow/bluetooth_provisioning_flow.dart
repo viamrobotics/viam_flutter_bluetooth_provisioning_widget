@@ -61,7 +61,6 @@ class BluetoothProvisioningFlow extends StatefulWidget {
       tipsDialogCtaText: copy.bluetoothScanningTipsDialogCtaText,
     );
     checkDeviceOnlineVm = CheckConnectedDeviceOnlineScreenViewModel(
-      robot: viewModel.robot,
       successTitle: viewModel.copy.checkingOnlineSuccessTitle,
       successSubtitle: viewModel.copy.checkingOnlineSuccessSubtitle,
       successCta: viewModel.copy.checkingOnlineSuccessCta,
