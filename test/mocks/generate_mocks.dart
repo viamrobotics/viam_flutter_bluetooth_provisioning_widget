@@ -14,5 +14,6 @@ import 'package:viam_sdk/src/gen/google/protobuf/timestamp.pb.dart';
   ViamBluetoothProvisioning,
   Timestamp,
   ConnectBluetoothDeviceRepository,
+  CheckingDeviceOnlineRepository,
 ])
 void main() {}
