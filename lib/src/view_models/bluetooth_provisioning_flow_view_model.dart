@@ -12,7 +12,7 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
     required String psk,
     required this.fragmentId,
     this.agentMinimumVersion = '0.20.0',
-    this.copy = const BluetoothProvisioningFlowCopy(),
+    required this.copy,
     required this.onSuccess,
     required this.existingMachineExit,
     required this.nonexistentMachineExit,
