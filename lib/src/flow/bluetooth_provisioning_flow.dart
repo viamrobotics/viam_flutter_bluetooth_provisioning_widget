@@ -155,6 +155,7 @@ class _BluetoothProvisioningFlowState extends State<BluetoothProvisioningFlow> {
                         CheckConnectedDeviceOnlineScreen(
                           viewModel: widget.checkDeviceOnlineVm,
                           handleError: _onPreviousPage,
+                          handleSuccess: widget.viewModel.onSuccess,
                         ),
                     ],
                   ),

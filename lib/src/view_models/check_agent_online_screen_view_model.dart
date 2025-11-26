@@ -12,7 +12,7 @@ class CheckAgentOnlineScreenViewModel extends ChangeNotifier {
     }
   }
 
-  final CheckingAgentOnlineRepository _checkingAgentOnlineRepository;
+  final CheckingAgentOnlineRepository checkingAgentOnlineRepository;
   final ConnectBluetoothDeviceRepository _connectBluetoothDeviceRepository;
   bool _agentOnline;
   StreamSubscription<bool>? _agentOnlineSubscription;
@@ -20,12 +20,11 @@ class CheckAgentOnlineScreenViewModel extends ChangeNotifier {
   CheckAgentOnlineScreenViewModel({
     required this.successTitle,
     required this.successSubtitle,
-    required CheckingAgentOnlineRepository checkingAgentOnlineRepository,
+    required this.checkingAgentOnlineRepository,
     required ConnectBluetoothDeviceRepository connectBluetoothDeviceRepository,
-  })  : _checkingAgentOnlineRepository = checkingAgentOnlineRepository,
-        _connectBluetoothDeviceRepository = connectBluetoothDeviceRepository,
+  })  : _connectBluetoothDeviceRepository = connectBluetoothDeviceRepository,
         _agentOnline = checkingAgentOnlineRepository.agentOnline {
-    _agentOnlineSubscription = _checkingAgentOnlineRepository.agentOnlineStateStream.listen((state) {
+    _agentOnlineSubscription = checkingAgentOnlineRepository.agentOnlineStateStream.listen((state) {
       agentOnline = state;
     });
   }
@@ -33,7 +32,7 @@ class CheckAgentOnlineScreenViewModel extends ChangeNotifier {
   @override
   void dispose() {
     _agentOnlineSubscription?.cancel();
-    _checkingAgentOnlineRepository.dispose();
+    checkingAgentOnlineRepository.dispose();
     // don't dispose the connect repository - it's shared with the parent view model
     super.dispose();
   }
@@ -43,6 +42,6 @@ class CheckAgentOnlineScreenViewModel extends ChangeNotifier {
   }
 
   void startChecking() {
-    _checkingAgentOnlineRepository.startChecking();
+    checkingAgentOnlineRepository.startChecking();
   }
 }

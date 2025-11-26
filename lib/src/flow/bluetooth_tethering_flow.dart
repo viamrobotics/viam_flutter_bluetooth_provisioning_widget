@@ -89,26 +89,33 @@ class BluetoothTetheringFlow extends StatefulWidget {
 
 class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
   final PageController _pageController = PageController();
-
+  StreamSubscription<bool>? _agentOnlineSubscription;
   bool _hasInternetConnection = false;
+  bool _agentOnline = false;
 
   @override
   initState() {
     super.initState();
-    // FINISH
-    widget.checkAgentOnlineVm._checkingAgentOnlineRepository.agentOnlineStateStream.listen((online) async {
-      if (online) {
-        print('AGENT ONLINE IN FLOW 📡');
-        await Future.delayed(Duration(seconds: 3)); // delay long enough to see success
-        await _onWifiCredentials(null, null); // shows loading
-      }
-    });
+    _setupAgentOnlineListener();
   }
 
   @override
   void dispose() {
     _pageController.dispose();
+    _agentOnlineSubscription?.cancel();
     super.dispose();
+  }
+
+  /// This could almost be done in the view model, except for the page changing logic required to move to the next screen
+  void _setupAgentOnlineListener() {
+    _agentOnlineSubscription = widget.checkAgentOnlineVm.checkingAgentOnlineRepository.agentOnlineStateStream.listen((online) async {
+      if (_agentOnline == online) return;
+      _agentOnline = online;
+      if (online) {
+        await Future.delayed(Duration(seconds: 3)); // delay long enough to see success
+        await _onWifiCredentials(null, null); // shows loading
+      }
+    });
   }
 
   void _onNextPage() {
