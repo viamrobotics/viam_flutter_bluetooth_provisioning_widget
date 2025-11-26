@@ -112,7 +112,7 @@ class ConnectBluetoothDeviceRepository {
     if (_device!.isConnected) {
       await _device!.connect();
     }
-    
+
     await _device!.unlockPairing(psk: psk);
   }
 
