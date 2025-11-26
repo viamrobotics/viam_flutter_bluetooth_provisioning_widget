@@ -1,9 +1,10 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class BluetoothScanningScreen extends StatefulWidget {
-  const BluetoothScanningScreen({super.key, required this.viewModel});
-
+  final Function(BluetoothDevice) onDeviceSelected;
   final BluetoothScanningScreenViewModel viewModel;
+
+  const BluetoothScanningScreen({super.key, required this.viewModel, required this.onDeviceSelected});
 
   @override
   State<BluetoothScanningScreen> createState() => _BluetoothScanningScreenState();
@@ -98,7 +99,11 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
                                           ? widget.viewModel.uniqueDevices[index].platformName
                                           : 'untitled',
                                       style: Theme.of(context).textTheme.bodyLarge),
-                                  onTap: () => widget.viewModel.connect(context, widget.viewModel.uniqueDevices[index]),
+                                  onTap: () async {
+                                    final device = widget.viewModel.uniqueDevices[index];
+                                    final success = await widget.viewModel.connect(context, device);
+                                    if (success) widget.onDeviceSelected(device);
+                                  },
                                 ),
                               );
                             },

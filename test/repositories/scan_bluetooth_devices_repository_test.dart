@@ -92,35 +92,5 @@ void main() {
         await completer.future;
       });
     });
-
-    test('scanning devices again', () async {
-      final mockScanningStream = StreamController<List<ScanResult>>();
-      when(mockViamBluetoothProvisioning.scanForPeripherals()).thenAnswer((_) => Future.value(mockScanningStream.stream));
-
-      final emittedValues = <List<BluetoothDevice>>[];
-      final completer = Completer<void>();
-
-      repository.uniqueDevicesStream.listen((value) {
-        emittedValues.add(List.from(value)); // create a copy to avoid reference issues
-        if (emittedValues.length == 2) {
-          completer.complete();
-        }
-      });
-
-      repository.scanDevicesAgain();
-      expect(repository.isScanning, true);
-      mockScanningStream.add([mockScanResult1, mockScanResult2]);
-      await completer.future;
-
-      expect(emittedValues, [
-        [],
-        [mockDevice1, mockDevice2],
-      ]);
-    });
-
-    test('stop scan', () async {
-      repository.stopScan();
-      expect(repository.isScanning, false);
-    });
   });
 }

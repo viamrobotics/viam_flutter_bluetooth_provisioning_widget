@@ -1,7 +1,7 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 /// Show an error dialog with one action: OK, which simply dismisses the dialog
-Future<void> _showErrorDialog(BuildContext context, {String title = 'An Error Occurred', String? error}) {
+Future<void> _showErrorDialog(BuildContext context, {String title = 'An Error Occurred', String? error}) async {
   return showAdaptiveDialog(
     context: context,
     builder: (context) => AlertDialog.adaptive(

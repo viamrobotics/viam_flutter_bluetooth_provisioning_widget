@@ -19,41 +19,42 @@ class ScanBluetoothDevicesRepository {
     _scanningController.add(_isScanning);
   }
 
-  bool _isDisposed = false;
   final Set<String> _deviceIds = {};
 
   ScanBluetoothDevicesRepository({required this.viamBluetoothProvisioning});
 
   void dispose() {
-    _isDisposed = true;
     _uniqueDevicesController.close();
     _scanningController.close();
     _scanSubscription?.cancel();
+    _scanSubscription = null;
     _uniqueDevices.clear();
     _deviceIds.clear();
-    stopScan();
   }
 
-  void start() {
+  Future<void> start() async {
     if (Platform.isAndroid) {
       // Need to explicitly request permissions on Android
       // iOS handles this automatically when you initialize bluetoothProvisioning
-      _checkPermissions();
+      await _checkPermissions();
     } else {
-      initialize();
+      await initialize();
     }
   }
 
   Future<void> initialize() async {
-    viamBluetoothProvisioning.initialize(poweredOn: (poweredOn) {
+    viamBluetoothProvisioning.initialize(poweredOn: (poweredOn) async {
       if (poweredOn) {
-        startScan();
+        await startScan();
       }
     });
   }
 
   Future<void> startScan() async {
     isScanning = true;
+    _deviceIds.clear();
+    _uniqueDevices.clear();
+
     final stream = await viamBluetoothProvisioning.scanForPeripherals();
     _scanSubscription = stream.listen((scanResults) {
       for (final result in scanResults) {
@@ -64,22 +65,6 @@ class ScanBluetoothDevicesRepository {
       }
       _uniqueDevicesController.add(_uniqueDevices);
     });
-  }
-
-  void scanDevicesAgain() {
-    stopScan();
-    _deviceIds.clear();
-    _uniqueDevices.clear();
-    _uniqueDevicesController.add(_uniqueDevices);
-    startScan();
-  }
-
-  void stopScan() {
-    _scanSubscription?.cancel();
-    _scanSubscription = null;
-    if (!_isDisposed) {
-      isScanning = false;
-    }
   }
 
   Future<void> _checkPermissions() async {

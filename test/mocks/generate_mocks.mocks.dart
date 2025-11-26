@@ -13,6 +13,8 @@ import 'package:flutter_blue_plus_platform_interface/flutter_blue_plus_platform_
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i15;
 import 'package:protobuf/protobuf.dart' as _i10;
+import 'package:viam_flutter_bluetooth_provisioning_widget/viam_flutter_bluetooth_provisioning_widget.dart'
+    as _i23;
 import 'package:viam_flutter_provisioning/viam_bluetooth_provisioning.dart'
     as _i22;
 import 'package:viam_sdk/src/app/app.dart' as _i4;
@@ -27,7 +29,7 @@ import 'package:viam_sdk/src/gen/common/v1/common.pb.dart' as _i20;
 import 'package:viam_sdk/src/gen/google/protobuf/struct.pb.dart' as _i14;
 import 'package:viam_sdk/src/gen/google/protobuf/timestamp.pb.dart' as _i11;
 import 'package:viam_sdk/src/robot/client.dart' as _i9;
-import 'package:viam_sdk/src/viam_sdk.dart' as _i18;
+import 'package:viam_sdk/viam_sdk.dart' as _i18;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -5790,4 +5792,101 @@ class MockTimestamp extends _i1.Mock implements _i11.Timestamp {
           ),
         ),
       ) as DateTime);
+}
+
+/// A class which mocks [ConnectBluetoothDeviceRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockConnectBluetoothDeviceRepository extends _i1.Mock
+    implements _i23.ConnectBluetoothDeviceRepository {
+  MockConnectBluetoothDeviceRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i16.Future<void> connect(_i3.BluetoothDevice? device) => (super.noSuchMethod(
+        Invocation.method(
+          #connect,
+          [device],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<void> reconnect() => (super.noSuchMethod(
+        Invocation.method(
+          #reconnect,
+          [],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<void> writeConfig({
+    required _i18.Viam? viam,
+    required _i12.Robot? robot,
+    required _i12.RobotPart? mainRobotPart,
+    required String? ssid,
+    required String? password,
+    required String? psk,
+    required String? fragmentId,
+    required bool? fragmentOverride,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #writeConfig,
+          [],
+          {
+            #viam: viam,
+            #robot: robot,
+            #mainRobotPart: mainRobotPart,
+            #ssid: ssid,
+            #password: password,
+            #psk: psk,
+            #fragmentId: fragmentId,
+            #fragmentOverride: fragmentOverride,
+          },
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
+
+  @override
+  _i16.Future<List<_i22.WifiNetwork>> readNetworkList() => (super.noSuchMethod(
+        Invocation.method(
+          #readNetworkList,
+          [],
+        ),
+        returnValue:
+            _i16.Future<List<_i22.WifiNetwork>>.value(<_i22.WifiNetwork>[]),
+      ) as _i16.Future<List<_i22.WifiNetwork>>);
+
+  @override
+  _i16.Future<bool> isAgentVersionBelowMinimum(String? minimumVersion) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #isAgentVersionBelowMinimum,
+          [minimumVersion],
+        ),
+        returnValue: _i16.Future<bool>.value(false),
+      ) as _i16.Future<bool>);
+
+  @override
+  bool isVersionLower({
+    required String? currentVersionStr,
+    required String? minimumVersionStr,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #isVersionLower,
+          [],
+          {
+            #currentVersionStr: currentVersionStr,
+            #minimumVersionStr: minimumVersionStr,
+          },
+        ),
+        returnValue: false,
+      ) as bool);
 }
