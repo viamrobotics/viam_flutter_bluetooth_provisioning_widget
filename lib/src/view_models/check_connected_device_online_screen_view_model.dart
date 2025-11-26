@@ -51,7 +51,7 @@ class CheckConnectedDeviceOnlineScreenViewModel extends ChangeNotifier {
   void dispose() {
     _deviceOnlineSubscription?.cancel();
     _errorMessageSubscription?.cancel();
-    // don't dispose the repository - it's shared with the parent view model
+    // don't dispose the connect repository - it's shared with the parent view model
     super.dispose();
   }
 

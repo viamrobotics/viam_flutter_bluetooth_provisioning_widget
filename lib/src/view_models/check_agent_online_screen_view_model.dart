@@ -1,7 +1,6 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class CheckAgentOnlineScreenViewModel extends ChangeNotifier {
-  final VoidCallback handleOnline;
   final String successTitle;
   final String successSubtitle;
 
@@ -19,7 +18,6 @@ class CheckAgentOnlineScreenViewModel extends ChangeNotifier {
   StreamSubscription<bool>? _agentOnlineSubscription;
 
   CheckAgentOnlineScreenViewModel({
-    required this.handleOnline,
     required this.successTitle,
     required this.successSubtitle,
     required CheckingAgentOnlineRepository checkingAgentOnlineRepository,
@@ -29,7 +27,6 @@ class CheckAgentOnlineScreenViewModel extends ChangeNotifier {
         _agentOnline = checkingAgentOnlineRepository.agentOnline {
     _agentOnlineSubscription = _checkingAgentOnlineRepository.agentOnlineStateStream.listen((state) {
       agentOnline = state;
-      if (agentOnline) handleOnline();
     });
   }
 
@@ -37,6 +34,7 @@ class CheckAgentOnlineScreenViewModel extends ChangeNotifier {
   void dispose() {
     _agentOnlineSubscription?.cancel();
     _checkingAgentOnlineRepository.dispose();
+    // don't dispose the connect repository - it's shared with the parent view model
     super.dispose();
   }
 

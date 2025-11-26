@@ -68,12 +68,19 @@ class BluetoothTetheringFlow extends StatefulWidget {
       checkingDeviceOnlineRepository: viewModel.checkingDeviceOnlineRepository,
       connectBluetoothDeviceRepository: viewModel.connectBluetoothDeviceRepository,
     );
+    checkAgentOnlineVm = CheckAgentOnlineScreenViewModel(
+      checkingAgentOnlineRepository: viewModel.checkingAgentOnlineRepository,
+      connectBluetoothDeviceRepository: viewModel.connectBluetoothDeviceRepository,
+      successTitle: viewModel.copy.checkAgentOnlineSuccessTitle,
+      successSubtitle: viewModel.copy.checkAgentOnlineSuccessSubtitle,
+    );
   }
 
   late final BluetoothProvisioningFlowViewModel viewModel;
   late final ConnectedBluetoothDeviceScreenViewModel connectedBluetoothDeviceVm;
   late final BluetoothScanningScreenViewModel scanningVm;
   late final CheckConnectedDeviceOnlineScreenViewModel checkDeviceOnlineVm;
+  late final CheckAgentOnlineScreenViewModel checkAgentOnlineVm;
 
   @override
   State<BluetoothTetheringFlow> createState() => _BluetoothTetheringFlowState();
@@ -129,17 +136,6 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
 
   @override
   Widget build(BuildContext context) {
-    final checkAgentOnlineVm = CheckAgentOnlineScreenViewModel(
-      handleOnline: () async {
-        await Future.delayed(Duration(seconds: 3)); // delay long enough to see success
-        await _onWifiCredentials(null, null); // shows loading
-      },
-      checkingAgentOnlineRepository: widget.viewModel.checkingAgentOnlineRepository,
-      connectBluetoothDeviceRepository: widget.viewModel.connectBluetoothDeviceRepository,
-      successTitle: widget.viewModel.copy.checkAgentOnlineSuccessTitle,
-      successSubtitle: widget.viewModel.copy.checkAgentOnlineSuccessSubtitle,
-    );
-
     return ListenableBuilder(
       listenable: widget.viewModel,
       builder: (context, child) {
@@ -194,7 +190,14 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                         // If the machine is configured already (has machine credentials) and gets a connection from tethering,
                         // we won't be able to check agent online. The agent bluetooth service will be shut down at this point.
                         // The machine will be online in app.viam.com and we should skip to that check instead.
-                        if (!widget.viewModel.isConfigured) CheckDeviceAgentOnlineScreen(viewModel: checkAgentOnlineVm),
+                        if (!widget.viewModel.isConfigured)
+                          CheckAgentOnlineScreen(
+                            viewModel: widget.checkAgentOnlineVm,
+                            handleOnline: () async {
+                              await Future.delayed(Duration(seconds: 3)); // delay long enough to see success
+                              await _onWifiCredentials(null, null); // shows loading
+                            },
+                          ),
                       ],
                       if (_hasInternetConnection && widget.viewModel.device != null)
                         ConnectedBluetoothDeviceScreen(
@@ -202,10 +205,7 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
                           viewModel: widget.connectedBluetoothDeviceVm,
                         ),
                       if (widget.viewModel.device != null)
-                        CheckConnectedDeviceOnlineScreen(
-                          viewModel: widget.checkDeviceOnlineVm,
-                          handleError: _onPreviousPage,
-                        ),
+                        CheckConnectedDeviceOnlineScreen(viewModel: widget.checkDeviceOnlineVm, handleError: _onPreviousPage),
                     ],
                   ),
                 ),
