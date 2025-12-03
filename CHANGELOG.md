@@ -1,3 +1,7 @@
+## 0.0.26
+* Adding unit tests
+* Bumping Viam SDK version to 0.12.1
+
 ## 0.0.25
 
 * Running on Flutter 3.35.5
