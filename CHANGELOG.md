@@ -1,5 +1,5 @@
 ## 0.0.27
-* Bumping Viam SDK version to 0.13.0
+* Extending Viam SDK Version to a range
 
 ## 0.0.26
 * Adding unit tests
