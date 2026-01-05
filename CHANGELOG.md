@@ -1,3 +1,6 @@
+## 0.0.30
+* Bumping Viam SDK max version to include entire 0.15 range
+
 ## 0.0.29
 * Bumping Viam SDK max version to 0.15.0
 
