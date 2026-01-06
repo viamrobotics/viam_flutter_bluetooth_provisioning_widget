@@ -27,11 +27,7 @@ class BluetoothProvisioningFlow extends StatefulWidget {
       robot: robot,
       isNewMachine: isNewMachine,
       connectBluetoothDeviceRepository: connectBluetoothDeviceRepository,
-      checkingDeviceOnlineRepository: CheckingDeviceOnlineRepository(
-        device: null,
-        viam: viam,
-        robot: robot,
-      ),
+      checkingDeviceOnlineRepository: checkingDeviceOnlineRepository,
       checkingAgentOnlineRepository: CheckingAgentOnlineRepository(device: null),
       mainRobotPart: mainRobotPart,
       psk: psk,
