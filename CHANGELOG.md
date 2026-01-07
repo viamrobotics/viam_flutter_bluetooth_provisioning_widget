@@ -1,3 +1,7 @@
+## 0.0.31
+* Fix read network list error (#105)
+* Fix leading scaffold icon updating in main view model (#104)
+
 ## 0.0.30
 * Bumping Viam SDK max version to include entire 0.15 range
 

@@ -1,7 +1,7 @@
 name: viam_flutter_bluetooth_provisioning_widget
 description: "A Flutter package for provisioning Viam machines using Bluetooth connections with support for both standard provisioning and tethering flows."
 repository: https://github.com/viamrobotics/viam_flutter_bluetooth_provisioning_widget
-version: 0.0.30
+version: 0.0.31
 homepage: https://www.viam.com
 
 environment:
