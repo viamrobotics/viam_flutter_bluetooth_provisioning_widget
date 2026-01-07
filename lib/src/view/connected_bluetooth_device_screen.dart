@@ -17,12 +17,6 @@ class ConnectedBluetoothDeviceScreen extends StatefulWidget {
 class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDeviceScreen> {
   bool _showingDialog = false;
 
-  @override
-  void initState() {
-    super.initState();
-    widget.viewModel.readNetworkList(context);
-  }
-
   Future<void> _presentPasskeyDialog(WifiNetwork wifiNetwork, ConnectedBluetoothDeviceScreenViewModel viewModel) async {
     await showDialog(
       context: context,
