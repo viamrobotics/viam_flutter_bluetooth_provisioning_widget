@@ -131,8 +131,9 @@ class _BluetoothTetheringFlowState extends State<BluetoothTetheringFlow> {
   }
 
   Future<void> _onDeviceConnected(BluetoothDevice device) async {
-    if (await widget.viewModel.isDeviceConnectionValid(context, device)) {
+    if (await widget.viewModel.isDeviceConnectionValid(context, device) && mounted) {
       _onNextPage();
+      widget.connectedBluetoothDeviceVm.readNetworkList(context);
     }
   }
 
