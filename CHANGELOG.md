@@ -1,3 +1,6 @@
+## 0.0.32
+* Extend the SDK range again and fix github workflows
+
 ## 0.0.31
 * Fix read network list error (#105)
 * Fix leading scaffold icon updating in main view model (#104)
