@@ -63,7 +63,7 @@ class ScanBluetoothDevicesRepository {
           _uniqueDevices.add(result.device);
         }
       }
-      _uniqueDevicesController.add(_uniqueDevices);
+      _uniqueDevicesController.add(List.from(_uniqueDevices));
     });
   }
 
