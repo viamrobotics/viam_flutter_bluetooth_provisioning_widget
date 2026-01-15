@@ -13,7 +13,7 @@ jobs:
       image: ghcr.io/cirruslabs/flutter:${{ vars.FLUTTER_VERSION }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - run: flutter --version
       - run: flutter pub get
