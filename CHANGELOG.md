@@ -1,3 +1,6 @@
+## 0.0.33
+* Fix bug for showing multiple devices while scanning 
+
 ## 0.0.32
 * Extend the SDK range again and fix github workflows
 
