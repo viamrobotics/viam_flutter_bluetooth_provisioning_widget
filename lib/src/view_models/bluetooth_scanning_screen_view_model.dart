@@ -89,4 +89,14 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
     uniqueDevices = [];
     await _scanBluetoothDevicesRepository.startScan();
   }
+
+  String deviceName(BluetoothDevice device) {
+    if (device.advName.isNotEmpty) {
+      return device.advName; // name advertised during scanning, won't be stale during scanning if device was renamed
+    } else if (device.platformName.isNotEmpty) {
+      return device.platformName; // name persisted between app restarts, can be stale (but a better fallback than 'untitled')
+    } else {
+      return 'untitled';
+    }
+  }
 }
