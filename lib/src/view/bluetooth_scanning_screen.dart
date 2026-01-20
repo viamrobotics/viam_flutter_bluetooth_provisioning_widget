@@ -94,10 +94,7 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
                                   minVerticalPadding: 20,
                                   leading: Icon(Icons.bluetooth, color: const Color(0xFF8B949E), size: 20),
                                   horizontalTitleGap: 16,
-                                  title: Text(
-                                      widget.viewModel.uniqueDevices[index].platformName.isNotEmpty == true
-                                          ? widget.viewModel.uniqueDevices[index].platformName
-                                          : 'untitled',
+                                  title: Text(widget.viewModel.deviceName(widget.viewModel.uniqueDevices[index]),
                                       style: Theme.of(context).textTheme.bodyLarge),
                                   onTap: () async {
                                     final device = widget.viewModel.uniqueDevices[index];
