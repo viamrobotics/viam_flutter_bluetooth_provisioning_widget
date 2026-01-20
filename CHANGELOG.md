@@ -1,3 +1,6 @@
+## 0.0.34
+* Fix device name display bug during scanning (missing or out-of-date names)
+
 ## 0.0.33
 * Fix bug for showing multiple devices while scanning 
 
