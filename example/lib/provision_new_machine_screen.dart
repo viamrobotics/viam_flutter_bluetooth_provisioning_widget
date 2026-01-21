@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:viam_flutter_bluetooth_provisioning_widget/viam_flutter_bluetooth_provisioning_widget.dart';
+import 'package:viam_sdk/protos/app/app.dart';
+import 'package:viam_sdk/viam_sdk.dart';
 
 import 'consts.dart';
 import 'utils.dart';

@@ -13,6 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   provider: ^6.1.5
+  viam_sdk: ^0.15.2
   viam_flutter_bluetooth_provisioning_widget:
     path: ../
 
