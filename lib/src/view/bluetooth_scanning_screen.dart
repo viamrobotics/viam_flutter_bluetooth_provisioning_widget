@@ -90,10 +90,12 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
                                   side: BorderSide(color: Colors.grey.shade300),
                                 ),
                                 child: ListTile(
+                                  titleAlignment: ListTileTitleAlignment.center,
                                   key: ValueKey('device-tile'),
                                   minVerticalPadding: 20,
                                   leading: Icon(Icons.bluetooth, color: const Color(0xFF8B949E), size: 20),
                                   horizontalTitleGap: 16,
+                                  minLeadingWidth: 0,
                                   title: Text(widget.viewModel.deviceName(widget.viewModel.uniqueDevices[index]),
                                       style: Theme.of(context).textTheme.bodyLarge),
                                   onTap: () async {

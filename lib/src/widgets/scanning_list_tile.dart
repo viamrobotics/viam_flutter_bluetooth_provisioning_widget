@@ -15,6 +15,8 @@ class ScanningListTile extends StatelessWidget {
           strokeWidth: 4,
         ),
       ),
+      horizontalTitleGap: 16,
+      minLeadingWidth: 0,
       title: Text('Scanning...', style: Theme.of(context).textTheme.bodyLarge),
     );
   }
