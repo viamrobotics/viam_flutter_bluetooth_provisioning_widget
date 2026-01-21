@@ -1,3 +1,6 @@
+## 0.0.35
+- Add 'hide APIKey' to protos export
+
 ## 0.0.34
 * Fix device name display bug during scanning (missing or out-of-date names)
 
