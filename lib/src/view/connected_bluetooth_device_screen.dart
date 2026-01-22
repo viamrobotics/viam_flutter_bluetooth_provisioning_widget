@@ -150,12 +150,14 @@ class _ConnectedBluetoothDeviceScreenState extends State<ConnectedBluetoothDevic
                             side: BorderSide(color: Colors.grey.shade300),
                           ),
                           child: ListTile(
+                            titleAlignment: ListTileTitleAlignment.center,
                             minVerticalPadding: 20,
                             leading: Icon(_networkIcon(widget.viewModel.wifiNetworks[index]), color: const Color(0xFF8B949E), size: 20),
                             trailing: widget.viewModel.wifiNetworks[index].isSecure
                                 ? Icon(Icons.lock_outline, color: const Color(0xFF8B949E), size: 20)
                                 : null,
                             horizontalTitleGap: 16,
+                            minLeadingWidth: 0,
                             title: Text(widget.viewModel.wifiNetworks[index].ssid, style: Theme.of(context).textTheme.bodyLarge),
                             onTap: () {
                               if (widget.viewModel.wifiNetworks[index].isSecure) {
