@@ -10,7 +10,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:viam_flutter_provisioning/viam_bluetooth_provisioning.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:viam_sdk/viam_sdk.dart' hide Permission;
-import 'package:viam_sdk/protos/app/app.dart';
+import 'package:viam_sdk/protos/app/app.dart' hide APIKey;
 import 'package:pub_semver/pub_semver.dart';
 
 // export

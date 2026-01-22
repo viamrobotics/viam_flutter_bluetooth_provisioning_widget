@@ -40,6 +40,7 @@ class ConnectBluetoothDeviceRepository {
       await _device!.writeRobotPartConfig(
         partId: mainRobotPart.id,
         secret: mainRobotPart.secret,
+        apiKey: null,
         psk: psk,
       );
     }
