@@ -14,7 +14,7 @@ import 'package:viam_sdk/protos/app/app.dart' show Robot, RobotPart;
 import 'package:pub_semver/pub_semver.dart';
 
 // export
-export 'package:viam_flutter_provisioning/viam_bluetooth_provisioning.dart';
+export 'package:viam_flutter_provisioning/viam_bluetooth_provisioning.dart' hide APIKey;
 export 'package:viam_sdk/viam_sdk.dart' show Viam;
 export 'package:viam_sdk/protos/app/app.dart' show Robot, RobotPart;
 
