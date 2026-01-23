@@ -1,3 +1,7 @@
+## 0.0.36
+- Set `viam_flutter_provisioning` minimum to `0.0.17` (has a change to support API keys)
+- `ListTile` styling fixes
+
 ## 0.0.35
 - Add 'hide APIKey' to protos export
 
