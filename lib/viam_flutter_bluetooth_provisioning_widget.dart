@@ -9,15 +9,14 @@ import 'package:collection/collection.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:viam_flutter_provisioning/viam_bluetooth_provisioning.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:viam_sdk/viam_sdk.dart' hide Permission;
-import 'package:viam_sdk/protos/app/app.dart' hide APIKey;
+import 'package:viam_sdk/viam_sdk.dart' show Viam;
+import 'package:viam_sdk/protos/app/app.dart' show Robot, RobotPart;
 import 'package:pub_semver/pub_semver.dart';
 
 // export
-export 'package:viam_flutter_provisioning/viam_bluetooth_provisioning.dart';
-export 'package:viam_sdk/viam_sdk.dart' hide Permission;
-export 'package:viam_sdk/protos/app/app.dart' hide APIKey;
-export 'package:pub_semver/pub_semver.dart';
+export 'package:viam_flutter_provisioning/viam_bluetooth_provisioning.dart' hide APIKey;
+export 'package:viam_sdk/viam_sdk.dart' show Viam;
+export 'package:viam_sdk/protos/app/app.dart' show Robot, RobotPart;
 
 // flows
 part 'src/flow/bluetooth_provisioning_flow.dart';
