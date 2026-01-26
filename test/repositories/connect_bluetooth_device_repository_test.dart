@@ -178,9 +178,9 @@ void main() {
       test('connects successfully when no device connected', () async {
         when(device.isConnected).thenReturn(false);
 
-        expect(repository.device, isNull);
+        expect(repository.currentDevice, isNull);
         await repository.connect(device);
-        expect(repository.device, equals(device));
+        expect(repository.currentDevice, equals(device));
       });
     });
 

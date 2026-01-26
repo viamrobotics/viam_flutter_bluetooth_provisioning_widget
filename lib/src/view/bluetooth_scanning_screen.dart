@@ -17,6 +17,14 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
     widget.viewModel.startScanning();
   }
 
+  Future<void> _onDeviceTapped(BluetoothDevice device) async {
+    await widget.viewModel.stopScanning();
+    if (mounted) {
+      final success = await widget.viewModel.connect(context, device);
+      if (success) widget.onDeviceSelected(device);
+    }
+  }
+
   Future<void> _notSeeingDevice(BuildContext context, String title, String subtitle, String ctaText) async {
     await showDialog(
       context: context,
@@ -99,9 +107,7 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
                                   title: Text(widget.viewModel.deviceName(widget.viewModel.uniqueDevices[index]),
                                       style: Theme.of(context).textTheme.bodyLarge),
                                   onTap: () async {
-                                    final device = widget.viewModel.uniqueDevices[index];
-                                    final success = await widget.viewModel.connect(context, device);
-                                    if (success) widget.onDeviceSelected(device);
+                                    await _onDeviceTapped(widget.viewModel.uniqueDevices[index]);
                                   },
                                 ),
                               );
