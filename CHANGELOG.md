@@ -1,4 +1,7 @@
-## 0.0.36
+## 0.0.37
+- Fix import conflicts with `viam_sdk`
+
+## 0.0.36 ⚠️ RETRACTED - NOT USEABLE
 - Set `viam_flutter_provisioning` minimum to `0.0.17` (has a change to support API keys)
 - `ListTile` styling fixes
 
