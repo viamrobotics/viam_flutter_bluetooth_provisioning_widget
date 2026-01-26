@@ -113,7 +113,6 @@ void main() {
         when(mockConnectBluetoothDeviceRepository.connect(mockDevice1)).thenAnswer((_) => Future.value());
         final result = await viewModel.connect(null, mockDevice1);
         expect(result, true);
-        expect(viewModel.isConnecting, false);
         verify(mockConnectBluetoothDeviceRepository.connect(mockDevice1)).called(1);
       });
 
@@ -121,7 +120,6 @@ void main() {
         when(mockConnectBluetoothDeviceRepository.connect(mockDevice1)).thenAnswer((_) => Future.error('error'));
         final result = await viewModel.connect(null, mockDevice1);
         expect(result, false);
-        expect(viewModel.isConnecting, false);
         verify(mockConnectBluetoothDeviceRepository.connect(mockDevice1)).called(1);
       });
     });
