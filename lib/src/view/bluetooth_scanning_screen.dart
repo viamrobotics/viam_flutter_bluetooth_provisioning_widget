@@ -19,7 +19,6 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
 
   Future<void> _onDeviceTapped(BluetoothDevice device) async {
     widget.viewModel.isLoading = true;
-
     if (Platform.isAndroid) await widget.viewModel.stopScanning();
     if (mounted) {
       final success = await widget.viewModel.connect(context, device);
