@@ -25,8 +25,10 @@ class ConnectBluetoothDeviceRepository {
       } catch (e) {
         if (attempt < maxAttempts) {
           await Future.delayed(Duration(seconds: 2));
+          debugPrint('failed to connect to device on attempt $attempt, retrying, error: $e');
         } else {
-          rethrow; // done trying, throw the last exception
+          debugPrint('failed to connect to device after $maxAttempts attempts, stopping, error: $e');
+          rethrow;
         }
       }
     }
