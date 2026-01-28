@@ -39,13 +39,13 @@ void main() {
     });
     test('reconnect', () async {
       final device = MockBluetoothDevice();
-      when(mockConnectBluetoothDeviceRepository.currentDevice).thenReturn(device);
+      when(mockConnectBluetoothDeviceRepository.connectedDevice).thenReturn(device);
       when(device.isConnected).thenReturn(false);
 
       await viewModel.reconnect();
 
       verify(mockConnectBluetoothDeviceRepository.reconnect()).called(1);
-      expect(mockConnectBluetoothDeviceRepository.currentDevice, isNotNull);
+      expect(mockConnectBluetoothDeviceRepository.connectedDevice, isNotNull);
     });
 
     test('start checking', () async {

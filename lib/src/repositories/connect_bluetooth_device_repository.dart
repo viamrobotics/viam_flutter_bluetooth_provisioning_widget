@@ -1,7 +1,7 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class ConnectBluetoothDeviceRepository {
-  BluetoothDevice? get currentDevice => _currentDevice;
+  BluetoothDevice? get connectedDevice => _currentDevice;
   BluetoothDevice? _currentDevice;
 
   Future<void> connect(BluetoothDevice newDevice) async {
