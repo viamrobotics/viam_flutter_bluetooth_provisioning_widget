@@ -17,6 +17,16 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
     widget.viewModel.startScanning();
   }
 
+  Future<void> _onDeviceTapped(BluetoothDevice device) async {
+    widget.viewModel.isLoading = true;
+    if (Platform.isAndroid) await widget.viewModel.stopScanning();
+    if (mounted) {
+      final success = await widget.viewModel.connect(context, device);
+      if (success) widget.onDeviceSelected(device);
+    }
+    widget.viewModel.isLoading = false;
+  }
+
   Future<void> _notSeeingDevice(BuildContext context, String title, String subtitle, String ctaText) async {
     await showDialog(
       context: context,
@@ -41,7 +51,7 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
     return ListenableBuilder(
       listenable: widget.viewModel,
       builder: (context, child) {
-        return widget.viewModel.isConnecting
+        return widget.viewModel.isLoading
             ? const Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -99,9 +109,7 @@ class _BluetoothScanningScreenState extends State<BluetoothScanningScreen> {
                                   title: Text(widget.viewModel.deviceName(widget.viewModel.uniqueDevices[index]),
                                       style: Theme.of(context).textTheme.bodyLarge),
                                   onTap: () async {
-                                    final device = widget.viewModel.uniqueDevices[index];
-                                    final success = await widget.viewModel.connect(context, device);
-                                    if (success) widget.onDeviceSelected(device);
+                                    await _onDeviceTapped(widget.viewModel.uniqueDevices[index]);
                                   },
                                 ),
                               );

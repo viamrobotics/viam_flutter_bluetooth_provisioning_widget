@@ -19,11 +19,11 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool _isConnecting = false;
-  bool get isConnecting => _isConnecting;
-  set isConnecting(bool value) {
-    if (isConnecting == value) return;
-    _isConnecting = value;
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+  set isLoading(bool value) {
+    if (isLoading == value) return;
+    _isLoading = value;
     notifyListeners();
   }
 
@@ -69,9 +69,21 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
     await _scanBluetoothDevicesRepository.start();
   }
 
+  Future<void> stopScanning() async {
+    if (FlutterBluePlus.isScanningNow) {
+      try {
+        await FlutterBluePlus.stopScan();
+        // Give the Android BLE stack time to fully stop scanning (not great, but needed)
+        // Other functions we rely on (like disconnect) have a built-in Android delay of 2s
+        await Future.delayed(const Duration(seconds: 2));
+      } catch (e) {
+        debugPrint('Failed to stop scanning: ${e.toString()}');
+      }
+    }
+  }
+
   Future<bool> connect(BuildContext? context, BluetoothDevice device) async {
     try {
-      isConnecting = true;
       await _connectBluetoothDeviceRepository.connect(device);
       return true;
     } catch (e) {
@@ -80,8 +92,6 @@ class BluetoothScanningScreenViewModel extends ChangeNotifier {
         await _showErrorDialog(context, title: 'Error', error: 'Failed to connect to device');
       }
       return false;
-    } finally {
-      isConnecting = false;
     }
   }
 

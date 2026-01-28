@@ -12,7 +12,7 @@ class BluetoothProvisioningFlowViewModel extends ChangeNotifier {
 
   /// if not specified, the fragmentId read from the connected device will be used instead
   final String? fragmentId;
-  BluetoothDevice? get device => connectBluetoothDeviceRepository.device;
+  BluetoothDevice? get device => connectBluetoothDeviceRepository.connectedDevice;
 
   final RobotPart _mainRobotPart;
   final String _psk;

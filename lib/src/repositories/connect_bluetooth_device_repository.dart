@@ -1,21 +1,42 @@
 part of '../../viam_flutter_bluetooth_provisioning_widget.dart';
 
 class ConnectBluetoothDeviceRepository {
-  BluetoothDevice? get device => _device;
-  BluetoothDevice? _device;
+  BluetoothDevice? get connectedDevice => _connectedDevice;
+  BluetoothDevice? _connectedDevice;
 
-  Future<void> connect(BluetoothDevice device) async {
-    if (device.isConnected) {
-      _device = device;
+  Future<void> connect(BluetoothDevice newDevice) async {
+    if (newDevice.isConnected) {
+      _connectedDevice = newDevice;
       return;
     }
-    await device.connect();
-    _device = device;
+
+    // disconnect previous device
+    if (_connectedDevice?.isConnected == true) {
+      await _connectedDevice!.disconnect(androidDelay: 2000);
+    }
+
+    const maxAttempts = 3;
+    for (int attempt = 1; attempt <= maxAttempts; attempt++) {
+      try {
+        await newDevice.connect();
+        _connectedDevice = newDevice;
+        debugPrint('connected to device on attempt $attempt');
+        return;
+      } catch (e) {
+        if (attempt < maxAttempts) {
+          await Future.delayed(Duration(seconds: 2));
+          debugPrint('failed to connect to device on attempt $attempt, retrying, error: $e');
+        } else {
+          debugPrint('failed to connect to device after $maxAttempts attempts, stopping, error: $e');
+          rethrow;
+        }
+      }
+    }
   }
 
   Future<void> reconnect() async {
-    if (_device?.isConnected == false && _device != null) {
-      await connect(_device!);
+    if (_connectedDevice?.isConnected == false && _connectedDevice != null) {
+      await connect(_connectedDevice!);
       debugPrint('reconnected to device');
     }
   }
@@ -30,14 +51,14 @@ class ConnectBluetoothDeviceRepository {
     required String? fragmentId,
     required bool fragmentOverride,
   }) async {
-    if (_device == null || _device?.isConnected == false) {
+    if (_connectedDevice == null || _connectedDevice?.isConnected == false) {
       throw Exception('No connected device');
     }
 
-    final status = await _device!.readStatus();
+    final status = await _connectedDevice!.readStatus();
     // don't overwrite existing machine, hotspot provisioning also does this check
     if (!status.isConfigured) {
-      await _device!.writeRobotPartConfig(
+      await _connectedDevice!.writeRobotPartConfig(
         partId: mainRobotPart.id,
         secret: mainRobotPart.secret,
         apiKey: null,
@@ -45,35 +66,35 @@ class ConnectBluetoothDeviceRepository {
       );
     }
     if (ssid != null) {
-      await _device!.writeNetworkConfig(ssid: ssid, pw: password, psk: psk);
+      await _connectedDevice!.writeNetworkConfig(ssid: ssid, pw: password, psk: psk);
     }
     if (fragmentOverride) {
-      final fragmentIdToWrite = fragmentId ?? await _device!.readFragmentId();
+      final fragmentIdToWrite = fragmentId ?? await _connectedDevice!.readFragmentId();
       if (fragmentIdToWrite.isNotEmpty) {
         await _fragmentOverride(viam, fragmentIdToWrite, mainRobotPart, robot);
       }
     }
-    await _device!.exitProvisioning(psk: psk);
+    await _connectedDevice!.exitProvisioning(psk: psk);
   }
 
   Future<List<WifiNetwork>> readNetworkList() async {
-    if (_device == null || _device?.isConnected == false) {
+    if (_connectedDevice == null || _connectedDevice?.isConnected == false) {
       throw Exception('No connected device');
     }
 
-    final wifiNetworks = await _device!.readNetworkList();
+    final wifiNetworks = await _connectedDevice!.readNetworkList();
     return wifiNetworks.sorted((a, b) => b.signalStrength.compareTo(a.signalStrength));
   }
 
   /// Version check to compare against a specified minimum version
   /// If we can't read the version, it's also in a version below what we support
   Future<bool> isAgentVersionBelowMinimum(String minimumVersion) async {
-    if (_device == null || _device?.isConnected == false) {
+    if (_connectedDevice == null || _connectedDevice?.isConnected == false) {
       throw Exception('No connected device');
     }
 
     try {
-      final agentVersion = await _device!.readAgentVersion();
+      final agentVersion = await _connectedDevice!.readAgentVersion();
       return isVersionLower(currentVersionStr: agentVersion, minimumVersionStr: minimumVersion);
     } catch (e) {
       debugPrint('Error reading agent version: $e');
@@ -107,14 +128,14 @@ class ConnectBluetoothDeviceRepository {
   }
 
   Future<void> unlockPairing({required String psk}) async {
-    if (_device == null) {
+    if (_connectedDevice == null) {
       throw Exception('No connected device');
     }
-    if (_device!.isConnected) {
-      await _device!.connect();
+    if (_connectedDevice!.isConnected) {
+      await _connectedDevice!.connect();
     }
 
-    await _device!.unlockPairing(psk: psk);
+    await _connectedDevice!.unlockPairing(psk: psk);
   }
 
   Future<void> _fragmentOverride(Viam viam, String fragmentId, RobotPart robotPart, Robot robot) async {

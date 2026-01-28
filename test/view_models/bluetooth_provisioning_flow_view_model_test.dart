@@ -41,7 +41,7 @@ void main() {
       when(mockBluetoothService.characteristics).thenReturn(<BluetoothCharacteristic>[viamStatusCharacteristic]);
 
       mockConnectBluetoothDeviceRepository = MockConnectBluetoothDeviceRepository();
-      when(mockConnectBluetoothDeviceRepository.device).thenReturn(mockDevice);
+      when(mockConnectBluetoothDeviceRepository.connectedDevice).thenReturn(mockDevice);
       mockCheckingDeviceOnlineRepository = MockCheckingDeviceOnlineRepository();
       deviceOnlineStateStream = StreamController<DeviceOnlineState>.broadcast();
       when(mockCheckingDeviceOnlineRepository.deviceOnlineStateStream).thenAnswer((_) => deviceOnlineStateStream.stream);
