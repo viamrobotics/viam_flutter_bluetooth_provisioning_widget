@@ -1,3 +1,6 @@
+## 0.1.0
+- Fix connection issue on Android
+
 ## 0.0.37
 - Fix import conflicts with `viam_sdk`
 
