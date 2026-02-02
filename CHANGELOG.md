@@ -1,3 +1,6 @@
+## 0.1.0
+- Fix/workaround connection issue on Android (android-code: 133)
+
 ## 0.0.37
 - Fix import conflicts with `viam_sdk`
 
