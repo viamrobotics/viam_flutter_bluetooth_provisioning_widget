@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
       assert(Consts.apiKeyId.isNotEmpty, 'apiKeyId is empty');
       assert(Consts.apiKey.isNotEmpty, 'apiKey is empty');
       assert(Consts.organizationId.isNotEmpty, 'organizationId is empty');
+      assert(Consts.locationId.isNotEmpty, 'locationId is empty');
     } catch (e) {
       debugPrint('Error: $e');
       // To use this example app populate the consts.dart file with your own api Keys.

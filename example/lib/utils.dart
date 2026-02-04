@@ -7,10 +7,9 @@ import 'consts.dart';
 
 class Utils {
   static Future<(Robot robot, RobotPart mainPart)> createRobot(Viam viam) async {
-    final location = await viam.appClient.createLocation(Consts.organizationId, 'test-location-${Random().nextInt(1000)}');
-    final String robotName = "tester-${Random().nextInt(1000)}";
-    final robotId = await viam.appClient.newMachine(robotName, location.id);
-    debugPrint('created robot: $robotName, at location: ${location.name}');
+    final String robotName = "ble-provisioning-example-${Random().nextInt(1000)}";
+    final robotId = await viam.appClient.newMachine(robotName, Consts.locationId);
+    debugPrint('created robot: $robotName');
     final robot = await viam.appClient.getRobot(robotId);
     final mainPart = (await viam.appClient.listRobotParts(robotId)).firstWhere((element) => element.mainPart);
     return (robot, mainPart);

@@ -11,8 +11,8 @@ class Consts {
   static const String apiKeyId = 'your-api-key-id';
   static const String apiKey = 'your-api-key';
   static const String organizationId = 'your-organization-id';
-
-  static const String psk = 'viamsetup'; // if you specify a hotspot_password in viam-defaults.json this must be updated
+  static const String locationId = 'your-location-id';
+  static const String psk = 'viamsetup'; // if you specify a hotspot_password in viam-defaults.json this must match
 }
 ```
 
