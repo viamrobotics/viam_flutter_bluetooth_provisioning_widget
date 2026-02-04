@@ -128,7 +128,7 @@ class _ProvisionNewMachineScreenState extends State<ProvisionNewMachineScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (_robotName != null) Text('Provisioning machine named: $_robotName'),
+            if (_robotName != null) Text('Provisioning machine: $_robotName', textAlign: TextAlign.center),
             if (_robotName != null) const SizedBox(height: 16),
             Center(
               child: Column(
