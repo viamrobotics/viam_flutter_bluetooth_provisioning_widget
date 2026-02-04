@@ -7,7 +7,7 @@ import 'consts.dart';
 
 class Utils {
   static Future<(Robot robot, RobotPart mainPart)> createRobot(Viam viam) async {
-    final String robotName = "ble-provisioning-example-${Random().nextInt(1000)}";
+    final String robotName = "ble-provisioning-${Random().nextInt(1000)}";
     final robotId = await viam.appClient.newMachine(robotName, Consts.locationId);
     debugPrint('created robot: $robotName');
     final robot = await viam.appClient.getRobot(robotId);
