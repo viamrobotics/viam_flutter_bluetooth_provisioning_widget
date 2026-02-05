@@ -4,6 +4,7 @@ class Consts {
   static const String apiKey = '';
 
   static const String organizationId = '';
+  static const String locationId = '';
 
   /// defaults to 'viamsetup', but if your viam-agent network configuration: https://docs.viam.com/manage/reference/viam-agent/#network_configuration
   /// has a value set for hotspot_password that will be used instead.
