@@ -6,7 +6,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:collection/collection.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:viam_flutter_provisioning/viam_bluetooth_provisioning.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:viam_sdk/viam_sdk.dart' show Viam;
