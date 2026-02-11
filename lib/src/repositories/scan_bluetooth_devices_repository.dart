@@ -32,16 +32,6 @@ class ScanBluetoothDevicesRepository {
     _deviceIds.clear();
   }
 
-  Future<void> start() async {
-    if (Platform.isAndroid) {
-      // Need to explicitly request permissions on Android
-      // iOS handles this automatically when you initialize bluetoothProvisioning
-      await _checkPermissions();
-    } else {
-      await initialize();
-    }
-  }
-
   Future<void> initialize() async {
     viamBluetoothProvisioning.initialize(poweredOn: (poweredOn) async {
       if (poweredOn) {
@@ -65,14 +55,5 @@ class ScanBluetoothDevicesRepository {
       }
       _uniqueDevicesController.add(List.from(_uniqueDevices));
     });
-  }
-
-  Future<void> _checkPermissions() async {
-    final scanStatus = await Permission.bluetoothScan.request();
-    final connectStatus = await Permission.bluetoothConnect.request();
-    final locationStatus = await Permission.locationWhenInUse.request();
-    if (scanStatus == PermissionStatus.granted && connectStatus == PermissionStatus.granted && locationStatus == PermissionStatus.granted) {
-      initialize();
-    }
   }
 }
