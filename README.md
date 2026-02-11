@@ -79,40 +79,64 @@ Before starting a provisioning flow, you need to:
 ### Basic Example
 
 ```dart
+import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:viam_flutter_bluetooth_provisioning_widget/viam_flutter_bluetooth_provisioning_widget.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-// Initialize Viam and get robot
-final viam = await Viam.withApiKey(apiKeyId, apiKey);
-final robot = await viam.appClient.getRobot(robotId);
-final mainPart = (await viam.appClient.listRobotParts(robot.id)).firstWhere((element) => element.mainPart);
+// Ask for permissions (this package does not handle Bluetooth permissions)
+Future<bool> hasBluetoothPermissions() async {
+  if (Platform.isAndroid) {
+    final scanStatus = await Permission.bluetoothScan.request();
+    final connectStatus = await Permission.bluetoothConnect.request();
+    final locationStatus = await Permission.locationWhenInUse.request();
 
-// Initialize and navigate to flow
-Navigator.of(context).push(MaterialPageRoute(
-  builder: (context) => BluetoothProvisioningFlow(
-    viam: viam,
-    robot: robot,
-    isNewMachine: true,
-    mainRobotPart: mainPart,
-    psk: 'viamsetup', // defaults to 'viamsetup', but will use your 'hotspot_password' from viam-defaults.json
-    fragmentId: null, // when passing null, the fragment will be read from viam-defaults.json
-    agentMinimumVersion: '0.20.0',
-    copy: BluetoothProvisioningFlowCopy(
-      checkingOnlineSuccessSubtitle: '${robot.name} is connected and ready to use.',
+    return (scanStatus == PermissionStatus.granted &&
+        connectStatus == PermissionStatus.granted &&
+        locationStatus == PermissionStatus.granted);
+  } else {
+    // iOS will ask for permissions when try to start scanning
+    // but you can also change this to ask before entering the flow
+    return true;
+  }
+}
+
+Future<void> startFlow(BuildContext context) async {
+  // Initialize Viam and get robot
+  final viam = await Viam.withApiKey('', '');
+  final robot = await viam.appClient.getRobot('');
+  final mainPart = (await viam.appClient.listRobotParts(robot.id)).firstWhere((element) => element.mainPart);
+
+  // Initialize and navigate to flow
+  if (!(await hasBluetoothPermissions())) return;
+  if (!context.mounted) return;
+  Navigator.of(context).push(MaterialPageRoute(
+    builder: (context) => BluetoothProvisioningFlow(
+      viam: viam,
+      robot: robot,
+      isNewMachine: true,
+      mainRobotPart: mainPart,
+      psk: 'viamsetup', // defaults to 'viamsetup', but will use your 'hotspot_password' from viam-defaults.json
+      fragmentId: null, // when passing null, the fragment will be read from viam-defaults.json
+      agentMinimumVersion: '0.20.0',
+      copy: BluetoothProvisioningFlowCopy(
+        checkingOnlineSuccessSubtitle: '${robot.name} is connected and ready to use.',
+      ),
+      onSuccess: () {
+        Navigator.of(context).pop();
+      },
+      existingMachineExit: () {
+        Navigator.of(context).pop();
+      },
+      nonexistentMachineExit: () {
+        Navigator.of(context).pop();
+      },
+      agentMinimumVersionExit: () {
+        Navigator.of(context).pop();
+      },
     ),
-    onSuccess: () {
-      Navigator.of(context).pop();
-    },
-    existingMachineExit: () {
-      Navigator.of(context).pop();
-    },
-    nonexistentMachineExit: () {
-      Navigator.of(context).pop();
-    },
-    agentMinimumVersionExit: () {
-      Navigator.of(context).pop();
-    },
-  ),
-));
+  ));
+}
 ```
 
 For a complete working example with either standard or tethering flows, see the [example app](example/README.md).
