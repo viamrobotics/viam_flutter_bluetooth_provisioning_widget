@@ -24,6 +24,7 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   integration_test:
     sdk: flutter
+  patrol: ^4.1.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -35,3 +36,10 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+patrol:
+  app_name: My App
+  android:
+    package_name: com.example.viam_example_app
+  ios:
+    bundle_id: com.example.viamExampleApp
