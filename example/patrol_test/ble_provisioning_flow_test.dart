@@ -65,12 +65,12 @@ void main() {
       }
 
       await $(find.byKey(const ValueKey('device-tile')))
-          .waitUntilVisible(timeout: const Duration(seconds: 60));
+          .waitUntilVisible(timeout: const Duration(seconds: 45));
       await $(find.byKey(const ValueKey('device-tile'))).first.tap();
 
       // WiFi Screen
       await $('Choose your Wi-Fi')
-          .waitUntilVisible(timeout: const Duration(seconds: 60));
+          .waitUntilVisible(timeout: const Duration(seconds: 45));
 
       // WiFi Network Selection
       await $(testWifiSsid).scrollTo(scrollDirection: AxisDirection.down).tap();
