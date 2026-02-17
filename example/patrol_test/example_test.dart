@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:patrol/patrol.dart';
 
+// TODO: Change this to the real BLE integration test 
 void main() {
   patrolTest(
     'counter state is the same after going to home and switching apps',
