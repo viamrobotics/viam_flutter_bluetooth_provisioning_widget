@@ -18,10 +18,8 @@ import 'package:viam_example_app/main.dart';
 // Note: Each run creates a new robot in your Viam organization. Clean up test
 // robots afterwards if needed.
 // ──────────────────────────────────────────────────────────────────────────────
-// const String testWifiSsid = 'YOUR_WIFI_SSID';
-// const String testWifiPassword = 'YOUR_WIFI_PASSWORD';
-const String testWifiSsid = 'Viam';
-const String testWifiPassword = 'checkmate';
+const String testWifiSsid = 'YOUR_WIFI_SSID';
+const String testWifiPassword = 'YOUR_WIFI_PASSWORD';
 
 void main() {
   patrolTest(
@@ -106,8 +104,7 @@ void main() {
       // Polls Viam API every 5s. Can take 1-3 minutes.
       // Try waiting for success screen; if it times out, check for error screen.
       try {
-        await $(find.byKey(const ValueKey('device-connected-viam')))
-            .waitUntilVisible(timeout: const Duration(minutes: 2));
+        await $(find.byKey(const ValueKey('device-connected-viam'))).waitUntilVisible(timeout: const Duration(minutes: 2));
       } catch (_) {
         if (find.byKey(const ValueKey('device-error')).evaluate().isNotEmpty) {
           fail('Device showed "Error during setup" instead of coming online.');
