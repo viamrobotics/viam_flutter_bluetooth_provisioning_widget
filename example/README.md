@@ -27,7 +27,7 @@ flutter run
 - **Physical Device**: Must be run on a physical device (not a simulator)
 - **viam-agent Version**: Machine must be running `0.20.0`+ for standard flow, `0.21.0`+ for tethering
 
-## Running Integration Tests on a Physical iOS Device
+## Running Flutter Integration Tests with Patrol on a Physical iOS Device
 
 Running [Patrol](https://patrol.leancode.co/) integration tests on a physical iOS device
 requires code signing via Fastlane Match.
@@ -54,7 +54,7 @@ requires code signing via Fastlane Match.
 ### Run the test
 
 ```bash
-patrol test -t integration_test/test.dart
+patrol test -t patrol_test/ble_provisioning_flow_test.dart --release
 ```
 
 ### Admin: Creating or renewing profiles
