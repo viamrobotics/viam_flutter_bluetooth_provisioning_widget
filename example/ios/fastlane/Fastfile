@@ -1,0 +1,22 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Fetch certs and configure Xcode project signing for RunnerUITests"
+  lane :certs do
+    match(type: "development", readonly: true)
+
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "Runner.xcodeproj",
+      team_id: "353W9N5AA3",
+      targets: ["RunnerUITests"],
+      code_sign_identity: "Apple Development",
+      profile_name: "match Development com.example.viamExampleApp.RunnerUITests.xctrunner"
+    )
+  end
+
+  desc "Sync certificates (creates new ones if needed, use for first-time setup)"
+  lane :setup_certs do
+    match(type: "development")
+  end
+end
