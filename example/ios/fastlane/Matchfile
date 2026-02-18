@@ -1,0 +1,7 @@
+git_url("https://github.com/viamrobotics/viam-ios-certs.git")
+
+storage_mode("git")
+
+type("development")
+
+app_identifier(["com.example.viamExampleApp", "com.example.viamExampleApp.RunnerUITests.xctrunner"])

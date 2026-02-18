@@ -1,0 +1,6 @@
+app_identifier("com.example.viamExampleApp")
+
+# TODO: Set your Apple Developer Portal email
+# apple_id("your-email@viam.com")
+
+team_id("353W9N5AA3")
