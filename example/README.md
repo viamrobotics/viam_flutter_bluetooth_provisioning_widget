@@ -26,3 +26,45 @@ flutter run
 
 - **Physical Device**: Must be run on a physical device (not a simulator)
 - **viam-agent Version**: Machine must be running `0.20.0`+ for standard flow, `0.21.0`+ for tethering
+
+## Running Integration Tests on a Physical iOS Device
+
+Running [Patrol](https://patrol.leancode.co/) integration tests on a physical iOS device
+requires code signing via Fastlane Match.
+
+### First-time setup
+
+1. Install Fastlane:
+
+   ```bash
+   brew install fastlane
+   ```
+
+2. Fetch the signing credentials:
+
+   ```bash
+   cd ios
+   fastlane certs
+   ```
+
+   This downloads the provisioning profile and certificate from the
+   [viam-ios-certs](https://github.com/viamrobotics/viam-ios-certs) repo
+   and configures the RunnerUITests target for manual signing.
+
+### Run the test
+
+```bash
+patrol test -t integration_test/test.dart
+```
+
+### Admin: Creating or renewing profiles
+
+If profiles have expired or a new signing target is needed:
+
+```bash
+cd ios
+fastlane setup_certs
+```
+
+This creates new certificates/profiles on the Apple Developer Portal and
+pushes them to the certs repo.
