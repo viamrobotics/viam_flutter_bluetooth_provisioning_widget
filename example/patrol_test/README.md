@@ -5,9 +5,10 @@ requires code signing via Fastlane Match.
 
 ### First-time setup
 
-1. Install Fastlane:
+1. Install Patrol CLI and Fastlane:
 
    ```bash
+   flutter pub global activate patrol_cli
    brew install fastlane
    ```
 

@@ -1,4 +1,5 @@
 default_platform(:ios)
+skip_docs
 
 platform :ios do
   desc "Fetch certs and configure Xcode project signing for RunnerUITests"
