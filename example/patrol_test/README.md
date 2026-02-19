@@ -25,6 +25,7 @@ requires code signing via Fastlane Match.
 ### Run the test
 
 ```bash
+cd "$(git rev-parse --show-toplevel)/example"
 patrol test -t patrol_test/ble_provisioning_flow_test.dart --release
 ```
 
