@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+#
+# Run BLE provisioning integration tests from anywhere.
+#
+# Usage:
+#   bash <(curl -fsSL https://raw.githubusercontent.com/viamrobotics/viam_flutter_bluetooth_provisioning_widget/main/scripts/run_integration_test.sh) /path/to/.env
+#
+# Required .env variables:
+#   API_KEY, API_KEY_ID, ORG_ID, LOCATION_ID, WIFI_SSID, WIFI_PASSWORD, DEVICE
+#   MATCH_PASSWORD, MATCH_KEYCHAIN_PASSWORD  (iOS only)
+#   PLATFORM  ("ios" or "android")
+#
+
+set -euo pipefail
+
+info() { echo "==> $*"; }
+die()  { echo "FAIL: $*" >&2; exit 1; }
+
+# ── Load .env file from first argument ───────────────────────────────────────
+
+ENV_FILE="${1:-}"
+[[ -z "$ENV_FILE" ]] && die "Usage: $0 <path-to-env-file>"
+[[ -f "$ENV_FILE" ]] || die "Env file not found: $ENV_FILE"
+
+set -a
+# shellcheck source=/dev/null
+source "$ENV_FILE"
+set +a
+
+PLATFORM="${PLATFORM:-}"
+[[ "$PLATFORM" != "ios" && "$PLATFORM" != "android" ]] && die "PLATFORM must be set to 'ios' or 'android' in your .env file"
+
+# ── Validate required env vars ───────────────────────────────────────────────
+
+REQUIRED_VARS=(API_KEY API_KEY_ID ORG_ID LOCATION_ID WIFI_SSID WIFI_PASSWORD DEVICE)
+[[ "$PLATFORM" == "ios" ]] && REQUIRED_VARS+=(MATCH_PASSWORD MATCH_KEYCHAIN_PASSWORD)
+
+for var in "${REQUIRED_VARS[@]}"; do
+  [[ -z "${!var:-}" ]] && die "Missing required variable: $var"
+done
+
+info "All required env vars present (platform: $PLATFORM)"
+
+# ── Temp directory with automatic cleanup ────────────────────────────────────
+
+TMPDIR_ROOT="$(mktemp -d)"
+trap 'rm -rf "$TMPDIR_ROOT"' EXIT
+info "Working in: $TMPDIR_ROOT"
+
+# ── Clone repo ───────────────────────────────────────────────────────────────
+
+git clone --depth 1 https://github.com/viamrobotics/viam_flutter_bluetooth_provisioning_widget.git "$TMPDIR_ROOT/repo"
+EXAMPLE_DIR="$TMPDIR_ROOT/repo/example"
+
+# ── Install tools ────────────────────────────────────────────────────────────
+
+info "Installing Patrol CLI ..."
+flutter pub global activate patrol_cli
+
+if [[ "$PLATFORM" == "ios" ]] && ! command -v fastlane &>/dev/null; then
+  info "Installing Fastlane ..."
+  brew install fastlane
+fi
+
+# ── Inject credentials into source files ─────────────────────────────────────
+
+info "Injecting credentials ..."
+
+sed -i.bak \
+  -e "s|static const String apiKeyId = '';|static const String apiKeyId = '$API_KEY_ID';|" \
+  -e "s|static const String apiKey = '';|static const String apiKey = '$API_KEY';|" \
+  -e "s|static const String organizationId = '';|static const String organizationId = '$ORG_ID';|" \
+  -e "s|static const String locationId = '';|static const String locationId = '$LOCATION_ID';|" \
+  "$EXAMPLE_DIR/lib/consts.dart"
+
+sed -i.bak \
+  -e "s|const String testWifiSsid = 'YOUR_WIFI_SSID';|const String testWifiSsid = '$WIFI_SSID';|" \
+  -e "s|const String testWifiPassword = 'YOUR_WIFI_PASSWORD';|const String testWifiPassword = '$WIFI_PASSWORD';|" \
+  "$EXAMPLE_DIR/patrol_test/ble_provisioning_flow_test.dart"
+
+rm -f "$EXAMPLE_DIR"/lib/consts.dart.bak "$EXAMPLE_DIR"/patrol_test/ble_provisioning_flow_test.dart.bak
+
+# ── Fetch signing certificates (iOS only) ────────────────────────────────────
+
+if [[ "$PLATFORM" == "ios" ]]; then
+  info "Fetching iOS signing certificates ..."
+  export MATCH_PASSWORD
+  export MATCH_KEYCHAIN_PASSWORD
+  (cd "$EXAMPLE_DIR/ios" && fastlane certs)
+fi
+
+# ── Run the test ─────────────────────────────────────────────────────────────
+
+info "Running flutter pub get ..."
+(cd "$EXAMPLE_DIR" && flutter pub get)
+
+info "Running patrol integration test on device: $DEVICE ..."
+TEST_EXIT=0
+(cd "$EXAMPLE_DIR" && patrol test -t patrol_test/ble_provisioning_flow_test.dart --release -d "$DEVICE") || TEST_EXIT=$?
+
+if [[ $TEST_EXIT -eq 0 ]]; then
+  echo "PASSED"
+else
+  echo "FAILED (exit code: $TEST_EXIT)"
+fi
+
+exit $TEST_EXIT
