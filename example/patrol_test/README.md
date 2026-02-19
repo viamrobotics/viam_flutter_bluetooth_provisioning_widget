@@ -15,7 +15,7 @@ requires code signing via Fastlane Match.
 2. Fetch the signing credentials:
 
    ```bash
-   cd ios
+   cd ../ios
    fastlane certs
    ```
 
