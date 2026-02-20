@@ -32,8 +32,9 @@ ENV_FILE="${1:-}"
 [[ -z "$ENV_FILE" ]] && die "Usage: $0 <path-to-env-file>"
 [[ -f "$ENV_FILE" ]] || die "Env file not found: $ENV_FILE"
 
+# Export everything so fastlane can access it
 set -a
-# shellcheck source=/dev/null
+# Read all variables from the .env file
 source "$ENV_FILE"
 set +a
 
