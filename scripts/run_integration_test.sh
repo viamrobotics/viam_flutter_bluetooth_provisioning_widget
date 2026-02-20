@@ -13,8 +13,7 @@
 
 set -euo pipefail
 
-info() { echo "==> $*"; }
-die()  { echo "FAIL: $*" >&2; exit 1; }
+die() { echo "FAIL: $*" >&2; exit 1; }
 
 # ── Load .env file from first argument ───────────────────────────────────────
 
@@ -39,13 +38,13 @@ for var in "${REQUIRED_VARS[@]}"; do
   [[ -z "${!var:-}" ]] && die "Missing required variable: $var"
 done
 
-info "All required env vars present (platform: $PLATFORM)"
+echo "All required env vars present (platform: $PLATFORM)"
 
 # ── Temp directory with automatic cleanup ────────────────────────────────────
 
 TMPDIR_ROOT="$(mktemp -d)"
 trap 'rm -rf "$TMPDIR_ROOT"' EXIT
-info "Working in: $TMPDIR_ROOT"
+echo "Working in: $TMPDIR_ROOT"
 
 # ── Clone repo ───────────────────────────────────────────────────────────────
 
@@ -54,17 +53,17 @@ EXAMPLE_DIR="$TMPDIR_ROOT/repo/example"
 
 # ── Install tools ────────────────────────────────────────────────────────────
 
-info "Installing Patrol CLI ..."
+echo "Installing Patrol CLI ..."
 flutter pub global activate patrol_cli
 
 if [[ "$PLATFORM" == "ios" ]] && ! command -v fastlane &>/dev/null; then
-  info "Installing Fastlane ..."
+  echo "Installing Fastlane ..."
   brew install fastlane
 fi
 
 # ── Inject credentials into source files ─────────────────────────────────────
 
-info "Injecting credentials ..."
+echo "Injecting credentials ..."
 
 sed -i.bak \
   -e "s|static const String apiKeyId = '';|static const String apiKeyId = '$API_KEY_ID';|" \
@@ -78,25 +77,21 @@ sed -i.bak \
   -e "s|const String testWifiPassword = 'YOUR_WIFI_PASSWORD';|const String testWifiPassword = '$WIFI_PASSWORD';|" \
   "$EXAMPLE_DIR/patrol_test/ble_provisioning_flow_test.dart"
 
-rm -f "$EXAMPLE_DIR"/lib/consts.dart.bak "$EXAMPLE_DIR"/patrol_test/ble_provisioning_flow_test.dart.bak
-
 # ── Fetch signing certificates (iOS only) ────────────────────────────────────
 
 if [[ "$PLATFORM" == "ios" ]]; then
-  info "Fetching iOS signing certificates ..."
-  export MATCH_PASSWORD
-  export MATCH_KEYCHAIN_PASSWORD
+  echo "Fetching iOS signing certificates ..."
   (cd "$EXAMPLE_DIR/ios" && fastlane certs)
 fi
 
 # ── Run the test ─────────────────────────────────────────────────────────────
 
-info "Running flutter pub get ..."
+echo "Running flutter pub get ..."
 (cd "$EXAMPLE_DIR" && flutter pub get)
 
-info "Running patrol integration test on device: $DEVICE ..."
+echo "Running patrol integration test on device: $DEVICE ..."
 TEST_EXIT=0
-(cd "$EXAMPLE_DIR" && patrol test -t patrol_test/ble_provisioning_flow_test.dart --release -d "$DEVICE") || TEST_EXIT=$?
+(cd "$EXAMPLE_DIR" && patrol test -t patrol_test/ble_provisioning_flow_test.dart --release --verbose -d "$DEVICE") || TEST_EXIT=$?
 
 if [[ $TEST_EXIT -eq 0 ]]; then
   echo "PASSED"
