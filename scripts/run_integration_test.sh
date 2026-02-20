@@ -3,6 +3,8 @@
 # This script runs BLE provisioning integration tests. It is intended to be run directly from a download, with a command such as:
 # TODO: fill this in with the correct "bash <(curl -fsSL ....)" command
 
+# In order to succesfully run this test you need to have a physical device connected to your computer and a pi that is in provisioning mode. 
+
 # By default, this script will run the test in release mode for iOS and debug mode for Android. You can override this in the .env file.
 
 # This script requires that you pass it a .env file that contains the following variables.
