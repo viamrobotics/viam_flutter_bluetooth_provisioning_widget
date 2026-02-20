@@ -21,8 +21,6 @@
 #   RELEASE=true|false   (default: true for iOS, false for Android)
 #   VERBOSE=true|false   (default: true)
 
-
-
 set -euo pipefail
 
 die() { echo "FAIL: $*" >&2; exit 1; }
