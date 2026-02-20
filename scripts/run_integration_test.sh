@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
-#
-# Run BLE provisioning integration tests from anywhere.
-#
-# Usage:
-#   bash <(curl -fsSL https://raw.githubusercontent.com/viamrobotics/viam_flutter_bluetooth_provisioning_widget/main/scripts/run_integration_test.sh) /path/to/.env
-#
+
+# This script runs BLE provisioning integration tests. It is intended to be run directly from a download, with a command such as:
+# bash <(curl -fsSL https://raw.githubusercontent.com/viamrobotics/viam_flutter_bluetooth_provisioning_widget/main/scripts/run_integration_test.sh) /path/to/.env
+
 # Required .env variables:
 #   API_KEY, API_KEY_ID, ORG_ID, LOCATION_ID, WIFI_SSID, WIFI_PASSWORD, DEVICE
 #   MATCH_PASSWORD, MATCH_KEYCHAIN_PASSWORD  (iOS only)
 #   PLATFORM  ("ios" or "android")
 #
+# Optional .env variables:
+#   RELEASE   (default: true) set to "false" to run in debug mode
+#   VERBOSE   (default: true) set to "false" to disable verbose output
 
 set -euo pipefail
 
 die() { echo "FAIL: $*" >&2; exit 1; }
 
-# ── Load .env file from first argument ───────────────────────────────────────
-
+# Load .env file from first argument
 ENV_FILE="${1:-}"
 [[ -z "$ENV_FILE" ]] && die "Usage: $0 <path-to-env-file>"
 [[ -f "$ENV_FILE" ]] || die "Env file not found: $ENV_FILE"
@@ -26,11 +26,9 @@ set -a
 source "$ENV_FILE"
 set +a
 
-PLATFORM="${PLATFORM:-}"
-[[ "$PLATFORM" != "ios" && "$PLATFORM" != "android" ]] && die "PLATFORM must be set to 'ios' or 'android' in your .env file"
+[[ "${PLATFORM:-}" != "ios" && "${PLATFORM:-}" != "android" ]] && die "PLATFORM must be set to 'ios' or 'android' in your .env file"
 
-# ── Validate required env vars ───────────────────────────────────────────────
-
+# Validate required env vars
 REQUIRED_VARS=(API_KEY API_KEY_ID ORG_ID LOCATION_ID WIFI_SSID WIFI_PASSWORD DEVICE)
 [[ "$PLATFORM" == "ios" ]] && REQUIRED_VARS+=(MATCH_PASSWORD MATCH_KEYCHAIN_PASSWORD)
 
@@ -40,19 +38,15 @@ done
 
 echo "All required env vars present (platform: $PLATFORM)"
 
-# ── Temp directory with automatic cleanup ────────────────────────────────────
-
+# Clone repo into a temp directory that is automatically cleaned up on exit
 TMPDIR_ROOT="$(mktemp -d)"
 trap 'rm -rf "$TMPDIR_ROOT"' EXIT
 echo "Working in: $TMPDIR_ROOT"
 
-# ── Clone repo ───────────────────────────────────────────────────────────────
-
 git clone --depth 1 https://github.com/viamrobotics/viam_flutter_bluetooth_provisioning_widget.git "$TMPDIR_ROOT/repo"
 EXAMPLE_DIR="$TMPDIR_ROOT/repo/example"
 
-# ── Install tools ────────────────────────────────────────────────────────────
-
+# Install tools
 echo "Installing Patrol CLI ..."
 flutter pub global activate patrol_cli
 
@@ -61,8 +55,7 @@ if [[ "$PLATFORM" == "ios" ]] && ! command -v fastlane &>/dev/null; then
   brew install fastlane
 fi
 
-# ── Inject credentials into source files ─────────────────────────────────────
-
+# Inject credentials into source files
 echo "Injecting credentials ..."
 
 sed -i.bak \
@@ -77,21 +70,23 @@ sed -i.bak \
   -e "s|const String testWifiPassword = 'YOUR_WIFI_PASSWORD';|const String testWifiPassword = '$WIFI_PASSWORD';|" \
   "$EXAMPLE_DIR/patrol_test/ble_provisioning_flow_test.dart"
 
-# ── Fetch signing certificates (iOS only) ────────────────────────────────────
-
+# Fetch signing certificates (iOS only)
 if [[ "$PLATFORM" == "ios" ]]; then
   echo "Fetching iOS signing certificates ..."
   (cd "$EXAMPLE_DIR/ios" && fastlane certs)
 fi
 
-# ── Run the test ─────────────────────────────────────────────────────────────
-
+# Run the test
 echo "Running flutter pub get ..."
 (cd "$EXAMPLE_DIR" && flutter pub get)
 
+PATROL_FLAGS=()
+[[ "${RELEASE:-true}" != "false" ]] && PATROL_FLAGS+=(--release)
+[[ "${VERBOSE:-true}" != "false" ]] && PATROL_FLAGS+=(--verbose)
+
 echo "Running patrol integration test on device: $DEVICE ..."
 TEST_EXIT=0
-(cd "$EXAMPLE_DIR" && patrol test -t patrol_test/ble_provisioning_flow_test.dart --release --verbose -d "$DEVICE") || TEST_EXIT=$?
+(cd "$EXAMPLE_DIR" && patrol test -t patrol_test/ble_provisioning_flow_test.dart "${PATROL_FLAGS[@]+"${PATROL_FLAGS[@]}"}" -d "$DEVICE") || TEST_EXIT=$?
 
 if [[ $TEST_EXIT -eq 0 ]]; then
   echo "PASSED"
