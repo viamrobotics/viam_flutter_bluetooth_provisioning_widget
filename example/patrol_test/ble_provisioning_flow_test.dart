@@ -39,6 +39,7 @@ void main() {
 
       // iOS: Local Network permission
       if (Platform.isIOS) {
+        await $.pumpAndSettle();
         if (await $.platform.mobile.isPermissionDialogVisible()) {
           await $.platform.mobile.grantPermissionWhenInUse();
         }
