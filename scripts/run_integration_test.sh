@@ -3,14 +3,25 @@
 # This script runs BLE provisioning integration tests. It is intended to be run directly from a download, with a command such as:
 # bash <(curl -fsSL https://raw.githubusercontent.com/viamrobotics/viam_flutter_bluetooth_provisioning_widget/main/scripts/run_integration_test.sh) /path/to/.env
 
-# Required .env variables:
-#   API_KEY, API_KEY_ID, ORG_ID, LOCATION_ID, WIFI_SSID, WIFI_PASSWORD, DEVICE
-#   MATCH_PASSWORD, MATCH_KEYCHAIN_PASSWORD  (iOS only)
+# By default, this script will run the test in release mode for iOS and debug mode for Android. You can override this in the .env file.
+
+# This script requires that you pass it a .env file that contains the following variables.
+#   API_KEY
+#   API_KEY_ID
+#   ORG_ID
+#   LOCATION_ID
+#   WIFI_SSID
+#   WIFI_PASSWORD
+#   DEVICE
 #   PLATFORM  ("ios" or "android")
-#
+#   MATCH_PASSWORD (iOS only)
+#   MATCH_KEYCHAIN_PASSWORD (iOS only)
+
 # Optional .env variables:
-#   RELEASE   (default: true) set to "false" to run in debug mode
-#   VERBOSE   (default: true) set to "false" to disable verbose output
+#   RELEASE=true|false   (default: true for iOS, false for Android)
+#   VERBOSE=true|false   (default: true)
+
+
 
 set -euo pipefail
 
@@ -80,8 +91,13 @@ fi
 echo "Running flutter pub get ..."
 (cd "$EXAMPLE_DIR" && flutter pub get)
 
+# Default: release on for iOS, off for Android. Verbose always on.
 PATROL_FLAGS=()
-[[ "${RELEASE:-true}" != "false" ]] && PATROL_FLAGS+=(--release)
+if [[ "$PLATFORM" == "ios" ]]; then
+  [[ "${RELEASE:-true}" != "false" ]] && PATROL_FLAGS+=(--release)
+else
+  [[ "${RELEASE:-false}" != "false" ]] && PATROL_FLAGS+=(--release)
+fi
 [[ "${VERBOSE:-true}" != "false" ]] && PATROL_FLAGS+=(--verbose)
 
 echo "Running patrol integration test on device: $DEVICE ..."
