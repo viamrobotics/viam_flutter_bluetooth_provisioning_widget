@@ -22,12 +22,15 @@ void main() {
 
       // Android permissions (Location may not appear on Android 12+)
       if (Platform.isAndroid) {
+        await $.pumpAndSettle();
         if (await $.platform.mobile.isPermissionDialogVisible()) {
           await $.platform.mobile.grantPermissionWhenInUse(); // Bluetooth Scan
         }
+        await $.pumpAndSettle();
         if (await $.platform.mobile.isPermissionDialogVisible()) {
           await $.platform.mobile.grantPermissionWhenInUse(); // Bluetooth Connect
         }
+        await $.pumpAndSettle();
         if (await $.platform.mobile.isPermissionDialogVisible()) {
           await $.platform.mobile.grantPermissionWhenInUse(); // Location
         }
@@ -46,8 +49,7 @@ void main() {
       }
 
       // Wait for robot creation
-      await $(find.byKey(const ValueKey('screen-1-cta')))
-          .waitUntilVisible(timeout: const Duration(seconds: 45));
+      await $(find.byKey(const ValueKey('screen-1-cta'))).waitUntilVisible(timeout: const Duration(seconds: 45));
 
       // IntroScreenOne
       await $(find.byKey(const ValueKey('screen-1-cta'))).tap();
@@ -60,18 +62,17 @@ void main() {
 
       // BluetoothScanningScreen — iOS: Bluetooth permission
       if (Platform.isIOS) {
+        await $.pumpAndSettle();
         if (await $.platform.mobile.isPermissionDialogVisible()) {
           await $.platform.mobile.grantPermissionWhenInUse();
         }
       }
 
-      await $(find.byKey(const ValueKey('device-tile')))
-          .waitUntilVisible(timeout: const Duration(seconds: 45));
+      await $(find.byKey(const ValueKey('device-tile'))).waitUntilVisible(timeout: const Duration(seconds: 45));
       await $(find.byKey(const ValueKey('device-tile'))).first.tap();
 
       // WiFi Screen
-      await $('Choose your Wi-Fi')
-          .waitUntilVisible(timeout: const Duration(seconds: 45));
+      await $('Choose your Wi-Fi').waitUntilVisible(timeout: const Duration(seconds: 45));
 
       // WiFi Network Selection
       await $(testWifiSsid).scrollTo(scrollDirection: AxisDirection.down).tap();
@@ -83,8 +84,7 @@ void main() {
 
       // Device Online Check
       try {
-        await $(find.byKey(const ValueKey('device-connected-viam')))
-            .waitUntilVisible(timeout: const Duration(minutes: 2));
+        await $(find.byKey(const ValueKey('device-connected-viam'))).waitUntilVisible(timeout: const Duration(minutes: 2));
       } catch (_) {
         if (find.byKey(const ValueKey('device-error')).evaluate().isNotEmpty) {
           fail('Device showed "Error during setup" instead of coming online.');
