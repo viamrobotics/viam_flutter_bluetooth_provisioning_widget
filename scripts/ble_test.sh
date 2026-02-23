@@ -64,11 +64,14 @@ EXAMPLE_DIR="$TMPDIR_ROOT/repo/example"
 
 # Check prerequisites
 command -v flutter &>/dev/null || die "Flutter is not installed. See https://docs.flutter.dev/get-started/install"
+echo "✓ Flutter found"
 
 if [[ "$PLATFORM" == "ios" ]]; then
   command -v xcodebuild &>/dev/null || die "Xcode is not installed. See https://developer.apple.com/xcode/"
+  echo "✓ Xcode found"
 elif [[ "$PLATFORM" == "android" ]]; then
   [[ -d "${ANDROID_HOME:-${ANDROID_SDK_ROOT:-}}" ]] || die "Android Studio/SDK is not installed. See https://developer.android.com/studio"
+  echo "✓ Android SDK found"
 fi
 
 # Install tools
