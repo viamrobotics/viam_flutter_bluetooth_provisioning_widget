@@ -6,10 +6,10 @@
 # By default, this script will run the test in release mode for iOS and debug mode for Android. You can override this in the .env file.
 
 # Prerequisites:
-#   - A physical device connected to your computer
-#   - A Pi in provisioning mode.
-#   - On macOS, Flutter will be installed automatically via Homebrew if not present.
-#   - On other platforms, install Flutter before running: https://docs.flutter.dev/get-started/install
+#   - A physical mobile device connected to your computer
+#   - A Raspberry Pi in provisioning mode
+#   - Flutter (https://docs.flutter.dev/get-started/install)
+#   - Xcode (iOS) or Android Studio (Android)
 
 # This script requires that you pass it a .env file that contains the following variables.
 #   API_KEY
@@ -62,16 +62,16 @@ echo "Working in: $TMPDIR_ROOT"
 git clone --depth 1 https://github.com/viamrobotics/viam_flutter_bluetooth_provisioning_widget.git "$TMPDIR_ROOT/repo"
 EXAMPLE_DIR="$TMPDIR_ROOT/repo/example"
 
-# Install tools
-if ! command -v flutter &>/dev/null; then
-  if [[ "$(uname)" == "Darwin" ]]; then
-    echo "Flutter not found. Installing via Homebrew ..."
-    brew install --cask flutter
-  else
-    die "Flutter is not installed. See https://docs.flutter.dev/get-started/install"
-  fi
+# Check prerequisites
+command -v flutter &>/dev/null || die "Flutter is not installed. See https://docs.flutter.dev/get-started/install"
+
+if [[ "$PLATFORM" == "ios" ]]; then
+  command -v xcodebuild &>/dev/null || die "Xcode is not installed. See https://developer.apple.com/xcode/"
+elif [[ "$PLATFORM" == "android" ]]; then
+  [[ -d "${ANDROID_HOME:-${ANDROID_SDK_ROOT:-}}" ]] || die "Android Studio/SDK is not installed. See https://developer.android.com/studio"
 fi
 
+# Install tools
 echo "Installing Patrol CLI ..."
 flutter pub global activate patrol_cli
 
