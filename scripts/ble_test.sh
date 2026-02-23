@@ -3,9 +3,13 @@
 # This script runs BLE provisioning integration tests. It is intended to be run directly from a download, with a command such as:
 # TODO: fill this in with the correct "bash <(curl -fsSL ....)" command
 
-# In order to succesfully run this test you need to have a physical device connected to your computer and a pi that is in provisioning mode. 
-
 # By default, this script will run the test in release mode for iOS and debug mode for Android. You can override this in the .env file.
+
+# Prerequisites:
+#   - A physical device connected to your computer
+#   - A Pi in provisioning mode.
+#   - On macOS, Flutter will be installed automatically via Homebrew if not present.
+#   - On other platforms, install Flutter before running: https://docs.flutter.dev/get-started/install
 
 # This script requires that you pass it a .env file that contains the following variables.
 #   API_KEY
@@ -59,6 +63,15 @@ git clone --depth 1 https://github.com/viamrobotics/viam_flutter_bluetooth_provi
 EXAMPLE_DIR="$TMPDIR_ROOT/repo/example"
 
 # Install tools
+if ! command -v flutter &>/dev/null; then
+  if [[ "$(uname)" == "Darwin" ]]; then
+    echo "Flutter not found. Installing via Homebrew ..."
+    brew install --cask flutter
+  else
+    die "Flutter is not installed. See https://docs.flutter.dev/get-started/install"
+  fi
+fi
+
 echo "Installing Patrol CLI ..."
 flutter pub global activate patrol_cli
 
