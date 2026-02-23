@@ -26,3 +26,7 @@ flutter run
 
 - **Physical Device**: Must be run on a physical device (not a simulator)
 - **viam-agent Version**: Machine must be running `0.20.0`+ for standard flow, `0.21.0`+ for tethering
+
+## BLE Provisioning Integration Test
+
+See [patrol_test/README.md](patrol_test/README.md) for instructions on running the end-to-end BLE provisioning test.

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # This script runs BLE provisioning integration tests. It is intended to be run directly from a download, with a command such as:
-# TODO: fill this in with the correct "bash <(curl -fsSL ....)" command
+# bash <(curl -fsSL https://raw.githubusercontent.com/viamrobotics/viam_flutter_bluetooth_provisioning_widget/main/scripts/ble_test.sh) /path/to/your.env
 
 # By default, this script will run the test in release mode for iOS and debug mode for Android. You can override this in the .env file.
 
