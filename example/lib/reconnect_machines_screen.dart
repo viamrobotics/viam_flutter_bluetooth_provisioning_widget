@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:viam_flutter_bluetooth_provisioning_widget/viam_flutter_bluetooth_provisioning_widget.dart';
-
-import 'consts.dart';
 
 enum _RobotStatus { online, offline, awaitingSetup, loading }
 
@@ -46,8 +45,8 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
       _isLoading = true;
     });
     try {
-      _viam = await Viam.withApiKey(Consts.apiKeyId, Consts.apiKey);
-      final locations = await _viam!.appClient.listLocations(Consts.organizationId);
+      _viam = await Viam.withApiKey(dotenv.env['API_KEY_ID']!, dotenv.env['API_KEY']!);
+      final locations = await _viam!.appClient.listLocations(dotenv.env['ORG_ID']!);
       final newList = <_ListRobot>[];
       for (final location in locations) {
         final locationRobots = await _viam!.appClient.listRobots(location.id);
@@ -108,7 +107,7 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
           robot: robot,
           isNewMachine: false,
           mainRobotPart: mainPart,
-          psk: Consts.psk,
+          psk: dotenv.env['PSK'] ?? 'viamsetup',
           fragmentId: null,
           agentMinimumVersion: '0.20.0',
           copy: BluetoothProvisioningFlowCopy(
@@ -140,7 +139,7 @@ class _ReconnectRobotsScreenState extends State<ReconnectRobotsScreen> {
         robot: robot,
         isNewMachine: false,
         mainRobotPart: mainPart,
-        psk: Consts.psk,
+        psk: dotenv.env['PSK'] ?? 'viamsetup',
         fragmentId: null,
         agentMinimumVersion: '0.20.0',
         copy: BluetoothProvisioningFlowCopy(

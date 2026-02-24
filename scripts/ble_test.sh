@@ -83,20 +83,16 @@ if [[ "$PLATFORM" == "ios" ]] && ! command -v fastlane &>/dev/null; then
   brew install fastlane
 fi
 
-# Inject credentials into source files
-echo "Injecting credentials ..."
-
-sed -i.bak \
-  -e "s|static const String apiKeyId = '';|static const String apiKeyId = '$API_KEY_ID';|" \
-  -e "s|static const String apiKey = '';|static const String apiKey = '$API_KEY';|" \
-  -e "s|static const String organizationId = '';|static const String organizationId = '$ORG_ID';|" \
-  -e "s|static const String locationId = '';|static const String locationId = '$LOCATION_ID';|" \
-  "$EXAMPLE_DIR/lib/consts.dart"
-
-sed -i.bak \
-  -e "s|const String testWifiSsid = 'YOUR_WIFI_SSID';|const String testWifiSsid = '$WIFI_SSID';|" \
-  -e "s|const String testWifiPassword = 'YOUR_WIFI_PASSWORD';|const String testWifiPassword = '$WIFI_PASSWORD';|" \
-  "$EXAMPLE_DIR/patrol_test/ble_provisioning_flow_test.dart"
+# Write .env file for the example app (loaded at runtime by flutter_dotenv)
+cat > "$EXAMPLE_DIR/.env" <<EOF
+API_KEY_ID=$API_KEY_ID
+API_KEY=$API_KEY
+ORG_ID=$ORG_ID
+LOCATION_ID=$LOCATION_ID
+WIFI_SSID=$WIFI_SSID
+WIFI_PASSWORD=$WIFI_PASSWORD
+EOF
+echo "✓ .env written to $EXAMPLE_DIR/.env"
 
 # Fetch signing certificates (iOS only)
 if [[ "$PLATFORM" == "ios" ]]; then

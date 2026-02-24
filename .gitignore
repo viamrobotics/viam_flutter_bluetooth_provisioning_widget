@@ -119,3 +119,6 @@ app.*.symbols
 !/dev/ci/**/Gemfile.lock
 .DS_Store
 /example/android/app/.cxx
+
+# Environment files (contain secrets)
+/example/.env
