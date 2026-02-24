@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:viam_flutter_bluetooth_provisioning_widget/viam_flutter_bluetooth_provisioning_widget.dart';
 
-import 'consts.dart';
 import 'utils.dart';
 
 class ProvisionNewMachineScreen extends StatefulWidget {
@@ -28,7 +28,7 @@ class _ProvisionNewMachineScreenState extends State<ProvisionNewMachineScreen> {
       _errorString = null;
     });
     try {
-      final viam = await Viam.withApiKey(Consts.apiKeyId, Consts.apiKey);
+      final viam = await Viam.withApiKey(dotenv.env['API_KEY_ID']!, dotenv.env['API_KEY']!);
       final (robot, mainPart) = await Utils.createRobot(viam);
       setState(() {
         _robotName = robot.name;
@@ -65,7 +65,7 @@ class _ProvisionNewMachineScreenState extends State<ProvisionNewMachineScreen> {
         robot: robot,
         isNewMachine: true,
         mainRobotPart: mainPart,
-        psk: Consts.psk,
+        psk: dotenv.env['PSK'] ?? 'viamsetup',
         fragmentId: null,
         agentMinimumVersion: '0.20.0',
         copy: BluetoothProvisioningFlowCopy(
@@ -94,7 +94,7 @@ class _ProvisionNewMachineScreenState extends State<ProvisionNewMachineScreen> {
         robot: robot,
         isNewMachine: true,
         mainRobotPart: mainPart,
-        psk: Consts.psk,
+        psk: dotenv.env['PSK'] ?? 'viamsetup',
         fragmentId: null,
         agentMinimumVersion: '0.20.0',
         copy: BluetoothProvisioningFlowCopy(

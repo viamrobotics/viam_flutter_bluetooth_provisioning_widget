@@ -1,12 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:patrol/patrol.dart';
 import 'package:viam_example_app/main.dart';
-
-const String testWifiSsid = 'YOUR_WIFI_SSID';
-const String testWifiPassword = 'YOUR_WIFI_PASSWORD';
 
 void main() {
   patrolTest(
@@ -14,6 +12,11 @@ void main() {
     framePolicy: LiveTestWidgetsFlutterBindingFramePolicy.fullyLive,
     config: PatrolTesterConfig(printLogs: true),
     ($) async {
+      // Load .env (same file the app uses — Wi-Fi creds come from here too)
+      await dotenv.load(fileName: ".env");
+      final String testWifiSsid = dotenv.env['WIFI_SSID']!;
+      final String testWifiPassword = dotenv.env['WIFI_PASSWORD']!;
+
       // Launch
       await $.pumpWidgetAndSettle(const MyApp());
 

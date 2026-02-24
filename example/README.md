@@ -4,16 +4,14 @@ This directory contains a complete example app that demonstrates how to use the 
 
 ## Quick Start
 
-1. **Update the constants** in `lib/consts.dart` with your Viam credentials:
+1. **Set up your environment** — create a `.env` file in this directory with your Viam credentials (see `.env.example` for reference):
 
-```dart
-class Consts {
-  static const String apiKeyId = 'your-api-key-id';
-  static const String apiKey = 'your-api-key';
-  static const String organizationId = 'your-organization-id';
-  static const String locationId = 'your-location-id';
-  static const String psk = 'viamsetup'; // if you specify a hotspot_password in viam-defaults.json this must match
-}
+```
+API_KEY_ID=your-api-key-id
+API_KEY=your-api-key
+ORG_ID=your-organization-id
+LOCATION_ID=your-location-id
+PSK=viamsetup // if you specify a hotspot_password in viam-defaults.json this must match
 ```
 
 2. **Run the app** on a physical device:

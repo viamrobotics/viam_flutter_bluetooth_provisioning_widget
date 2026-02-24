@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # This script runs BLE provisioning integration tests. It is intended to be run directly from a download, with a command such as:
-# TODO: fill this in with the correct "bash <(curl -fsSL ....)" command
+# bash <(curl -fsSL https://raw.githubusercontent.com/viamrobotics/viam_flutter_bluetooth_provisioning_widget/main/example/ble_test.sh) /path/to/your.env
 
 # By default, this script will run the test in release mode for iOS and debug mode for Android. You can override this in the .env file.
 
@@ -83,20 +83,9 @@ if [[ "$PLATFORM" == "ios" ]] && ! command -v fastlane &>/dev/null; then
   brew install fastlane
 fi
 
-# Inject credentials into source files
-echo "Injecting credentials ..."
-
-sed -i.bak \
-  -e "s|static const String apiKeyId = '';|static const String apiKeyId = '$API_KEY_ID';|" \
-  -e "s|static const String apiKey = '';|static const String apiKey = '$API_KEY';|" \
-  -e "s|static const String organizationId = '';|static const String organizationId = '$ORG_ID';|" \
-  -e "s|static const String locationId = '';|static const String locationId = '$LOCATION_ID';|" \
-  "$EXAMPLE_DIR/lib/consts.dart"
-
-sed -i.bak \
-  -e "s|const String testWifiSsid = 'YOUR_WIFI_SSID';|const String testWifiSsid = '$WIFI_SSID';|" \
-  -e "s|const String testWifiPassword = 'YOUR_WIFI_PASSWORD';|const String testWifiPassword = '$WIFI_PASSWORD';|" \
-  "$EXAMPLE_DIR/patrol_test/ble_provisioning_flow_test.dart"
+# Copy the user's .env into the example app (loaded at runtime by flutter_dotenv)
+cp "$ENV_FILE" "$EXAMPLE_DIR/.env"
+echo "✓ .env copied to $EXAMPLE_DIR/.env"
 
 # Fetch signing certificates (iOS only)
 if [[ "$PLATFORM" == "ios" ]]; then
