@@ -83,16 +83,9 @@ if [[ "$PLATFORM" == "ios" ]] && ! command -v fastlane &>/dev/null; then
   brew install fastlane
 fi
 
-# Write .env file for the example app (loaded at runtime by flutter_dotenv)
-cat > "$EXAMPLE_DIR/.env" <<EOF
-API_KEY_ID=$API_KEY_ID
-API_KEY=$API_KEY
-ORG_ID=$ORG_ID
-LOCATION_ID=$LOCATION_ID
-WIFI_SSID=$WIFI_SSID
-WIFI_PASSWORD=$WIFI_PASSWORD
-EOF
-echo "✓ .env written to $EXAMPLE_DIR/.env"
+# Copy the user's .env into the example app (loaded at runtime by flutter_dotenv)
+cp "$ENV_FILE" "$EXAMPLE_DIR/.env"
+echo "✓ .env copied to $EXAMPLE_DIR/.env"
 
 # Fetch signing certificates (iOS only)
 if [[ "$PLATFORM" == "ios" ]]; then
