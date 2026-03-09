@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import 'consts.dart';
 import 'start_screen.dart';
 
-void main() {
+Future<void> main() async {
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 
@@ -13,13 +14,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     try {
-      assert(Consts.apiKeyId.isNotEmpty, 'apiKeyId is empty');
-      assert(Consts.apiKey.isNotEmpty, 'apiKey is empty');
-      assert(Consts.organizationId.isNotEmpty, 'organizationId is empty');
-      assert(Consts.locationId.isNotEmpty, 'locationId is empty');
+      assert(dotenv.env['API_KEY_ID']!.isNotEmpty, 'apiKeyId is empty');
+      assert(dotenv.env['API_KEY']!.isNotEmpty, 'apiKey is empty');
+      assert(dotenv.env['ORG_ID']!.isNotEmpty, 'organizationId is empty');
+      assert(dotenv.env['LOCATION_ID']!.isNotEmpty, 'locationId is empty');
     } catch (e) {
       debugPrint('Error: $e');
-      // To use this example app populate the consts.dart file with your own api Keys.
+      // To use this example app populate the .env file with your own api Keys.
       rethrow;
     }
 

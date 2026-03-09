@@ -16,6 +16,7 @@ dependencies:
   viam_flutter_bluetooth_provisioning_widget:
     path: ../
   permission_handler: ^11.0.0
+  flutter_dotenv: ^6.0.0
 
 dev_dependencies:
   flutter_test:
@@ -31,6 +32,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - .env
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
