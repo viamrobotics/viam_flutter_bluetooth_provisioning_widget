@@ -11,7 +11,7 @@ API_KEY_ID=your-api-key-id
 API_KEY=your-api-key
 ORG_ID=your-organization-id
 LOCATION_ID=your-location-id
-PSK=viamsetup
+PSK=viamsetup // if you specify a hotspot_password in viam-defaults.json this must match
 ```
 
 See `.env.example` for additional fields needed when running integration tests.
