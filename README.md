@@ -151,6 +151,11 @@ The standard provisioning flow for machines with internet access. Scans for near
 
 The tethering flow for machines that need internet access through the mobile device. Similar to the standard flow but includes options for internet tethering when the machine doesn't have direct network access.
 
+
+## BLE Provisioning Integration Tests
+
+This package includes an end-to-end integration test that runs the full BLE provisioning flow on a physical device. Since the test runs through the example app, see the [example README](example/README.md#ble-provisioning-integration-tests) for setup and usage.
+
 ## License
 
 See the [LICENSE](LICENSE) file for license rights and limitations.
