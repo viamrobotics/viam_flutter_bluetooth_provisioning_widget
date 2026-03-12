@@ -122,3 +122,7 @@ app.*.symbols
 # Environment files (contain secrets)
 /example/.env
 
+
+# Claude Code
+.claude/worktrees
+.claude/settings.local.json
