@@ -38,6 +38,8 @@ class ConnectBluetoothDeviceRepository {
     if (_connectedDevice?.isConnected == false && _connectedDevice != null) {
       await connect(_connectedDevice!);
       debugPrint('reconnected to device');
+    } else if (_connectedDevice?.isConnected == true) {
+      debugPrint('reconnect: device already connected');
     }
   }
 
