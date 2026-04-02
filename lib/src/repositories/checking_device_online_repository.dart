@@ -49,6 +49,8 @@ class CheckingDeviceOnlineRepository {
           deviceOnlineState = DeviceOnlineState.errorConnecting;
           _errorMessageController.add(error);
         }
+      } else {
+        debugPrint('checking device online: device not connected');
       }
     });
   }
