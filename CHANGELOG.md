@@ -1,3 +1,9 @@
+## 1.0.0
+- Removes `permission_handler` as package dependency
+- Avoid creating new locations in example project
+- Includes BLE provisioning automated integration tests
+- Adds a few helpful `debugPrint`s around device connection state
+
 ## 0.1.0
 - Fix/workaround connection issue on Android (android-code: 133)
 
